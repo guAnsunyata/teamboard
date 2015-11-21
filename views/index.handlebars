@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<style type="text/css">
+  .alpha95 {
+      /* Fallback for web browsers that don't support RGBa */
+      background-color: rgb(255, 255, 255);
+      /* RGBa with 0.6 opacity */
+      background-color: rgba(255, 255, 255, 0.95);
+      /* For IE 5.5 - 7*/
+      filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+      /* For IE 8*/
+      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+  }
+  .wrapper{
+    margin-bottom: 60px;
+  }
+  .home{
+    margin-top: 10%;
+    width: 92.5%;
+  }
+  .title-wrapper li{
+    opacity: 0;
+  }
+  .title{
+    padding-top: 5px;
+    font-size: 62px;
+    color: #01579b;
+  }
+  .subtitle{
+    font-size: 18px;
+  }
+  .signup{
+    display: none;
+    opacity: 0;
+    margin-top: -20px;
+  }
+  .signup-wrapper{
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 0%;
+  }
+  .signup-title{
+    
+  }
+</style>
+<div class="wrapper" align="center">
+
+    <div class="home alpha95">
+      <ul class="title-wrapper">
+        <li class="title center-align"><b>Patchwork</b></li>
+        <li class="subtitle">The Lightest Task/Knowledge Management Tool</li>
+        <hr style="width: 90%;" /><br/>
+        <li>
+          <button class="waves-effect waves-light btn" id="signUp-btn" onclick="javascript:showSignUp()" >Sign Up</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="row signup">
+    <div class="signup-wrapper">
+    <ul>
+      <div class="signup-title" align="left">
+        <li><h4>Sign Up</h4></li>
+        <li><p>
+          <input type="checkbox" id="contract" />
+          <label for="contract">You allow PatchWork to access your personal info.</label>
+        </p></li>
+      </div>
+      <li>
+      <form class="col s12" id="reg">
+        <div class="row">
+          <div class="input-field col s12">
+            <input name="email" id="email" type="email" class="validate">
+            <label for="email">Email</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input name="name" id="first_name" type="text" class="validate">
+            <label for="first_name">First Name</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="name" id="last_name" type="text" class="validate">
+            <label for="first_name">Last Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input  name="password" id="password" type="password" class="validate">
+            <label for="password">Password</label>
+          </div>
+          <div class="input-field col s6">
+            <input  name="repassword" id="repassword" type="password" class="validate">
+            <label for="repassword">Confirm Password</label>
+          </div>
+        </div>
+        <br/>
+      <button class="waves-effect waves-light btn" id="submit" formmethod="post" formaction="/user/signup" form="reg" type="submit" disabled="true">Submit</button>
+      <br/><br/>
+      </form>
+      </li>
+    </ul>
+    </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+  setTimeout(function(){ Materialize.showStaggeredList('.title-wrapper'); }, 100);
+
+});
+
+function showSignUp(){
+  $('#contract').clickToggle(function(){
+      document.getElementById("submit").disabled = false;
+    },function(){
+      document.getElementById("submit").disabled = true;
+    });
+
+  $('#signUp-btn').css('display', 'none');
+  setTimeout(function(){
+  $('.home').animate({"margin-top": "12%"}, {duration: 100,specialEasing: {
+      width: "linear",
+      height: "easeOutBounce"
+    }});
+  }, 250);
+  setTimeout(function(){
+  $('.home').animate({"margin-top": "0%"}, {duration: 450,specialEasing: {
+      width: "linear",
+      height: "easeOutBounce"
+    }});
+  }, 350);
+  setTimeout(function(){ Materialize.showStaggeredList('.signup'); }, 700);
+  setTimeout(function(){ $('.signup').css('display','block'); }, 700);
+  setTimeout(function(){ $('.signup').animate({"opacity": "1"}, {duration: 550,specialEasing: {
+      width: "linear",
+      height: "easeOutBounce"
+  }});
+  }, 700);
+};
+
+$.fn.clickToggle = function(a, b) {
+    return this.each(function() {
+        var clicked = false;
+        $(this).click(function() {
+            if (clicked) {
+                clicked = false;
+                return b.apply(this, arguments);
+            }
+            clicked = true;
+            return a.apply(this, arguments);
+        });
+    });
+};
+
+</script>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<style type="text/css">
+	.task{
+		margin-left: 10%;
+	    margin-right: 10%;
+	    font-family: '微軟正黑體';
+	}
+	.task-dashboard{
+		height: 100px;
+		margin-top: 20px;
+		padding: 10px;
+		margin-bottom: 10px;
+		background-color: gray;
+	}
+	.ctrl-panel{
+		height: 40px;
+		margin-bottom: 0px;
+	}
+	.collapsible-body{
+		padding-left: 35px;
+		padding-right: 40px;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+	.todos{
+
+	}
+	.todos-setting{
+		text-align: center;
+	}
+	.collapsible-header{
+		padding-left: 38px;
+	}
+	.todos-checkbox{
+		padding-left: 10px;
+	}
+	.add-todo-panel{
+	    display: none;
+	    padding: 16px;
+	    position: fixed;
+	    width: 450px;
+	    height: 600px;
+	    top: 50%;
+	    left: 50%;
+	    margin-top: -300px;
+	    margin-left: -225px;
+	    background-color: white;
+	    z-index: 999;
+  	}
+  	.add-todo-panel-title{
+  	  font-size: 24px;
+  	  padding-left: 18px;
+  	  margin-bottom: 12px;
+ 	}
+</style>
+
+<script src="//cdn.jsdelivr.net/sortable/latest/Sortable.min.js"></script>
+<!-- <script type="text/javascript" src="ckeditor/ckeditor.js"></script> -->
+<script src="Trumbowyg-2.0.0-beta.5/dist/trumbowyg.min.js"></script>
+<link rel="stylesheet" href="Trumbowyg-2.0.0-beta.5/dist/ui/trumbowyg.min.css">
+
+<script type="text/javascript">
+	$( document ).ready(function(){
+		$('.footer').remove();
+		api_sortable();
+
+		// $item = $('.collection-item span.item-title');
+		// $todos_wrapper = $('.todos-wrapper');
+		// $collection_item = $('.collection-item');
+
+		// $item.dblclick(function(){
+		// 	var $this = $(this);
+		// 	$this.attr("contentEditable","true").focus();
+		// })
+
+		// $item.blur(function(){
+		// 	var $this = $(this);
+		// 	$this.attr("contentEditable","false");
+		// });
+
+		$('.collection').collapsible({
+	      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    });
+
+		(function($) {
+		    $.fn.clickToggle = function(func1, func2) {
+		        var funcs = [func1, func2];
+		        this.data('toggleclicked', 0);
+		        this.click(function() {
+		            var data = $(this).data();
+		            var tc = data.toggleclicked;
+		            $.proxy(funcs[tc], this)();
+		            data.toggleclicked = (tc + 1) % 2;
+		        });
+		        return this;
+		    };
+		}(jQuery));
+
+		if(document.getElementById("todos-content").contentEditable == true){
+			alert('123');
+			$('.collapsible-body').trumbowyg({
+			});
+		}else{
+			$('.collapsible-body').trumbowyg('destroy');
+		}
+
+		$('.collapsible-body').dblclick(function(){
+			var $this = $(this);
+			$this.attr("contentEditable","true").focus();
+		})
+
+		$('.collapsible-body').blur(function(){
+			var $this = $(this);
+			$this.attr("contentEditable","false");
+		});
+		
+
+		// var first = true;
+		// $todos_wrapper.clickToggle(function(){ 
+		// 	$(this).parent().children('.item-contain').slideDown();
+		// 	$(this).children('.item-nav').html("<span style=\"padding-right: 5px; font-size: 26px;\">-");
+		// 	//ckeditor
+		// 	// if(first){
+		// 	// 	CKEDITOR.replace('item-contain-eidtor');
+		// 	// 	first = false;
+		// 	// }
+		// },function(){
+		// 	$(this).parent().children('.item-contain').slideUp();
+		// 	$(this).children('.item-nav').html("＋");
+		// });
+
+		// var editor_toggle = true;
+		// var init = true;
+		// $('#item-contain-eidtor').click(function(){
+		// 	if(editor_toggle){
+		// 		//var $content = $(this).html();
+		// 		editor_toggle = false;
+		// 		// if($content != ''){
+		// 		// 	$(this).html('');
+		// 		// }
+		// 		$(this).trumbowyg({
+		// 		    closable: true,
+		// 		    autogrow: true
+		// 		});
+		// 		//$(this).trumbowyg('html', $content);
+		// 			$(this).trumbowyg().on('tbwblur', function(){
+		// 				$(this).trumbowyg('destroy');
+		// 				editor_toggle = true;
+		// 			});
+		// 		//$(this).trumbowyg().focus();
+		// 	}
+		// });
+	});
+
+	//sortable
+	var api_sortable = function init(){
+		var el = document.getElementById('todos-sortable');
+		var sortable = new Sortable(el, {
+		    group: "name",  // or { name: "...", pull: [true, false, clone], put: [true, false, array] }
+		    sort: true,  // sorting inside list
+		    delay: 0, // time in milliseconds to define when the sorting should start
+		    disabled: false, // Disables the sortable if set to true.
+		    store: null,  // @see Store
+		    animation: 150,  // ms, animation speed moving items when sorting, `0` — without animation
+		    filter: ".ignore-elements",  // Selectors that do not lead to dragging (String or Function)]
+		    ghostClass: "sortable-ghost",  // Class name for the drop placeholder
+		    chosenClass: "sortable-chosen",  // Class name for the chosen item
+		    dataIdAttr: 'data-id',
+
+		    forceFallback: false,  // ignore the HTML5 DnD behaviour and force the fallback to kick in
+		    fallbackClass: "sortable-fallback",  // Class name for the cloned DOM Element when using forceFallback
+		    fallbackOnBody: false,  // Appends the cloned DOM Element into the Document's Body
+
+		    scroll: true, // or HTMLElement
+		    scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
+		    scrollSpeed: 10, // px
+
+		    setData: function (dataTransfer, dragEl) {
+		        dataTransfer.setData('Text', dragEl.textContent);
+		    },
+
+		    // dragging started
+		    onStart: function (/**Event*/evt) {
+		    	console.log('onStart: ',evt.oldIndex);
+		        evt.oldIndex;  // element index within parent
+		    },
+
+		    // dragging ended
+		    onEnd: function (/**Event*/evt) {
+		        evt.oldIndex;  // element's old index within parent
+		        evt.newIndex;  // element's new index within parent
+		    },
+
+		    // Element is dropped into the list from another list
+		    onAdd: function (/**Event*/evt) {
+		        var itemEl = evt.item;  // dragged HTMLElement
+		        evt.from;  // previous list
+		        // + indexes from onEnd
+		    },
+
+		    // Changed sorting within list
+		    onUpdate: function (/**Event*/evt) {
+		        var itemEl = evt.item;  // dragged HTMLElement
+		        // + indexes from onEnd
+		    },
+
+		    // Called by any change to the list (add / update / remove)
+		    onSort: function (/**Event*/evt) {
+		    	console.log('onSort: ' ,evt);
+		    },
+
+		    // Element is removed from the list into another list
+		    onRemove: function (/**Event*/evt) {
+		        // same properties as onUpdate
+		    },
+
+		    // Attempt to drag a filtered element
+		    onFilter: function (/**Event*/evt) {
+		        var itemEl = evt.item;  // HTMLElement receiving the `mousedown|tapstart` event.
+		    },
+
+		    // Event when you move an item in the list or between lists
+		    onMove: function (/**Event*/evt) {
+		        // Example: http://jsbin.com/tuyafe/1/edit?js,output
+		        evt.dragged; // dragged HTMLElement
+		        evt.draggedRect; // TextRectangle {left, top, right и bottom}
+		        evt.related; // HTMLElement on which have guided
+		        evt.relatedRect; // TextRectangle
+		        // return false; — for cancel
+		    }
+		});
+		return{
+			sortable: sortable
+		}
+	};
+
+	// var sortable = Sortable.create(el);
+</script>
+
+<div class="task">
+
+	<!-- pop-out div (P.S. there are cancel zone in the layout)-->
+	<div class="pop-out add-todo-panel z-depth-2 animate fadescaleIn">
+		<div class="add-todo-panel-title">Add Task</div>
+			<div class="row">
+			<form class="col s12">
+			  <div class="row">
+			    <div class="input-field col s6">
+			      <input placeholder="Placeholder" id="first_name" type="text" class="validate">
+			      <label for="first_name">First Name</label>
+			    </div>
+			    <div class="input-field col s6">
+			      <input id="last_name" type="text" class="validate">
+			      <label for="last_name">Last Name</label>
+			    </div>
+			  </div>
+			  <div class="row">
+			    <div class="input-field col s12">
+			      <input id="password" type="password" class="validate">
+			      <label for="password">Password</label>
+			    </div>
+			  </div>
+			  <div class="row">
+			    <div class="input-field col s12">
+			      <input id="email" type="email" class="validate">
+			      <label for="email">Email</label>
+			    </div>
+			  </div>
+			</form>
+		</div>
+	</div>
+
+	<div class="task-dashboard">
+		<div class="task-title">
+			Doc Analysis | Leader + mate<br/>
+			State | activity
+		</div>
+	</div>
+
+	<div class="ctrl-panel">
+		<a class="waves-effect waves-light btn" href="javascript: add_todo();">Add</a>
+		<a class="waves-effect waves-light btn" href="javascript: sort_todo();">Sortable</a>
+	</div>
+
+<!-- 	</div>
+	<div class="todos">
+		<ul class="collection" id="todos-sortable">
+			<li class="collection-item">
+				<div class="todos-wrapper valign-wrapper" style="display: table;">
+		      			<input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
+						<label for="filled-in-box" class="valign" style="float: left"> </label>
+						<span class="item-title valign" style="float: left">Doc gathering</span>
+		      			<span class="item-mate valign" style="float: left; height: 25px"><img src="images/dashboard-leader.jpg" alt="" height="25" class="circle"></span>
+	      				<span class="item-nav" style="position: absolute; right: 20px; width: 35px; text-align: right;">+</span>
+	      		</div>
+      			<section class="item-contain" style="overflow: hidden; display: none; padding-top:6px;">
+      				<div id="item-contain-eidtor" style="border: 1px;">
+         				<p>Origin text</p>
+      				</div>
+
+      			</section>
+			</li>
+			<li class="collection-item">Domain 1</li>
+			<li class="collection-item">Domain 2</li>
+			<li class="collection-item">Domain 3</li>
+    	</ul>
+	</div> -->
+	<div class="todos">
+	<ul class="collapsible" data-collapsible="expandable" id="todos-sortable">
+		<li>
+		  <input type="checkbox" class="filled-in" id="todos_id1" checked="checked"/>
+      	  <label for="todos_id1" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
+		  <div class="collapsible-header" style="display: inline-block; width: 97%;"><i class="material-icons">filter_drama</i><span id="todos-title">First</span></div>
+		  <!-- <div class="settong" align="center" style="display: inline-block;"> -->
+		  	<i class="todos_setting tiny material-icons" style="font-size: 18px; line-height: 3rem; width:2%; text-align: center;">settings</i>
+		  <!-- </div> -->
+		  <div class="collapsible-body test" id="todos-content" contentEditable="false">
+		  	Operation
+		  </div>
+		</li>
+		<li>
+		  <input type="checkbox" class="filled-in" id="todos_id2" checked="checked"/>
+      	  <label for="todos_id2" style="position: absolute; margin-top:12px; margin-left:12px"></label>
+		  <div class="collapsible-header" style="display: inline-block; width:100%"><i class="material-icons">place</i>Second</div>
+		  <div class="collapsible-body" id="todos-content" contentEditable="false">
+		  	Second 
+		  </div>
+		</li>
+		<li>
+		  <input type="checkbox" class="filled-in" id="todos_id3" checked=""/>
+      	  <label for="todos_id3" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
+		  <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+		  <div class="collapsible-body" id="todos-content" contentEditable="false">
+		  	Third
+		  </div>
+		</li>
+	</ul>
+	</div>
+
+</div>
+
+
+<!-- <iframe src="/chatroom" width="100%" height="295px;" style=" position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 400px;
+  display: none;">
+
+</iframe> -->
+
+<script>
+var socket = io.connect();
+// function add_todo(){
+// 	$add_todo_panel = $('.add_todo_panal')
+// 	$add_todo_panel.css({"display":"block"})
+// 	active_cancelzone();
+// }
+function add_todo(){
+	socket.emit('create todo',[],function(){});
+}
+
+socket.on('emit new todo', function(data){
+	$('.collapsible').append("<li><input type=\"checkbox\" class=\"filled-in\" id=\""+data._id+"\" checked=\"\" /><label for=\""+data._id+"\"style=\"position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;\"></label><div class=\"collapsible-header\"><i class=\"material-icons\">whatshot</i>Third</div><div class=\"collapsible-body\" id=\"todos-content\" contentEditable=\"false\">Third</div></li>");
+	var el = document.getElementById(data._id);
+	var sortable = new Sortable(el);
+	$('.collapsible').collapsible({
+      accordion : false
+    });
+    	if(document.getElementById("todos-content").contentEditable == true){
+			alert('123');
+			$('.collapsible-body').trumbowyg({
+			});
+		}else{
+			$('.collapsible-body').trumbowyg('destroy');
+		}
+
+		$('.collapsible-body').dblclick(function(){
+			var $this = $(this);
+			$this.attr("contentEditable","true").focus();
+		})
+
+		$('.collapsible-body').blur(function(){
+			var $this = $(this);
+			$this.attr("contentEditable","false");
+		});
+
+		$('.collapsible-body').keyup(function(){
+			var target = $(this).parent().children('input').attr('id');
+			var content = $(this).html();
+			var data = {todo_id: target, content: content};
+			socket.emit('update todo content',data);
+		});
+});
+
+socket.on('emit todo content', function(data){
+	var $el = $('#'+data._id).parent().children('.collapsible-body');
+	$el.html(data.content);
+});
+
+$(document).ready(function(){
+	$('.todos_setting').click(function(){
+		var $this = $(this);
+		$this.parent().children('#todos_title').attr("contentEditable","true").focus();
+		$this.parent().children('#todos_title').remove();
+
+	});
+})
+
+</script>
+
+
+

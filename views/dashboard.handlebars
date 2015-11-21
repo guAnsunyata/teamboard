@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<script src="js/countUp.js"></script>
+<style type="text/css">
+  * {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+  .dashboard{
+    font-family: '微軟正黑體';
+  }
+  .chart-card{
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  .chart-content{
+    /*height: 250px;*/
+    /*background-color: gray;*/
+    /*background: -webkit-radial-gradient(circle, #96C2FE, #6E9AEA);*/
+    padding: 20px 20px;
+  }
+  .proj-field-title{
+    display: inline-block;
+    color: white;
+    margin: 5px 0px 0px 0px;
+    padding: 3px 7px;
+    border-radius: 4px;
+  }
+  .proj-name div{
+    display: inline-block;
+    margin: 5px 0px 10px 20px;
+    padding-bottom: 5px;
+    font-size: 24px;
+    border-bottom: 1px solid black;
+  }
+  .proj-desc{
+    margin: 8px 0px 8px 20px;
+  }
+  .proj-date-wrap{
+    display: inline-block;
+  }
+  .proj-date-dash{
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .chart-mid{
+  	text-align: center;
+  	-moz-user-select: none; 
+    -khtml-user-select: none; 
+    -webkit-user-select: none; 
+    -o-user-select: none;
+  }
+  .finished-rate{
+  	display: inline-block;
+  	font-family: "Courier New";
+	font-size: 150px;
+	line-height: 140px;
+  }
+  .finished-rate-unit{
+  	display: inline-block;
+  	font-family: "Courier New";
+	font-size: 50px;
+  }
+  .finished-task-wrap, .finished-todo-wrap{
+  	display: inline-block;
+  	font-family: "Courier New";
+  	text-align: right;
+  }
+  .total-task-wrap, .total-todo-wrap{
+  	display: inline-block;
+  	font-family: "Courier New";
+  	text-align: left;
+  }
+  .task-dash, .todo-dash{
+  	display: inline-block;
+  	margin-left: 5px;
+  	margin-right: 5px;
+  	font-size: 35px;
+  	font-weight: 100;
+  	line-height: 40px;
+  	vertical-align: top;
+  }
+  .finished-task, .total-task, .finished-todo, .total-todo{
+  	font-size: 25px;
+  	line-height: 20px;
+  }
+  .panel{
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
+  .panel a{
+    text-transform: none;
+  }
+  .panel-content{
+    height: 40px;
+  }
+  .task-card{
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-bottom: 12px;
+  }
+  .task-card a{
+    color: white;
+  }
+  .task-wrapper{
+    padding: 12px;
+    padding-left: 24px;
+    padding-right: 24px;
+    height: 315px;
+    background-color: #4CAF50; //element style
+  }
+  .task-title{
+    line-height: 20px;
+    margin-bottom: 0px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    /*border-width: 1px;
+    border-bottom-style: solid;*/
+  }
+  .task-state{
+    height: 20px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .task-state div{
+    font-size: 11px;
+  }
+  .task-state-icon{
+    height: 20px;
+    padding-left: 6px;
+  }
+  .task-state-decription{
+    padding-left: 5px;
+  }
+  .task-leader{
+    vertical-align: center;
+    padding: 6px;
+    margin-top: 0px;
+    height: 50px;
+    background-color: #c8e6c9; //element style
+  }
+  .task-content{
+    padding: 6px;
+    margin-top: 0px;
+    background-color: white;
+    height: 150px;
+    overflow: scroll;
+  }
+  label{
+    color: black;
+  }
+  .tag-more{
+    margin-top: 3px;
+    color: white;
+  }
+  .tag-edit{
+    margin-top: 3px;
+    color: white;
+  }
+  label.todo-finished{
+    text-decoration: line-through;
+  }
+  hr{
+    -webkit-margin-before: 6px;
+    -webkit-margin-after: 6px;
+  }
+
+  .add-task-panel{
+    display: none;
+    padding: 16px;
+    position: fixed;
+    width: 450px;
+    height: 600px;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -225px;
+    background-color: white;
+    z-index: 999;
+    overflow: scroll;
+  }
+  .add-task-panel-title{
+    font-size: 24px;
+    padding-left: 18px;
+    margin-bottom: 12px;
+  }
+
+  .post{
+    background-color: gray;
+    height: 100%;
+  }
+
+  /* tooltip */
+  /* 
+  a.tooltip {outline:none; }
+  a.tooltip strong {line-height:30px;}
+  a.tooltip:hover {text-decoration:none;} 
+  a.tooltip span {
+      z-index:10;display:none; padding:14px 20px;
+      margin-top:-30px; margin-left:28px;
+      width:300px; line-height:16px;
+  }
+  a.tooltip:hover span{
+      display:inline; position:absolute; color:#111;
+      border:1px solid #DCA; background:#fffAF0;}
+  .callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;}
+
+  a.tooltip span
+  {
+      border-radius:4px;
+      box-shadow: 5px 5px 8px #CCC;
+  }
+  */
+
+</style>
+
+<div class="row" style="margin-left: 1%; marign-right: 1%;">
+
+<!-- <div class="post col s1"></div> -->
+
+<div class="container">
+<div class="dashboard col s12">
+  <!-- pop-out div (P.S. there are cancel zone in the layout)-->
+  <div class="pop-out add-task-panel z-depth-2 animate fadescaleIn">
+    <div class="add-task-panel-title">Add Task</div>
+    <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="name" type="text" class="validate">
+          <label for="name">Task Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea id="textarea1" class="materialize-textarea"></textarea>
+          <label for="textarea1">Description</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input placeholder="start date" id="start_date" type="text" class="validate">
+          <label for="first_name">Start date</label>
+        </div>
+        <div class="input-field col s6">
+          <input placeholder="due date" id="due_date" type="text" class="validate">
+          <label for="last_name">Due date</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="email" type="text" class="validate">
+          <label for="email">Task leader</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="email" type="text" class="validate">
+          <label for="email">Collaborations</label>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+	<!-- changes  -->
+  <div class="chart-card">
+    <div class="card chart-content">
+      <div class="row">
+        <div class="col s4 chart-left">
+          <div class="grey lighten-1 proj-field-title">Project Name</div>
+          <div class="proj-name">
+            <div>Canvas網頁授權交易平台</div>
+          </div>
+          <div class="grey lighten-1 proj-field-title">About this Project</div>
+          <div class="proj-desc">哇，一個網路授權耶，好猛哦！好~現在宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜一種尷尬的狀態
+          </div>
+          <div class="proj-date-wrap">
+            <span class="grey lighten-1 proj-field-title">Start Date</span><br />
+            <span>2015-11-11</span>
+          </div>
+          <div class="proj-date-dash"> - </div>
+          <div class="proj-date-wrap">
+            <span class="grey lighten-1 proj-field-title">Due Date</span><br />
+            <span>2015-11-12</span>
+          </div>
+        </div>
+        <div class="col s4 chart-mid">
+        	<div class="proj-finished-rate-wrap">
+        		<div class="finished-rate">25</div>
+        		<span class="finished-rate-unit">%</span>
+        	</div>
+        	<div class="proj-task-wrap">
+        		<div class="finished-task-wrap">
+        		  <div class="finished-task">10</div>
+        		  <div class="finished-task-unit">Finished Tasks</div>
+        		</div>
+        		<div class="task-dash">/</div>
+        		<div class="total-task-wrap">
+        		  <div class="total-task-unit">Total Tasks</div>
+        		  <div class="total-task">40</div>
+        		</div>
+        	</div>
+        	<div class="proj-todo-wrap">
+        		<div class="finished-todo-wrap">
+        		  <div class="finished-todo">100</div>
+        		  <div class="finished-todo-unit">Finished Todos</div>
+        		</div>
+        		<div class="todo-dash">/</div>
+        		<div class="total-todo-wrap">
+        		  <div class="total-todo-unit">Total Todos</div>
+        		  <div class="total-todo">400</div>
+        		</div>
+        	</div>
+        </div>
+        <div class="col s4 chart-right">
+          <div class="proj-status-wrap">
+        	<div class="grey lighten-1 proj-field-title">Recent Status</div>
+        	<div class="proj-status">
+        		我覺得這把大概沒救了
+        	</div>
+          </div>
+          <div class="proj-members-wrap">
+            <div class="grey lighten-1 proj-field-title">Project Members</div>
+            <div class="proj-members">你還有你他媽</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-content">
+        <a class="add-task-btn waves-effect btn animate fadescaleInLeft" href="javascript:add_task()">Add Task</a>
+        <input>
+        <a class="btn waves-effect btn animate fadescaleInLeft" onclick="Materialize.toast('Guan : everybody hurry up !!', 4000)">Broadcast!</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="task-card col s12 m6 l3" id="_id1">
+      <div class="task-wrapper z-depth-2 animate bounceIn">
+        <div class="task-title">
+          <a href="/task">Doc Analysis</a>
+        </div><hr />
+
+        <div class="task-state valign-wrapper">
+          <div class="task-state-icon">
+            <i class="small material-icons" style="color: #1b5e20; font-size: 20px;">play_circle_filled</i>
+          </div>
+          <div class="task-state-decription left">
+            : Everything is on time from now.
+          </div>
+        </div>
+
+        <div class="task-leader valign-wrapper z-depth-1">
+          <div class="valign left" style="height: 40px;">
+            <img src="images/dashboard-leader.jpg" alt="" height="40" class="circle">
+          </div>
+          <div class="valign left" style="padding-left: 6px;">
+            <b>Xiou Wan, Hsu</b>
+          </div>
+        </div>
+
+        <div class="progress">
+          <div class="determinate" style="width: 22.5%"></div>
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 120px; right: 10px;">
+            <a class="btn-floating btn-large #1b5e20 green darken-4">
+              25.0%
+            </a>
+        </div>
+
+        <div class="task-content z-depth-1">
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-1" checked="checked" disabled="disabled" />
+            <label for="todo1-1" style="text-decoration: line-through;">Doc Gathering</label>
+          </div>
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-2" disabled="disabled" />
+            <label for="todo1-2">Consult with Dr.Hsu</label>
+          </div>
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-3" disabled="disabled" />
+            <label for="todo1-3">List the requirement</label>
+          </div>
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-4" disabled="disabled" />
+            <label for="todo1-4">Relaxing</label>
+          </div>
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-4" disabled="disabled" />
+            <label for="todo1-4">Relaxing</label>
+          </div>
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-4" disabled="disabled" />
+            <label for="todo1-4">Relaxing</label>
+          </div>
+
+        </div>
+
+        <div class="tag-edit left valign-wrapper"><i class="tiny material-icons valign">settings</i><div class="valign">edit</div></div>
+        <div class="tag-more right valign-wrapper"><i class="tiny material-icons valign">reorder</i><div class="valign">more</div></div>
+      </div>
+    </div>
+
+    <div class="task-card col s12 m6 l3" id="_id1">
+      <div class="task-wrapper z-depth-2 animate bounceIn" style="background-color: #039be5;">
+        <div class="task-title">
+          功能模型設計
+          <div style="font-size: 12px; color:white; font-weight: normal;">- due day : 10/30 -</div>
+        </div>
+
+
+        <div class="task-state valign-wrapper">
+          <div class="task-state-icon">
+            <div class="valign left"><i class="material-icons" style="color: #0d47a1; height:1px;">trending_down</i></div>
+          </div>
+          <div class="task-state-decription left">
+            : 行程有些延誤。
+          </div>
+        </div>
+
+        <div class="task-leader valign-wrapper z-depth-1" style="background-color: #e1f5fe;">
+          <div class="valign left" style="height: 40px;">
+            <img src="images/dashboard-leader2.jpg" alt="" height="40" class="circle">
+          </div>
+          <div class="valign left" style="padding-left: 6px;">
+            <b>林紘丞</b>
+          </div>
+        </div>
+
+        <div class="progress" style="background-color: #1e88e5;">
+          <div class="determinate" style="width: 67.5%; background-color: #0d47a1"></div>
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 120px; right: 10px;">
+            <a class="btn-floating btn-large #0d47a1 blue darken-4">
+              16/21
+            </a>
+        </div>
+
+        <div class="task-content z-depth-1">
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-1" checked="checked" disabled="disabled" />
+            <label for="todo1-1" class="todo-finished">Project API模型</label>
+          </div>
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-2" checked="checked" disabled="disabled" />
+            <label for="todo1-2" class="todo-finished">使用者 API模型</label>
+          </div>
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-3" checked="checked" disabled="disabled" />
+            <label for="todo1-3" class="todo-finished">共同協作 API模型</label>
+          </div>
+          <div class="todo">
+            <input type="checkbox" class="filled-in" id="todo1-4" disabled="disabled" />
+            <label for="todo1-4">帶入資料功能測試 (1/6)</label>
+          </div>
+        </div>
+      </div>
+    </div>
+<div>
+
+
+</div>
+</div>
+
+<script type="text/javascript">
+$( document ).ready(function(){
+  $('.footer').remove();
+  $add_task_panel = $('.add-task-panel');
+});
+
+function add_task(){
+  $add_task_panel.css({"display":"block"})
+  active_cancelzone();
+}
+
+</script>
+
+<script type="text/javascript">
+  var data;
+  $.post('/api/getData',[], function(res){
+    
+  });
+</script>
+
