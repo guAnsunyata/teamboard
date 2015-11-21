@@ -11,4 +11,5 @@ var todoSchema = new Schema({
 		ref: 'TaskModel'
 	}
 });
+
 module.exports = mongoose.model('TodoModel', todoSchema);
