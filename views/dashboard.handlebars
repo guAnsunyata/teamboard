@@ -502,11 +502,13 @@ function count_up(){
 </script>
 
 <script type="text/javascript">
+  // get project information from mongolab
   var $projName = $('#projName');
   var $projDesc = $('#projDesc');
+  var projId;
   $.get('/api/findTestProj', function(data){
     $projName.html(data[0].name);
-    $projDesc.html(data[0].desc+'<br />id: '+data[0]._id);
+    projId = data[0]._id;
+    $projDesc.html(data[0].desc+'<br />id: '+projId);
   });
 </script>
-

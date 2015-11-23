@@ -258,9 +258,14 @@ app.get('/newProj', function (req, res) {
   })
 });
 // find test project, should be deleted soon ...
-app.get('/api/findTestProj', function (req, res){
+app.get('/api/findTestProj', function (req, res) {
   Proj.unformalFind(req, function (data) {
   	res.json(data);
+  })
+});
+app.get('/api/updateProjName', function (req, res) {
+  Proj.updateName(req, function (data) {
+  	res.send(data);
   })
 });
 

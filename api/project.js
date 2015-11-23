@@ -1,4 +1,6 @@
 var ProjectModel = require('./model/projectModel.js');
+var TaskModel = require('./model/taskModel.js');
+var TodoModel = require('./model/todoModel.js');
 
 var ProjectProto = {
 	//最殘的create
@@ -17,6 +19,15 @@ var ProjectProto = {
 			if(err) throw err;
 			callback(project);
 		})
+	},
+	'updateName': function(req, callback) {
+		var query = { '_id':'5653015b58fe43dc186ec0a0' }
+		ProjectModel.update(query, {
+			'name': 'change proj name again'
+		}, function (err, proj) {
+			if(err) throw err;
+			callback(proj);
+		});
 	}
 }
 
