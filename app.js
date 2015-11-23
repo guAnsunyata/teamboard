@@ -12,11 +12,12 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
 
+var ProjApi = require('./api/project');
+var Proj = new ProjApi();
 var TaskApi = require('./api/task');
 var Task = new TaskApi();
 var TodoApi = require('./api/todo');
 var Todo = new TodoApi;
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -249,7 +250,19 @@ app.get('/signup', function (req, res) {
   res.render('signup', {layout: 'layout'});
 });
 
-app.post('/')
+// create test project, should be deleted soon...
+app.get('/newProj', function (req, res) {
+  Proj.unformalCreate(req, function (data) {
+  	res.json(data);
+  	console.log('new fucking project has been created!');
+  })
+});
+// find test project, should be deleted soon ...
+app.get('/api/findTestProj', function (req, res){
+  Proj.unformalFind(req, function (data) {
+  	res.json(data);
+  })
+});
 
 app.get('/dashboard', function (req, res) {
   res.render('dashboard', {layout: 'layout'});
