@@ -53,16 +53,16 @@
     -webkit-user-select: none; 
     -o-user-select: none;
   }
-  .finished-rate{
+  #finishedRate{
   	display: inline-block;
   	font-family: "Courier New";
-	font-size: 150px;
-	line-height: 140px;
+  	font-size: 150px;
+  	line-height: 140px;
   }
   .finished-rate-unit{
   	display: inline-block;
   	font-family: "Courier New";
-	font-size: 50px;
+	  font-size: 50px;
   }
   .finished-task-wrap, .finished-todo-wrap{
   	display: inline-block;
@@ -275,24 +275,27 @@
         <div class="col s12 m12 l4 chart-left">
           <div class="grey lighten-1 proj-field-title">Project Name</div>
           <div class="proj-name">
-            <div>Canvas網頁授權交易平台</div>
+            <div id="projName"></div>
+            <!-- Canvas網頁授權交易平台 -->
           </div>
           <div class="grey lighten-1 proj-field-title">About this Project</div>
-          <div class="proj-desc">哇，一個網路授權耶，好猛哦！好~現在宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜一種尷尬的狀態
+          <div class="proj-desc">
+            <div id="projDesc"></div>
+            <!-- 哇，一個網路授權耶，好猛哦！好~現在宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜一種尷尬的狀態 -->
           </div>
           <div class="proj-date-wrap">
             <span class="grey lighten-1 proj-field-title">Start Date</span><br />
-            <span>2015-11-11</span>
+            <span><!-- 2015-11-11 --></span>
           </div>
           <div class="proj-date-dash"> - </div>
           <div class="proj-date-wrap">
             <span class="grey lighten-1 proj-field-title">Due Date</span><br />
-            <span>2015-11-12</span>
+            <span><!-- 2015-11-12 --></span>
           </div>
         </div>
         <div class="col s12 m12 l4 chart-mid">
         	<div class="proj-finished-rate-wrap">
-        		<div class="finished-rate">25</div>
+        		<div id="finishedRate">25</div>
         		<span class="finished-rate-unit">%</span>
         	</div>
         	<div class="proj-task-wrap">
@@ -476,19 +479,34 @@
 $( document ).ready(function(){
   $('.footer').remove();
   $add_task_panel = $('.add-task-panel');
+  count_up();
 });
 
 function add_task(){
   $add_task_panel.css({"display":"block"})
   active_cancelzone();
 }
-
+function count_up(){
+  var $finishedRate = $('#finishedRate');
+  var options = {
+    useEasing : true, 
+    useGrouping : true, 
+    separator : ',', 
+    decimal : '.', 
+    prefix : '', 
+    suffix : ''
+  };
+  var demo = new CountUp("finishedRate", 0, 25, 0, 3.5, options);
+  demo.start();
+}
 </script>
 
 <script type="text/javascript">
-  var data;
-  $.post('/api/getData',[], function(res){
-    
+  var $projName = $('#projName');
+  var $projDesc = $('#projDesc');
+  $.get('/api/findTestProj', function(data){
+    $projName.html(data[0].name);
+    $projDesc.html(data[0].desc+'<br />id: '+data[0]._id);
   });
 </script>
 
