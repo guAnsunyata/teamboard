@@ -12,8 +12,8 @@ var ProjectProto = {
 			callback(project);
 		})
 	},
-	'findAll': function(req, callback) {
-		ProjectModel.find({}, function (err, project) {
+	'unformalFind': function(req, callback) {
+		ProjectModel.find({'_id':'5653015b58fe43dc186ec0a0'}, function (err, project) {
 			if(err) throw err;
 			callback(project);
 		})

@@ -7,9 +7,9 @@ var projectSchema = new Schema({
 	duedate: Date,
 	status: String,
 	members: [{
-		type: Schema.Types.ObjectID,
+		type: Schema.Types.ObjectId,
 		ref: 'TaskModel'
 	}]
 });
 
-module.exports = mongoose.module('ProjectModel', projectSchema);
+module.exports = mongoose.model('ProjectModel', projectSchema);
