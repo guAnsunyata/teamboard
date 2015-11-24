@@ -108,7 +108,7 @@ io.sockets.on('connection', function (socket){
 		 */
 		Todo.updateContent(req, function (data) {
 			if(data!=0){
-		 		io.sockets.emit('emit todo content', data);
+		 		socket.broadcast.emit('emit todo content', data);
 			}
 		})
 	});
