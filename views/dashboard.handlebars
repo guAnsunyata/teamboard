@@ -506,14 +506,9 @@ function count_up(){
   var $projName = $('#projName');
   var $projDesc = $('#projDesc');
   var projId;
-  $.post('/api/findTestProj', {id: '5653015b58fe43dc186ec0a0'}, 
-    function(data){
-      $projName.html(data[0].name);
-      projId = data[0]._id;
-      $projDesc.html(data[0].desc+'<br />id: '+projId);
-  });
-  $.post('/api/updateProjName', {id: '5653015b58fe43dc186ec0a0', name:'project!'},
-    function(data){
-      $projName.html(data[0].name);
+  $.get('/api/findTestProj', function(data){
+    $projName.html(data[0].name);
+    projId = data[0]._id;
+    $projDesc.html(data[0].desc+'<br />id: '+projId);
   });
 </script>

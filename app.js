@@ -252,39 +252,23 @@ app.get('/signup', function (req, res) {
 
 // create test project, should be deleted soon...
 app.get('/newProj', function (req, res) {
-  Proj.create(req, function (data) {
+  Proj.unformalCreate(req, function (data) {
   	res.json(data);
   	console.log('new fucking project has been created!');
   })
 });
 // find test project, should be deleted soon ...
-app.post('/api/findTestProj', function (req, res) {
-  Proj.find(req, function (data) {
+app.get('/api/findTestProj', function (req, res) {
+  Proj.unformalFind(req, function (data) {
   	res.json(data);
   })
 });
-app.post('/api/updateProjName', function (req, res) {
-  var q = {
-  	id: '5653015b58fe43dc186ec0a0',
-  	name: 'test proj.'
-  }
+app.get('/api/updateProjName', function (req, res) {
   Proj.updateName(req, function (data) {
-  	if(data.ok){
-  	  Proj.find(req, function (data) {
-  	  	res.json(data);
-  	  });
-  	}
+  	res.send(data);
   })
 });
-app.post('/api/updateProjDesc', function (req, res) {
-  Proj.updateDesc(req, function (data) {
-  	if(data.ok){
-  	  Proj.find(req, function (data) {
-  	  	res.json(data);
-  	  });
-  	}
-  })
-});
+
 app.get('/dashboard', function (req, res) {
   res.render('dashboard', {layout: 'layout'});
 });

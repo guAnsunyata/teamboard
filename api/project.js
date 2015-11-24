@@ -4,35 +4,28 @@ var TodoModel = require('./model/todoModel.js');
 
 var ProjectProto = {
 	//最殘的create
-	'create': function(req, callback) {
+	'unformalCreate': function(req, callback) {
 		var new_project = new ProjectModel({
-			name: req.body.name,
-			desc: req.body.desc
+			name: 'PatchWork test proj',
+			desc: 'no description needed'
 		});
 		new_project.save(function (err, project){
 			if(err) throw err;
 			callback(project);
 		})
 	},
-	'find': function(req, callback) {
-		ProjectModel.find({'_id': req.body.id}, function (err, project) {
+	'unformalFind': function(req, callback) {
+		ProjectModel.find({'_id':'5653015b58fe43dc186ec0a0'}, function (err, project) {
 			if(err) throw err;
 			callback(project);
 		})
 	},
 	'updateName': function(req, callback) {
-		var query = { '_id': req.body.id }
+		var query = { '_id':'5653015b58fe43dc186ec0a0' }
 		ProjectModel.update(query, {
-			'name': req.body.name
+			'name': 'change proj name again'
 		}, function (err, proj) {
-			callback(proj);
-		});
-	},
-	'updateDesc': function(req, callback) {
-		var query = { '_id': req.body.id }
-		ProjectModel.update(query, {
-			'desc': req.body.desc
-		}, function (err, proj) {
+			if(err) throw err;
 			callback(proj);
 		});
 	}
