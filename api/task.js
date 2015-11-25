@@ -24,7 +24,7 @@ var TaskProto = {
 		})
 	},
 	'findAll': function (req, callback) {
-		TaskModel.find({}, function (err, task) {
+		TaskModel.find({'id':req.body.id}, function (err, task) {
 			if(err) throw err;
 			callback(task);
 		})
