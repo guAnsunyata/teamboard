@@ -294,7 +294,7 @@ app.get('/chatroom', function (req, res){
 });
 
 app.get('/task', function (req, res) {
-  res.render('task', {layout: 'layout'});
+  res.render('task2', {layout: 'layout'});
 });
 
 app.post('/api/getData', function(req, res) {
