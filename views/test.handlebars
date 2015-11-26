@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<div height="80">&nbsp;</div>
+<div id="test1"></div>
+<div id="test2"></div>
+<script>
+$(document).ready(function(){
+  $test1 = $('#test1');
+  $test2 = $('#test2');
+  // create task testing...
+ //  $.post('/api/createTask', 
+	// {
+	//   name: 'task 1',
+	//   desc: 'i\'m task 1',
+	//   proj_id: '5653015b58fe43dc186ec0a0'
+	// },
+	// function(data){
+	//   console.log(data);
+	//   $test1.html(data);
+ //  });
+  $.post('/api/findAllTask',
+    {
+      proj_id: '5653015b58fe43dc186ec0a0',
+	},
+	function(data){
+	  console.log(data);
+  	  $test2.html(data);
+  });
+});
+</script>
