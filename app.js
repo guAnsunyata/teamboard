@@ -114,13 +114,55 @@ io.sockets.on('connection', function (socket){
 	});
 });
 
-/* Task CRUD */
-app.get('/createTask', function (req, res) {
+/* Project api */
+// create project
+app.get('/newProj', function (req, res) {
+  Proj.create(req, function (data) {
+  	res.json(data);
+  	console.log('new fucking project has been created!');
+  })
+});
+// find project by id
+app.post('/api/findProj', function (req, res) {
+  Proj.find(req, function (data) {
+  	res.json(data);
+  })
+});
+// update project name
+app.post('/api/updateProjName', function (req, res) {
+  var q = { // test project
+  	id: '5653015b58fe43dc186ec0a0',
+  	name: 'test proj.'
+  }
+  Proj.updateName(req, function (data) {
+  	if(data.ok){
+  	  Proj.find(req, function (data) {
+  	  	res.json(data);
+  	  });
+  	}
+  })
+});
+// update project description
+app.post('/api/updateProjDesc', function (req, res) {
+  Proj.updateDesc(req, function (data) {
+  	if(data.ok){
+  	  Proj.find(req, function (data) {
+  	  	res.json(data);
+  	  });
+  	}
+  })
+});
+
+/* Task api */
+// create task
+app.post('/api/createTask', function (req, res) {
 	Task.create(req, function (data) {
 		res.json(data);
+		console.log(data);
 	});
 });
-app.get('/findAllTask', function (req, res) {
+// find task by project id
+app.post('/api/findAllTask', function (req, res) {
 	Task.findAll(req, function (data) {
 		function countFinished(data, callback) {
 			var allTask = data.length;
@@ -142,11 +184,10 @@ app.get('/findAllTask', function (req, res) {
 		countFinished(data, combineData);
 	});
 });
-// suposed to be app.post(...)
-app.get('/updateTask', function (req, res) {
+// update task
+app.post('/updateTask', function (req, res) {
 	Task.update(req, function (data) {
 		res.json(data);
-		console.log(data);
 	})
 });
 app.get('/deleteAllTask', function (req, res) {
@@ -155,7 +196,20 @@ app.get('/deleteAllTask', function (req, res) {
 	});
 });
 
-/* Todo CRUD */
+/* Todo api */
+// use _id of task to create todo
+app.post('/api/createTodo', function (req, res) {
+	Todo.create(req, function (data) {
+		var dataForTaskUpdate = {
+			taskID: req.body.task_id,
+			todoID: data._id
+		}
+		// update todos field in the task model after todo was created.
+		Task.updateTodoID(dataForTaskUpdate, function (data) {
+			res.json(data);
+		})
+	})
+});
 app.get('/createTodo', function (req, res) {
 	Todo.create(req, function (data) {
 		res.send(data);
@@ -171,8 +225,10 @@ app.get('/delAllTodo', function (req, res) {
 		res.status(data).end();
 	});
 });
-
-//test end
+// test page for api testing!
+app.get('/test', function (req, res) {
+	res.render('test', {layout: 'layout'});
+});
 
 //New View
 app.get('/home', function (req, res){
@@ -250,41 +306,6 @@ app.get('/signup', function (req, res) {
   res.render('signup', {layout: 'layout'});
 });
 
-// create test project, should be deleted soon...
-app.get('/newProj', function (req, res) {
-  Proj.create(req, function (data) {
-  	res.json(data);
-  	console.log('new fucking project has been created!');
-  })
-});
-// find test project, should be deleted soon ...
-app.post('/api/findTestProj', function (req, res) {
-  Proj.find(req, function (data) {
-  	res.json(data);
-  })
-});
-app.post('/api/updateProjName', function (req, res) {
-  var q = {
-  	id: '5653015b58fe43dc186ec0a0',
-  	name: 'test proj.'
-  }
-  Proj.updateName(req, function (data) {
-  	if(data.ok){
-  	  Proj.find(req, function (data) {
-  	  	res.json(data);
-  	  });
-  	}
-  })
-});
-app.post('/api/updateProjDesc', function (req, res) {
-  Proj.updateDesc(req, function (data) {
-  	if(data.ok){
-  	  Proj.find(req, function (data) {
-  	  	res.json(data);
-  	  });
-  	}
-  })
-});
 app.get('/dashboard', function (req, res) {
   res.render('dashboard', {layout: 'layout'});
 });
