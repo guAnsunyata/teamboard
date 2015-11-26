@@ -11,7 +11,10 @@ var taskSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
-	todos: [{ order: Number, todoID: Schema.Types.ObjectId }],
+	todos: [{ 
+		type: Schema.Types.ObjectId,
+		ref: 'TodoModel'
+	}],
 	projectID: {
 		type: Schema.Types.ObjectId,
 		ref: 'ProjectModel'
