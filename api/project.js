@@ -21,19 +21,23 @@ var ProjectProto = {
 		})
 	},
 	'updateName': function(req, callback) {
-		var query = { '_id': req.body.id }
-		ProjectModel.update(query, {
-			'name': req.body.name
-		}, function (err, proj) {
-			callback(proj);
-		});
+		var query = {'_id': req.proj_id}
+		ProjectModel.update(query, {'name': req.name}, function (err, proj) {
+			if(err){
+				console.log(err);
+			}else{
+				callback(proj);
+			}
+		})
 	},
 	'updateDesc': function(req, callback) {
-		var query = { '_id': req.body.id }
-		ProjectModel.update(query, {
-			'desc': req.body.desc
-		}, function (err, proj) {
-			callback(proj);
+		var query = {'_id': req.proj_id}
+		ProjectModel.update(query, {'desc': req.desc}, function (err, proj) {
+			if(err){
+				console.log(err);
+			}else{
+				callback(proj);
+			}
 		});
 	}
 }

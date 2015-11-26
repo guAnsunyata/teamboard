@@ -1,34 +1,43 @@
 var TodoModel = require('./model/todoModel.js');
+var TaskModel = require('./model/taskModel.js');
 
 var TodoProto = {
 	'create': function(req, callback) {
-		var new_todo = new TodoModel({'taskID': req.body.task_id});
+		var new_todo = new TodoModel({
+			'title': '',
+			'content': '',
+			'collabs': '',
+			'taskID': req.task_id
+		});
 		new_todo.save(function (err, todo) {
-			if(err) throw err;
-			callback(todo);
+			if(err) {
+				console.log(todo);
+			}else{
+				callback(todo);
+			}
 		})
 	},
 	'updateTitle': function(req, callback) {
 		var query = {_id: req.todo_id};
 		TodoModel.update(query, {title: req.title}, function (err, todo) {
-			if(todo!=0){
+			if(err){
+				console.log(err);
+			}else{
 				TodoModel.findOne(query, function (err, todo) {
 					callback(todo);
 				})
-			}else{
-				callback(todo);
 			}
 		})
 	},
 	'updateContent': function(req, callback) {
 		var query = {_id: req.todo_id};
 		TodoModel.update(query, {content: req.content}, function (err, todo) {
-			if(todo!=0){
+			if(err) {
+				console.log(err);
+			}else{
 				TodoModel.findOne(query, function (err, todo) {
 					callback(todo);
 				})
-			}else{
-				callback(todo);
 			}
 		})
 	},
