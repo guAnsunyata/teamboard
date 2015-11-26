@@ -212,12 +212,12 @@ app.post('/api/createTodo', function (req, res) {
 });
 app.get('/createTodo', function (req, res) {
 	Todo.create(req, function (data) {
-		res.send(data);
+		res.json(data);
 	});
 });
 app.get('/findAllTodo', function (req, res) {
 	Todo.findAll(req, function (data) {
-		res.send(data);
+		res.json(data);
 	});
 });
 app.get('/delAllTodo', function (req, res) {
