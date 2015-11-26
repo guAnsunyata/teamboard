@@ -7,7 +7,7 @@ var taskSchema = new Schema({
 	duedate: Date,
 	leader: String,
 	collabs: [ Schema.Types.ObjectId ],
-	finish: {
+	finished: {
 		type: Boolean,
 		default: false
 	},

@@ -5,7 +5,10 @@ var todoSchema = new Schema({
 	content: String,
 	test: [{user: String}],
 	collabs: [ Schema.Types.ObjectId ],
-	finish: Boolean,
+	finished: {
+		type: Boolean,
+		default: false
+	},
 	taskID: {
 		type: Schema.Types.ObjectId,
 		ref: 'TaskModel'
