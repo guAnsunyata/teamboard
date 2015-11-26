@@ -13,8 +13,18 @@
 	<link type="text/css" rel="stylesheet" href="css/kule.lazy-master/css/kule-animates.min.css"  media="screen,projection"/>
 	<link type="text/css" rel="stylesheet" href="css/kule.lazy-master/css/kule-addons.min.css"  media="screen,projection"/>
 
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="/js/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="js/materialize.js"></script>
+
 	<style>
 		/* global */
+		html{
+			font-family: ;
+		}
+		hr {
+			border:0; height:1px; background-color:#d4d4d4; margin-left: 0px !important;
+		}
 		.cancel-zone{
 			display: none;
 			position: fixed;
@@ -48,6 +58,7 @@
 			padding-right: 16px;
 		}
 		.logo{
+			font-family: ;
 			padding-left: 16px;
 			display: inline-block;
 			font-size: 32px;
@@ -83,9 +94,6 @@
 <div class="cancel-zone">
   
 </div>
-	<!--Import jQuery before materialize.js-->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="js/materialize.js"></script>
 
 <div class="header z-depth-1">
 	<nav style="background-color: #4fc3fc; border-radius: 3px;">
@@ -156,4 +164,18 @@ $cancel_zone = $('.cancel-zone');
 function active_cancelzone(){
   $cancel_zone.css({"display":"block"})
 }
+
+(function($) {
+    $.fn.clickToggle = function(func1, func2) {
+        var funcs = [func1, func2];
+        this.data('toggleclicked', 0);
+        this.click(function() {
+            var data = $(this).data();
+            var tc = data.toggleclicked;
+            $.proxy(funcs[tc], this)();
+            data.toggleclicked = (tc + 1) % 2;
+        });
+        return this;
+    };
+}(jQuery));
 </script>

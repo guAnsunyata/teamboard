@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Task - Todos</title>
+	<!-- Sortable.js Config -->
+	<script src="//cdn.jsdelivr.net/sortable/latest/Sortable.min.js"></script>
+	<script src="/js/sortable-config.js"></script>
+	<!-- pickadate.js-master -->
+	<script src="/js/picker.date.js"></script>
+	<link type="text/css" rel="stylesheet" href="/css/classic.date.css"  media="screen,projection"/>
+	<!-- collaboration -->
+	<script src="/js/task-collaboration.js"></script>
+
+</head>
+
+<style type="text/css">
+	.task{
+		padding-top: 30px;
+		font-family: '微軟正黑體';
+		font-weight: ;
+	}
+	.todos-dashboard{
+		height: 154px;
+		background-color: ;
+		border-top-style:outset;
+ 		border-bottom-style:inset;
+		border-right-style:inset;
+		border-left-style:outset;
+		border-radius: 5px;
+		padding: 12px;
+		margin-bottom: 7px;
+	}
+	.task-title{
+		margin-left: 5px;
+		font-size: 24px;
+		font-weight: bold;
+	}
+	.task-tag{
+		display: inline-block;
+	    margin: 6px 12px 6px 7px;
+	    padding: 3px 7px;
+	    border-radius: 4px;
+	}
+	.collapsible-body{
+		padding: 30px 35px 30px 40px;
+	}
+	.collapsible-header{
+		padding-left: 38px;
+	}
+ 	/* activity post */
+ 	.chip.chip-small img{
+ 		height: 20px;
+ 		width: 20px;
+ 	}
+ 	.chip-small{
+ 		height: 20px;
+ 		line-height: 20px;
+ 		font-size: 8px;
+ 		font-family: '新細明體';
+ 	}
+ 	.activity{
+ 		text-align: center; margin-bottom: 3px; font-size: 20px;
+ 		border-radius:5px;
+ 	}
+ 	.activity-wrapper{
+		padding: 15px 15px 30px 16px;
+		background-color:white;
+		border-radius:5px;
+		/* min-height:400px;
+		max-height: 400px; */
+		height: 100%;
+		overflow: scroll;
+		font-family: 微軟正黑體;
+	}
+	.activity-date{
+		padding-top: 10px;
+	}
+ 	.activity-post{
+ 		padding: 0px 0px 5px 0px;
+ 	}
+ 	.status{
+ 		display: inline-block;
+ 		width: 55px;
+ 		text-align: center;
+ 		font-weight: 600;
+ 		border-top-style:outset;
+ 		border-bottom-style:inset;
+		border-right-style:inset;
+		border-left-style:outset;
+		border-radius: 5px;
+		border-width:thin;
+		font-size: 13px;
+ 	}
+ 	.update{
+ 		color: #01579b;
+ 	}
+ 	.add{
+ 		color: green;
+ 	}
+ 	.omit{
+ 		color: #606060;
+ 	}
+ 	.done{
+ 		color: red;
+ 	}
+ 	#dropdown2 li{
+ 		margin-right: 65px;
+ 	}
+</style>
+
+<body>
+<div id="task-id" style="display: none;">123456789</div>
+  <div class="row task">
+    <!-- Post -->
+    <div class="col s3">
+    <ul id="dropdown2" class="dropdown-content">
+    <li><a href="#!">文件分析<span class="badge">5/11</span></a></li>
+    <li><a href="#!">功能模型設計<span class="new badge">1</span></a></li>
+    <li><a href="#!">功能實作<span class="badge">0/6</span></a></li>
+  </ul>
+  <a class="btn dropdown-button" href="#!" data-activates="dropdown2">切換任務<i class="mdi-navigation-arrow-drop-down right"></i></a>
+            
+    <!-- <div class="activity"><b>專案動態</b></div> -->
+      <div class="activity-wrapper">
+      	  <div class="activity-date">
+      	  Nov 26
+      	  <hr/>
+      	  </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status add">ADD</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status omit">DEL</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status done">DONE</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-date">
+      	  Nov 25
+      	  <hr/>
+      	  </div>
+      	  <div class="activity-post">
+	      <span class="status update">PUT</span>
+			<div class="chip chip-small">
+			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
+			  林紘丞
+			</div>｜功能模型設計
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+	      <div class="activity-post">
+	      <span class="status update">PUT</span> 功能模型設計：Project API
+	      </div>
+      </div>
+    </div>
+    <!-- Todo & config -->
+    <div class="col s9">
+	    <div class="todos-dashboard">
+			<div class="task-dashboard-wrapper">
+				<span class="task-title">功能模型設計</span>
+				<span class="task-tag" style="color: #3c763d; background-color:#dff0d8;">完成率</span>4/4
+				<br/>
+				<span class="task-tag" style="color: #515101; background-color:#fcf8e3;">到期日</span>2015/12/01
+				<br/>
+				<span class="task-tag" style="color: #004669; background-color:#d9edf7;">負責人</span>
+				<!-- collaborators -->
+				<div class="chip">
+				    <img src="images/dashboard-leader.jpg" alt="Contact Person">
+				    許韶文
+				</div>
+				<span class="task-tag" style="color: #004669; background-color:#d9edf7;">成員</span>
+				<div class="chip">
+				    <img src="images/dashboard-leader2.jpg" alt="Contact Person">
+				    林紘丞
+				</div>
+			</div>
+		</div>
+
+		<div class="ctrl-panel">
+			<a class="waves-effect waves-light btn" href="javascript: add_todo();">新增</a>
+			<a class="waves-effect waves-light btn" href="javascript: delete_todo();">刪除</a>
+		</div>
+		<div class="todos">
+			<ul class="collapsible" data-collapsible="expandable" id="todos-sortable">
+				<li>
+				  <input type="checkbox" class="filled-in" id="todos_id1" checked="checked"/>
+		      	  <label for="todos_id1" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
+				  <div class="collapsible-header" style="display: inline-block; width: 100%;"><i class="material-icons">filter_drama</i><span id="todos-title">專題期末發表</span></div>
+				  <!-- <div class="settong" align="center" style="display: inline-block;"> -->
+				  	<!-- <i class="todos_setting tiny material-icons" style="font-size: 18px; line-height: 3rem; width:2%; text-align: center;">settings</i> -->
+				  <!-- </div> -->
+				  <div class="collapsible-body test" id="todos-content" contentEditable="false">
+				  	Operation
+				  </div>
+				</li>
+				<li>
+				  <input type="checkbox" class="filled-in" id="todos_id2" checked="checked"/>
+		      	  <label for="todos_id2" style="position: absolute; margin-top:12px; margin-left:12px"></label>
+				  <div class="collapsible-header" style="display: inline-block; width:100%"><i class="material-icons">place</i>台南大學翟老師-施測網站</div>
+				  <div class="collapsible-body" id="todos-content" contentEditable="false">
+				  	Second 
+				  </div>
+				</li>
+				<li>
+				  <input type="checkbox" class="filled-in" id="todos_id3" checked=""/>
+		      	  <label for="todos_id3" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
+				  <div class="collapsible-header"><i class="material-icons">whatshot</i>念沛學長企業-官方網站</div>
+				  <div class="collapsible-body" id="todos-content" contentEditable="false">
+				  	Third
+				  </div>
+				</li>
+				<li>
+				  <input type="checkbox" class="filled-in" id="todos_id4" checked=""/>
+		      	  <label for="todos_id4" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
+				  <div class="collapsible-header"><i class="material-icons">whatshot</i>MIS期末系統-Canvas授權網站</div>
+				  <div class="collapsible-body" id="todos-content" contentEditable="false">
+				  	Fourth
+				  </div>
+				</li>
+			</ul>
+		</div>
+	</div>
+  </div>
+
+</body>
+</html>
+
+<script>
+//script for document
+var Global = this;
+var todos = document.getElementById('todos-sortable');
+var sortable_api = sortable_init(todos);
+$('.datepicker').pickadate();
+
+$( document ).ready(function(){
+	collection_init();
+	$('.footer').remove();
+	$('.collection').collapsible({
+		accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	});
+});
+
+//collection
+function collection_init(){
+	var task_id = document.getElementById('task-id').innerHTML;
+	console.log(task_id);
+	$.post('/findAllTodo',{},function(data){
+		console.log('init:',data);
+		data.forEach(function (t){
+			todo_deploy(t, function(el){
+				todo_regist(el);
+			});
+		});
+	});
+	function todo_deploy(data, callback){
+		//append html per todo using data._id, data.status, data.title, data.content
+		$('.collapsible').append('');
+		var el = $('.collapsible-body #'+data._id);
+		callback(el);
+	}
+}
+
+Global.collection_lock = false;
+function todo_regist(el){
+	el.dblclick(function(){
+		var $this = $(this);
+		$this.attr("contentEditable","true");
+	}).blur(function(){
+		if(!Global.collection_lock){
+			var $this = $(this);
+			$this.attr("contentEditable","false");
+		}
+	}).keyup(function(){
+		var target = $(this).parent().children('input').attr('id');
+		var content = $(this).html();
+		var data = {todo_id: target, content: content};
+		//socket.emit
+		socket.emit('update todo content',data);
+	});
+}	
+
+</script>
