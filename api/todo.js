@@ -2,7 +2,7 @@ var TodoModel = require('./model/todoModel.js');
 
 var TodoProto = {
 	'create': function(req, callback) {
-		var new_todo = new TodoModel({});
+		var new_todo = new TodoModel({'taskID': req.body.task_id});
 		new_todo.save(function (err, todo) {
 			if(err) throw err;
 			callback(todo);

@@ -1,4 +1,5 @@
 var TaskModel = require('./model/taskModel.js');
+var TodoModel = require('./model/todoModel.js');
 
 var TaskProto = {
 	'create': function(req, callback) {
@@ -8,8 +9,8 @@ var TaskProto = {
 				startdate: req.body.startdate,
 				duedate: req.body.duedate,
 				leader: req.body.leader,
-				collabs: req.body.collabs
-				// ,projectID: req.body.proj_id
+				collabs: req.body.collabs,
+				projectID: req.body.proj_id
 			});
 		new_task.save(function (err, task) {
 			if(err) throw err;
@@ -24,7 +25,14 @@ var TaskProto = {
 		})
 	},
 	'findAll': function (req, callback) {
-		TaskModel.find({'id':req.body.id}, function (err, task) {
+		TaskModel.find({'projectID': req.body.proj_id}, function (err, task) {
+			if(err) throw err;
+			callback(task);
+		})
+	},
+	'updateTodoID': function(req, callback) {
+		var query = {_id: req.taskID}
+		TaskModel.update(query, {$pushAll: {todos: [req.todoID]}}, function (err, task) {
 			if(err) throw err;
 			callback(task);
 		})
