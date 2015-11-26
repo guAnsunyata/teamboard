@@ -59,6 +59,14 @@ io.sockets.on('connection', function (socket){
 		 * 		proj_id: 	_id of the project
 		 */
 		Task.create(req, function (data) {
+			var dataForTaskUpdate = {
+				taskID: req.task_id,
+				todoID: data._id
+			}
+			// update todos field in the task model after todo was created.
+			Task.updateTodoID(dataForTaskUpdate, function (data) {
+				console.log(data);
+			});
 			io.sockets.emit('emit new task', data);
 		})
 	});
@@ -86,7 +94,9 @@ io.sockets.on('connection', function (socket){
 		 * 		desc: 		new description of the task
 		 */
 		console.log('create todo !!');
+
 		Todo.create(req, function (data) {
+			// Task.updateTodoID()
 			io.sockets.emit('emit new todo', data);
 		})
 	});
@@ -96,9 +106,7 @@ io.sockets.on('connection', function (socket){
 		 * 		title: 		new description of the task
 		 */
 		Todo.updateTitle(req, function (data) {
-		 	if(data!=0){
-		 		io.sockets.emit('emit todo title', data);
-		 	}
+		 	socket.broadcast.emit('emit todo title', data);
 		})
 	});
 	socket.on('update todo content', function (req, callback) {
@@ -107,11 +115,16 @@ io.sockets.on('connection', function (socket){
 		 * 		content: 	new description of the task
 		 */
 		Todo.updateContent(req, function (data) {
-			if(data!=0){
-		 		socket.broadcast.emit('emit todo content', data);
-			}
+			socket.broadcast.emit('emit todo content', data);
 		})
 	});
+});
+
+// test update
+app.post('/testupdate', function (req, res) {
+	Todo.updateContent(req, function (data) {
+		res.json(data);
+	})
 });
 
 /* Project api */
@@ -131,12 +144,10 @@ app.post('/api/findProj', function (req, res) {
 // update project name
 app.post('/api/updateProjName', function (req, res) {
   var q = { // test project
-  	id: '5653015b58fe43dc186ec0a0',
+  	proj_id: '5653015b58fe43dc186ec0a0',
   	name: 'test proj.'
   }
   Proj.updateName(req, function (data) {
-  	if(data.ok){
-  	  Proj.find(req, function (data) {
   	  	res.json(data);
   	  });
   	}
@@ -145,11 +156,7 @@ app.post('/api/updateProjName', function (req, res) {
 // update project description
 app.post('/api/updateProjDesc', function (req, res) {
   Proj.updateDesc(req, function (data) {
-  	if(data.ok){
-  	  Proj.find(req, function (data) {
-  	  	res.json(data);
-  	  });
-  	}
+  	res.json(data);
   })
 });
 
