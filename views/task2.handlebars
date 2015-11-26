@@ -27,7 +27,8 @@
 		border-right-style:inset;
 		border-left-style:outset;
 		border-radius: 5px;
-		padding: 12px;
+		border-width: 0.5px;
+		padding: 20px;
 		margin-bottom: 7px;
 	}
 	.task-title{
@@ -180,12 +181,11 @@
     </div>
     <!-- Todo & config -->
     <div class="col s9">
-	    <div class="todos-dashboard">
+	    <div class="todos-dashboard z-depth-1">
 			<div class="task-dashboard-wrapper">
-				<span class="task-title">功能模型設計</span>
-				<span class="task-tag" style="color: #3c763d; background-color:#dff0d8;">完成率</span>4/4
-				<br/>
+				<span class="task-title">功能模型設計</span><br/>
 				<span class="task-tag" style="color: #515101; background-color:#fcf8e3;">到期日</span>2015/12/01
+				<span class="task-tag" style="color: #3c763d; background-color:#dff0d8; margin-left:22px;">完成率</span>4/4
 				<br/>
 				<span class="task-tag" style="color: #004669; background-color:#d9edf7;">負責人</span>
 				<!-- collaborators -->
@@ -202,26 +202,23 @@
 		</div>
 
 		<div class="ctrl-panel">
-			<a class="waves-effect waves-light btn" href="javascript: add_todo();">新增</a>
-			<a class="waves-effect waves-light btn" href="javascript: delete_todo();">刪除</a>
+			<a id="button_add" class="waves-effect waves-light btn" href="javascript: add_todo();">新增</a>
+			<a id="button_delete" class="waves-effect waves-light btn" href="javascript: delete_todo();">刪除</a>
+			<div class="switch" style="display: inline-block; margin-left: 10px;">
+			    <label>
+			      排序
+			      <input id="button_sortable" type="checkbox">
+			      <span id="button_sortable" class="lever"></span>
+			    </label>
+			 </div>
+			<!-- <a id="button_sortable" class="waves-effect waves-light btn" href="javascript: sortable_todo();">排序</a> -->
 		</div>
 		<div class="todos">
 			<ul class="collapsible" data-collapsible="expandable" id="todos-sortable">
-				<li>
-				  <input type="checkbox" class="filled-in" id="todos_id1" checked="checked"/>
-		      	  <label for="todos_id1" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
-				  <div class="collapsible-header" style="display: inline-block; width: 100%;"><i class="material-icons">filter_drama</i><span id="todos-title">專題期末發表</span></div>
-				  <!-- <div class="settong" align="center" style="display: inline-block;"> -->
-				  	<!-- <i class="todos_setting tiny material-icons" style="font-size: 18px; line-height: 3rem; width:2%; text-align: center;">settings</i> -->
-				  <!-- </div> -->
-				  <div class="collapsible-body test" id="todos-content" contentEditable="false">
-				  	Operation
-				  </div>
-				</li>
-				<li>
+				<!-- <li>
 				  <input type="checkbox" class="filled-in" id="todos_id2" checked="checked"/>
 		      	  <label for="todos_id2" style="position: absolute; margin-top:12px; margin-left:12px"></label>
-				  <div class="collapsible-header" style="display: inline-block; width:100%"><i class="material-icons">place</i>台南大學翟老師-施測網站</div>
+				  <div class="collapsible-header" style="display: inline-block; width:100%"><i class="material-icons">place</i><span id="todos-title">台南大學翟老師-施測網站</div>
 				  <div class="collapsible-body" id="todos-content" contentEditable="false">
 				  	Second 
 				  </div>
@@ -229,7 +226,7 @@
 				<li>
 				  <input type="checkbox" class="filled-in" id="todos_id3" checked=""/>
 		      	  <label for="todos_id3" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
-				  <div class="collapsible-header"><i class="material-icons">whatshot</i>念沛學長企業-官方網站</div>
+				  <div class="collapsible-header"><i class="material-icons">whatshot</i><span id="todos-title">念沛學長企業-官方網站</div>
 				  <div class="collapsible-body" id="todos-content" contentEditable="false">
 				  	Third
 				  </div>
@@ -237,11 +234,11 @@
 				<li>
 				  <input type="checkbox" class="filled-in" id="todos_id4" checked=""/>
 		      	  <label for="todos_id4" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
-				  <div class="collapsible-header"><i class="material-icons">whatshot</i>MIS期末系統-Canvas授權網站</div>
+				  <div class="collapsible-header"><i class="material-icons">whatshot</i><span id="todos-title">MIS期末系統-Canvas授權網站</div>
 				  <div class="collapsible-body" id="todos-content" contentEditable="false">
 				  	Fourth
 				  </div>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 	</div>
@@ -252,7 +249,6 @@
 
 <script>
 //script for document
-var Global = this;
 var todos = document.getElementById('todos-sortable');
 var sortable_api = sortable_init(todos);
 $('.datepicker').pickadate();
@@ -260,48 +256,7 @@ $('.datepicker').pickadate();
 $( document ).ready(function(){
 	collection_init();
 	$('.footer').remove();
-	$('.collection').collapsible({
-		accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	});
+	sortable_button_init();
 });
-
-//collection
-function collection_init(){
-	var task_id = document.getElementById('task-id').innerHTML;
-	console.log(task_id);
-	$.post('/findAllTodo',{},function(data){
-		console.log('init:',data);
-		data.forEach(function (t){
-			todo_deploy(t, function(el){
-				todo_regist(el);
-			});
-		});
-	});
-	function todo_deploy(data, callback){
-		//append html per todo using data._id, data.status, data.title, data.content
-		$('.collapsible').append('');
-		var el = $('.collapsible-body #'+data._id);
-		callback(el);
-	}
-}
-
-Global.collection_lock = false;
-function todo_regist(el){
-	el.dblclick(function(){
-		var $this = $(this);
-		$this.attr("contentEditable","true");
-	}).blur(function(){
-		if(!Global.collection_lock){
-			var $this = $(this);
-			$this.attr("contentEditable","false");
-		}
-	}).keyup(function(){
-		var target = $(this).parent().children('input').attr('id');
-		var content = $(this).html();
-		var data = {todo_id: target, content: content};
-		//socket.emit
-		socket.emit('update todo content',data);
-	});
-}	
 
 </script>

@@ -5,7 +5,7 @@
 		    group: "name",  // or { name: "...", pull: [true, false, clone], put: [true, false, array] }
 		    sort: true,  // sorting inside list
 		    delay: 0, // time in milliseconds to define when the sorting should start
-		    disabled: false, // Disables the sortable if set to true.
+		    disabled: true, // Disables the sortable if set to true.
 		    store: null,  // @see Store
 		    animation: 150,  // ms, animation speed moving items when sorting, `0` — without animation
 		    filter: ".ignore-elements",  // Selectors that do not lead to dragging (String or Function)]
@@ -75,9 +75,7 @@
 		        // return false; — for cancel
 		    }
 		});
-		return{
-			sortable: sortable
-		}
+		return sortable
 	};
 
 	// api_sortable();
