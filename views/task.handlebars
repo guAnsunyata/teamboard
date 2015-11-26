@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <style type="text/css">
 	.task{
-		margin-left: 10%;
-	    margin-right: 10%;
+		margin-left: 2%;
+	    margin-right: 2%;
 	    font-family: '微軟正黑體';
 	}
 	.task-dashboard{
@@ -56,8 +56,8 @@
 
 <script src="//cdn.jsdelivr.net/sortable/latest/Sortable.min.js"></script>
 <!-- <script type="text/javascript" src="ckeditor/ckeditor.js"></script> -->
-<script src="Trumbowyg-2.0.0-beta.5/dist/trumbowyg.min.js"></script>
-<link rel="stylesheet" href="Trumbowyg-2.0.0-beta.5/dist/ui/trumbowyg.min.css">
+<!-- <script src="Trumbowyg-2.0.0-beta.5/dist/trumbowyg.min.js"></script>
+<link rel="stylesheet" href="Trumbowyg-2.0.0-beta.5/dist/ui/trumbowyg.min.css"> -->
 
 <script type="text/javascript">
 	$( document ).ready(function(){
@@ -96,24 +96,13 @@
 		    };
 		}(jQuery));
 
-		if(document.getElementById("todos-content").contentEditable == true){
-			alert('123');
-			$('.collapsible-body').trumbowyg({
-			});
-		}else{
-			$('.collapsible-body').trumbowyg('destroy');
-		}
-
-		$('.collapsible-body').dblclick(function(){
-			var $this = $(this);
-			$this.attr("contentEditable","true").focus();
-		})
-
-		$('.collapsible-body').blur(function(){
-			var $this = $(this);
-			$this.attr("contentEditable","false");
-		});
-		
+		// if(document.getElementById("todos-content").contentEditable == true){
+		// 	alert('123');
+		// 	$('.collapsible-body').trumbowyg({
+		// 	});
+		// }else{
+		// 	$('.collapsible-body').trumbowyg('destroy');
+		// }
 
 		// var first = true;
 		// $todos_wrapper.clickToggle(function(){ 
@@ -237,7 +226,11 @@
 	// var sortable = Sortable.create(el);
 </script>
 
-<div class="task">
+<div class="row">
+<div class="col s2">
+
+</div>
+<div class="task col s10">
 
 	<!-- pop-out div (P.S. there are cancel zone in the layout)-->
 	<div class="pop-out add-todo-panel z-depth-2 animate fadescaleIn">
@@ -310,9 +303,9 @@
 		<li>
 		  <input type="checkbox" class="filled-in" id="todos_id1" checked="checked"/>
       	  <label for="todos_id1" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
-		  <div class="collapsible-header" style="display: inline-block; width: 97%;"><i class="material-icons">filter_drama</i><span id="todos-title">First</span></div>
+		  <div class="collapsible-header" style="display: inline-block; width: 100%;"><i class="material-icons">filter_drama</i><span id="todos-title">First</span></div>
 		  <!-- <div class="settong" align="center" style="display: inline-block;"> -->
-		  	<i class="todos_setting tiny material-icons" style="font-size: 18px; line-height: 3rem; width:2%; text-align: center;">settings</i>
+		  	<!-- <i class="todos_setting tiny material-icons" style="font-size: 18px; line-height: 3rem; width:2%; text-align: center;">settings</i> -->
 		  <!-- </div> -->
 		  <div class="collapsible-body test" id="todos-content" contentEditable="false">
 		  	Operation
@@ -338,7 +331,7 @@
 	</div>
 
 </div>
-
+</div>
 
 <!-- <iframe src="/chatroom" width="100%" height="295px;" style=" position: fixed;
   bottom: 0;
@@ -366,18 +359,18 @@ socket.on('emit new todo', function(data){
 	$('.collapsible').collapsible({
       accordion : false
     });
-    	if(document.getElementById("todos-content").contentEditable == true){
-			alert('123');
-			$('.collapsible-body').trumbowyg({
-			});
-		}else{
-			$('.collapsible-body').trumbowyg('destroy');
-		}
+        //if(document.getElementById("todos-content").contentEditable == true){
+		// 	alert('123');
+		// 	$('.collapsible-body').trumbowyg({
+		// 	});
+		// }else{
+		// 	$('.collapsible-body').trumbowyg('destroy');
+		// }
 
 		$('.collapsible-body').dblclick(function(){
 			var $this = $(this);
-			$this.attr("contentEditable","true").focus();
-		})
+			$this.attr("contentEditable","true");
+		});
 
 		$('.collapsible-body').blur(function(){
 			var $this = $(this);
@@ -393,18 +386,19 @@ socket.on('emit new todo', function(data){
 });
 
 socket.on('emit todo content', function(data){
+	console.log('todo refresh');
 	var $el = $('#'+data._id).parent().children('.collapsible-body');
 	$el.html(data.content);
 });
 
-$(document).ready(function(){
-	$('.todos_setting').click(function(){
-		var $this = $(this);
-		$this.parent().children('#todos_title').attr("contentEditable","true").focus();
-		$this.parent().children('#todos_title').remove();
+// $(document).ready(function(){
+// 	$('.todos_setting').click(function(){
+// 		var $this = $(this);
+// 		$this.parent().children('#todos_title').attr("contentEditable","true").focus();
+// 		$this.parent().children('#todos_title').remove();
 
-	});
-})
+// 	});
+// })
 
 </script>
 
