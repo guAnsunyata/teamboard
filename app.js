@@ -137,19 +137,9 @@ io.sockets.on('connection', function (socket){
 
 // test update
 app.post('/testupdate', function (req, res) {
-	var task_id = req.body.task_id;
-	// console.log(task_id);
-	Todo.create(req, function (data) {
-		var dataForTaskUpdate = {
-			task_id: task_id,
-			todo_id: data._id
-		}
-		console.log(task_id);
-		// update todos field in the task model after todo was created.
-		Task.updateTodoID(dataForTaskUpdate, function (data) {
-			res.json(data);
-		});
-	});
+	Todo.updateCheckerTest(req, function (data) {
+		res.json(data);
+	})
 });
 
 /* Project api */
@@ -204,8 +194,8 @@ app.post('/api/getCount', function (req, res) {
 					finishedTask++;
 				if(data[task].todos!=null){
 					totalTodo += data[task].todos.length;
-					for(var todo in data[task.todos]){
-						if(data[task.todos][todo].checker)
+					for(var todo in data[task].todos){
+						if(data[task].todos[todo].checker)
 							finishedTodo++;
 					}
 				}
@@ -218,7 +208,7 @@ app.post('/api/getCount', function (req, res) {
 				finishedTask: finishedTask,
 				totalTodo: totalTodo,
 				finishedTodo: finishedTodo,
-				mongoData: data
+				// mongoData: data
 			}
 			res.json(dataToReturn);
 		}

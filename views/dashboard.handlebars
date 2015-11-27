@@ -83,7 +83,7 @@
   	line-height: 40px;
   	vertical-align: top;
   }
-  .finished-task, .total-task, .finished-todo, .total-todo{
+  #finishedTask, #totalTask, #finishedTodo, #totalTodo{
   	font-size: 25px;
   	line-height: 20px;
   }
@@ -295,29 +295,29 @@
         </div>
         <div class="col s12 m12 l4 chart-mid">
         	<div class="proj-finished-rate-wrap">
-        		<div id="finishedRate">25</div>
+        		<div id="finishedRate">0</div>
         		<span class="finished-rate-unit">%</span>
         	</div>
         	<div class="proj-task-wrap">
         		<div class="finished-task-wrap">
-        		  <div class="finished-task">10</div>
+        		  <div id="finishedTask">0</div>
         		  <div class="finished-task-unit">Finished Tasks</div>
         		</div>
         		<div class="task-dash">/</div>
         		<div class="total-task-wrap">
         		  <div class="total-task-unit">Total Tasks</div>
-        		  <div class="total-task">40</div>
+        		  <div id="totalTask">0</div>
         		</div>
         	</div>
         	<div class="proj-todo-wrap">
         		<div class="finished-todo-wrap">
-        		  <div class="finished-todo">100</div>
+        		  <div id="finishedTodo">0</div>
         		  <div class="finished-todo-unit">Finished Todos</div>
         		</div>
         		<div class="todo-dash">/</div>
         		<div class="total-todo-wrap">
         		  <div class="total-todo-unit">Total Todos</div>
-        		  <div class="total-todo">400</div>
+        		  <div id="totalTodo">0</div>
         		</div>
         	</div>
         </div>
@@ -479,15 +479,33 @@
 $( document ).ready(function(){
   $('.footer').remove();
   $add_task_panel = $('.add-task-panel');
-  count_up();
+  getStats(count_up);
 });
 
 function add_task(){
   $add_task_panel.css({"display":"block"})
   active_cancelzone();
 }
-function count_up(){
-  var $finishedRate = $('#finishedRate');
+function getStats(count_up) {
+  $.post('/api/getCount', {proj_id: '5653015b58fe43dc186ec0a0'},
+    function (data) {
+      count_up(data.totalTask,
+               data.finishedTask,
+               data.totalTodo,
+               data.finishedTodo);
+    });
+}
+function count_up(totalTask, finishedTask, totalTodo, finishedTodo){
+  // var $finishedRate = $('#finishedRate');
+  // var $finishedTask = $('#finishedTask');
+  // var $totalTask = $('#totalTask');
+  // var $finishedTodo = $('#finishedTodo');
+  // var $totalTodo = $('#totalTodo');
+  var rate = 0;
+  if(totalTodo==0)
+    rate = 0;
+  else 
+    rate = finishedTodo/totalTodo*100;
   var options = {
     useEasing : true, 
     useGrouping : true, 
@@ -496,8 +514,16 @@ function count_up(){
     prefix : '', 
     suffix : ''
   };
-  var demo = new CountUp("finishedRate", 0, 25, 0, 3.5, options);
-  demo.start();
+  var rate_countup = new CountUp("finishedRate", 0, rate, 0, 3.5, options);
+  var FTask_countup = new CountUp("finishedTask", 0, finishedTask, 0, 3.5, options);
+  var TTask_countup = new CountUp("totalTask", 0, totalTask, 0, 3.5, options);
+  var FTodo_countup = new CountUp("finishedTodo", 0, finishedTodo, 0, 3.5, options);
+  var TTodo_countup = new CountUp("totalTodo", 0, totalTodo, 0, 3.5, options);
+  rate_countup.start();
+  FTask_countup.start();
+  TTask_countup.start();
+  FTodo_countup.start();
+  TTodo_countup.start();
 }
 </script>
 
@@ -510,7 +536,7 @@ function count_up(){
     function(data){
       $projName.html(data[0].name);
       projId = data[0]._id;
-      $projDesc.html(data[0].desc+'<br />id: '+projId);
+      $projDesc.html(data[0].desc+'<br />');
   });
   // $.post('/api/updateProjName', {id: '5653015b58fe43dc186ec0a0', name:'project!'},
   //   function(data){
