@@ -53,6 +53,18 @@ var TodoProto = {
 			}
 		})
 	},
+	'updateOrder': function(req, callback) {
+		var query = {_id: req.todo_id};
+		TodoModel.update(query, {order: req.order}, function (err, todo) {
+			if(err) {
+				console.log(err);
+			}else{
+				TodoModel.findOne(query, function (err, todo) {
+					callback(todo);
+				})
+			}
+		})
+	},
 	'findAll': function (req, callback) {
 		TodoModel.find({}, function (err, todo) {
 			if(err) throw err;

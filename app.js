@@ -124,6 +124,15 @@ io.sockets.on('connection', function (socket){
 			socket.broadcast.emit('emit todo checker', data);
 		})
 	});
+	socket.on('update todo order', function (req, callback) {
+		/* updateContnet 的參數 req 需要有:
+		 * 		todo_id: 	_id of the task
+		 * 		order: 	the order of todo(Number)
+		 */
+		Todo.updateOrder(req, function (data) {
+			socket.broadcast.emit('emit todo order', data);
+		})
+	});
 });
 
 // test update
