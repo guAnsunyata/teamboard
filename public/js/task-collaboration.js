@@ -18,14 +18,21 @@ socket.on('emit new todo', function(data){
 	console.log('new todo refresh');
 	var html = get_todo_html(data);
 	$('.collapsible').append(html);
-	var $el = $('#li'+data._id).children('.collapsible-body');
+	var $el = $('#li'+data._id);
     todo_regist($el);
+});
+socket.on('emit new todo and focus', function(data){
+	var $el = $('#li'+data._id);
+	$el.children('.todos-title').attr('contentEditable','true').focus();
 });
 
 socket.on('emit todo checker', function(data){
 	var $el = $('#li'+data._id).children('input[type=checkbox]');
-	var state = $el.attr('checked');
+	var state = $el.prop('checked');
+	console.log(!state);
 	$el.prop('checked', !state);
+	//var state2 = $el.prop('checked');
+	//console.log(state2);
 	console.log('todo checker refresh');
 });
 
@@ -78,7 +85,8 @@ function todo_regist($el){ // el is whole <li>
 		var target = $(this).parent().attr('id');
 		var formatted_tartget = target.substr(target.indexOf("li")+2,target.length-2);
 		//WARNING : 未知問題，正常運作
-		var check = $el.children('input[type=checkbox]').attr('checked');
+		var check = $el.children('input[type=checkbox]').prop('checked');
+		console.log(check);
 		var data = {
 			todo_id: formatted_tartget,
 			checker: !check
