@@ -31,12 +31,18 @@ var TaskProto = {
 		})
 	},
 	'updateTodoID': function(req, callback) {
-		var query = {_id: req.taskID}
-		TaskModel.update(query, {$pushAll: {todos: [req.todoID]}}, function (err, task) {
+		var query = {_id: req.task_id}
+		TaskModel.update(query, {$pushAll: {todos: [req.todo_id]}}, function (err, task) {
 			if(err) {
-				console.log(task);
+				console.log(err);
 			}else{
-				callback(task);
+				TaskModel.find(query, function (err, task) {
+					if(err) {
+						console.log(task)
+					}else{
+						callback(task);
+					}
+				})
 			}
 		})
 	},

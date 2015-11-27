@@ -3,11 +3,11 @@ var Schema = mongoose.Schema;
 var todoSchema = new Schema({
 	title: String,
 	content: String,
-	collabs: [ Schema.Types.ObjectId ],
 	checker: {
 		type: Boolean,
 		default: false
 	},
+	order: Number,
 	taskID: {
 		type: Schema.Types.ObjectId,
 		ref: 'TaskModel'

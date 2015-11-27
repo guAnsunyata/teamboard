@@ -3,15 +3,16 @@ var TaskModel = require('./model/taskModel.js');
 
 var TodoProto = {
 	'create': function(req, callback) {
+		console.log(req.body.task_id);
 		var new_todo = new TodoModel({
 			'title': '',
 			'content': '',
-			'collabs': '',
-			'taskID': req.task_id
+			// 'collabs': '',
+			'taskID': req.body.task_id
 		});
 		new_todo.save(function (err, todo) {
 			if(err) {
-				console.log(todo);
+				console.log(err);
 			}else{
 				callback(todo);
 			}
