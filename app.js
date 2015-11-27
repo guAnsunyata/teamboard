@@ -118,11 +118,20 @@ io.sockets.on('connection', function (socket){
 			socket.broadcast.emit('emit todo content', data);
 		})
 	});
+	socket.on('update todo checker', function (req, callback) {
+		/* updateContnet 的參數 req 需要有:
+		 * 		todo_id: 	_id of the task
+		 * 		checker: 	todo checkbox status(t/f)
+		 */
+		Todo.updateChecker(req, function (data) {
+			socket.broadcast.emit('emit todo checker', data);
+		})
+	});
 });
 
 // test update
 app.post('/testupdate', function (req, res) {
-	Todo.updateContent(req, function (data) {
+	Todo.updateChecker(req, function (data) {
 		res.json(data);
 	})
 });
@@ -148,10 +157,8 @@ app.post('/api/updateProjName', function (req, res) {
   	name: 'test proj.'
   }
   Proj.updateName(req, function (data) {
-  	  	res.json(data);
-  	  });
-  	}
-  })
+  	res.json(data);
+  });
 });
 // update project description
 app.post('/api/updateProjDesc', function (req, res) {
