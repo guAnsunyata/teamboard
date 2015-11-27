@@ -59,14 +59,6 @@ io.sockets.on('connection', function (socket){
 		 * 		proj_id: 	_id of the project
 		 */
 		Task.create(req, function (data) {
-			var dataForTaskUpdate = {
-				taskID: req.task_id,
-				todoID: data._id
-			}
-			// update todos field in the task model after todo was created.
-			Task.updateTodoID(dataForTaskUpdate, function (data) {
-				console.log(data);
-			});
 			io.sockets.emit('emit new task', data);
 		})
 	});
@@ -91,12 +83,17 @@ io.sockets.on('connection', function (socket){
 	socket.on('create todo', function (req, callback) {
 		/* create 的參數 req 需要有:
 		 * 		task_id: 	_id of the task
-		 * 		desc: 		new description of the task
 		 */
-		console.log('create todo !!');
-
 		Todo.create(req, function (data) {
-			// Task.updateTodoID()
+			var dataForTaskUpdate = {
+				task_id: task_id,
+				todo_id: data._id
+			}
+			console.log(task_id);
+			// update todos field in the task model after todo was created.
+			Task.updateTodoID(dataForTaskUpdate, function (data) {
+				res.json(data);
+			});
 			io.sockets.emit('emit new todo', data);
 		})
 	});
@@ -131,9 +128,19 @@ io.sockets.on('connection', function (socket){
 
 // test update
 app.post('/testupdate', function (req, res) {
-	Todo.updateChecker(req, function (data) {
-		res.json(data);
-	})
+	var task_id = req.body.task_id;
+	// console.log(task_id);
+	Todo.create(req, function (data) {
+		var dataForTaskUpdate = {
+			task_id: task_id,
+			todo_id: data._id
+		}
+		console.log(task_id);
+		// update todos field in the task model after todo was created.
+		Task.updateTodoID(dataForTaskUpdate, function (data) {
+			res.json(data);
+		});
+	});
 });
 
 /* Project api */
@@ -178,6 +185,7 @@ app.post('/api/createTask', function (req, res) {
 // find task by project id
 app.post('/api/findAllTask', function (req, res) {
 	Task.findAll(req, function (data) {
+		console.log(req.body.proj_id);
 		function countFinished(data, callback) {
 			var allTask = data.length;
 			var finishedTask = 0;
@@ -193,7 +201,7 @@ app.post('/api/findAllTask', function (req, res) {
 				finishedTask: finishedTask,
 				mongoData: data
 			}
-			res.send(dataToReturn);
+			res.json(dataToReturn);
 		}
 		countFinished(data, combineData);
 	});
