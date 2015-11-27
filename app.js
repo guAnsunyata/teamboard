@@ -89,7 +89,6 @@ io.sockets.on('connection', function (socket){
 				task_id: task_id,
 				todo_id: data._id
 			}
-			console.log(task_id);
 			// update todos field in the task model after todo was created.
 			Task.updateTodoID(dataForTaskUpdate, function (data) {
 				res.json(data);

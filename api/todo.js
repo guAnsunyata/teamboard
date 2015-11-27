@@ -3,11 +3,10 @@ var TaskModel = require('./model/taskModel.js');
 
 var TodoProto = {
 	'create': function(req, callback) {
-		console.log(req.body.task_id);
 		var new_todo = new TodoModel({
 			'title': '',
 			'content': '',
-			'taskID': req.task_id
+			'taskID': req.body.task_id
 		});
 		new_todo.save(function (err, todo) {
 			if(err) {
