@@ -107,6 +107,13 @@
  	#dropdown2 li{
  		margin-right: 65px;
  	}
+ 	.collapsible-header{
+ 		cursor: default;
+ 		-moz-user-select: none;
+	    -khtml-user-select: none;
+	    -webkit-user-select: none;
+	    -o-user-select: none;
+ 	}
 </style>
 
 <body>
@@ -198,6 +205,7 @@
 				    <img src="images/dashboard-leader2.jpg" alt="Contact Person">
 				    林紘丞
 				</div>
+				<i class="material-icons" style="font-size: 26px; padding-top: 7px;">supervisor_account</i>
 			</div>
 		</div>
 
@@ -218,12 +226,13 @@
 				<!-- <li>
 				  <input type="checkbox" class="filled-in" id="todos_id2" checked="checked"/>
 		      	  <label for="todos_id2" style="position: absolute; margin-top:12px; margin-left:12px"></label>
-				  <div class="collapsible-header" style="display: inline-block; width:100%"><i class="material-icons">place</i><span id="todos-title">台南大學翟老師-施測網站</div>
+				  <span style="float: left"><i class="material-icons">place</i><span id="todos-title">台南大學翟老師-施測網站</span></span>
+				  <div class="collapsible-header" style="display: inline-block; width:100%"></div>
 				  <div class="collapsible-body" id="todos-content" contentEditable="false">
 				  	Second 
 				  </div>
-				</li>
-				<li>
+				</li> -->
+				<!-- <li>
 				  <input type="checkbox" class="filled-in" id="todos_id3" checked=""/>
 		      	  <label for="todos_id3" style="position: absolute; margin-top:12px; margin-left:12px; margin-right:20px;"></label>
 				  <div class="collapsible-header"><i class="material-icons">whatshot</i><span id="todos-title">念沛學長企業-官方網站</div>
@@ -254,9 +263,17 @@ var sortable_api = sortable_init(todos);
 $('.datepicker').pickadate();
 
 $( document ).ready(function(){
-	collection_init();
 	$('.footer').remove();
+	collection_init();
 	sortable_button_init();
+});
+
+$(document).on('keypress', 'span', function (e) {
+    var code = e.keyCode || e.which;
+    if (code == 13) {
+        e.preventDefault();
+        return false;
+    }
 });
 
 </script>

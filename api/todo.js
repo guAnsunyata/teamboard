@@ -4,8 +4,8 @@ var TaskModel = require('./model/taskModel.js');
 var TodoProto = {
 	'create': function(req, callback) {
 		var new_todo = new TodoModel({
-			'title': '',
-			'content': '',
+			'title': '新事項',
+			'content': '雙擊編輯內容',
 			'taskID': req.task_id
 		});
 		new_todo.save(function (err, todo) {

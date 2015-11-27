@@ -27,7 +27,6 @@
 
 		    // dragging started
 		    onStart: function (/**Event*/evt) {
-		    	console.log('onStart: ',evt.oldIndex);
 		        evt.oldIndex;  // element index within parent
 		    },
 
@@ -46,13 +45,15 @@
 
 		    // Changed sorting within list
 		    onUpdate: function (/**Event*/evt) {
-		        var itemEl = evt.item;  // dragged HTMLElement
+		        //var itemEl = evt.item;  // dragged HTMLElement
+		        //socket.emit('update todo order',data);
+		        console.log(evt.item.id);
 		        // + indexes from onEnd
 		    },
 
 		    // Called by any change to the list (add / update / remove)
 		    onSort: function (/**Event*/evt) {
-		    	console.log('onSort: ' ,evt);
+		    	//console.log('onSort: ' ,evt);
 		    },
 
 		    // Element is removed from the list into another list
