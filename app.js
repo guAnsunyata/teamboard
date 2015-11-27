@@ -86,7 +86,7 @@ io.sockets.on('connection', function (socket){
 		 */
 		Todo.create(req, function (data) {
 			var dataForTaskUpdate = {
-				task_id: task_id,
+				task_id: req.task_id,
 				todo_id: data._id
 			}
 			// update todos field in the task model after todo was created.
@@ -193,26 +193,69 @@ app.post('/api/createTask', function (req, res) {
 // find task by project id
 app.post('/api/findAllTask', function (req, res) {
 	Task.findAll(req, function (data) {
-		console.log(req.body.proj_id);
-		function countFinished(data, callback) {
-			var allTask = data.length;
+		function count(data, callback) {
+			var totalTask = data.length;
 			var finishedTask = 0;
+			var totalTodo = 0;
+			var finishedTodo = 0;
 			for(var task in data){
-				if(task.finished)
-					countFinished++;
+				if(data[task].finished)
+					finishedTask++;
+				if(data[task].todos!=null){
+					totalTodo += data[task].todos.length;
+					for(var todo in data[task.todos]){
+						if(data[task.todos][todo].checker)
+							finishedTodo++;
+					}
+				}
 			}
-			callback(allTask, finishedTask, data);
+			callback(totalTask, finishedTask, totalTodo, finishedTodo, data);
 		}
-		var combineData = function(allTask, finishedTask) {
+		var combineData = function(totalTask, finishedTask, totalTodo, finishedTodo, data) {
 			var dataToReturn = {
-				totalTask: allTask,
+				totalTask: totalTask,
 				finishedTask: finishedTask,
+				totalTodo: totalTodo,
+				finishedTodo: finishedTodo,
 				mongoData: data
 			}
 			res.json(dataToReturn);
 		}
-		countFinished(data, combineData);
+		count(data, combineData);
 	});
+});
+app.post('/api/getCount', function (req, res) {
+	Task.getCount(req, function (data){
+		function count(data, callback) {
+			var totalTask = data.length;
+			var finishedTask = 0;
+			var totalTodo = 0;
+			var finishedTodo = 0;
+			for(var task in data){
+				if(data[task].finished)
+					finishedTask++;
+				if(data[task].todos!=null){
+					totalTodo += data[task].todos.length;
+					for(var todo in data[task.todos]){
+						if(data[task.todos][todo].checker)
+							finishedTodo++;
+					}
+				}
+			}
+			callback(totalTask, finishedTask, totalTodo, finishedTodo, data);
+		}
+		var combineData = function(totalTask, finishedTask, totalTodo, finishedTodo, data) {
+			var dataToReturn = {
+				totalTask: totalTask,
+				finishedTask: finishedTask,
+				totalTodo: totalTodo,
+				finishedTodo: finishedTodo,
+				mongoData: data
+			}
+			res.json(dataToReturn);
+		}
+		count(data, combineData);
+	})
 });
 // update task
 app.post('/updateTask', function (req, res) {
