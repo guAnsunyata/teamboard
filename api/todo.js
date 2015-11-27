@@ -9,12 +9,29 @@ var TodoProto = {
 			'taskID': req.body.task_id
 		});
 		new_todo.save(function (err, todo) {
-			if(err) {
-				console.log(err);
-			}else{
-				callback(todo);
-			}
-		})
+			if(err) throw err;
+			callback(todo);
+		});
+		// function countTodos(req, thenCreate){
+		// 	TodoModel.count({'taskID': req.body.task_id}, function (err, todo) {
+		// 		thenCreate(req, todo);
+		// 	});
+		// }
+		// var createTodo = function (req, totalTodo, callback) {
+		// 	var new_todo = new TodoModel({
+		// 		'title': '',
+		// 		'content': '',
+		// 		'taskID': req.body.task_id
+		// 	});
+		// 	new_todo.save(function (err, todo) {
+		// 		if(err) {
+		// 			console.log(err);
+		// 		}else{
+		// 			callback(todo);
+		// 		}
+		// 	})
+		// }
+		// countTodos(req, createTodo);
 	},
 	'updateTitle': function(req, callback) {
 		var query = {_id: req.todo_id};
