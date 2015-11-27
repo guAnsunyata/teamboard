@@ -7,8 +7,7 @@ var TodoProto = {
 		var new_todo = new TodoModel({
 			'title': '',
 			'content': '',
-			// 'collabs': '',
-			'taskID': req.body.task_id
+			'taskID': req.task_id
 		});
 		new_todo.save(function (err, todo) {
 			if(err) {
