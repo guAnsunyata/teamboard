@@ -6,7 +6,7 @@ var TodoProto = {
 		var new_todo = new TodoModel({
 			'title': '',
 			'content': '',
-			'taskID': req.body.task_id
+			'taskID': req.task_id
 		});
 		new_todo.save(function (err, todo) {
 			if(err) throw err;
@@ -82,7 +82,7 @@ var TodoProto = {
 		})
 	},
 	'findAll': function (req, callback) {
-		TodoModel.find({}, function (err, todo) {
+		TodoModel.find({taskID: req.body.task_id}, function (err, todo) {
 			if(err) throw err;
 			callback(todo);
 		})

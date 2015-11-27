@@ -191,39 +191,6 @@ app.post('/api/createTask', function (req, res) {
 	});
 });
 // find task by project id
-app.post('/api/findAllTask', function (req, res) {
-	Task.findAll(req, function (data) {
-		function count(data, callback) {
-			var totalTask = data.length;
-			var finishedTask = 0;
-			var totalTodo = 0;
-			var finishedTodo = 0;
-			for(var task in data){
-				if(data[task].finished)
-					finishedTask++;
-				if(data[task].todos!=null){
-					totalTodo += data[task].todos.length;
-					for(var todo in data[task.todos]){
-						if(data[task.todos][todo].checker)
-							finishedTodo++;
-					}
-				}
-			}
-			callback(totalTask, finishedTask, totalTodo, finishedTodo, data);
-		}
-		var combineData = function(totalTask, finishedTask, totalTodo, finishedTodo, data) {
-			var dataToReturn = {
-				totalTask: totalTask,
-				finishedTask: finishedTask,
-				totalTodo: totalTodo,
-				finishedTodo: finishedTodo,
-				mongoData: data
-			}
-			res.json(dataToReturn);
-		}
-		count(data, combineData);
-	});
-});
 app.post('/api/getCount', function (req, res) {
 	Task.getCount(req, function (data){
 		function count(data, callback) {
@@ -281,6 +248,11 @@ app.post('/api/createTodo', function (req, res) {
 		Task.updateTodoID(dataForTaskUpdate, function (data) {
 			res.json(data);
 		})
+	})
+});
+app.post('/api/findAllTodo', function (req, res) {
+	Todo.findAll(req, function (data) {
+		res.json(data);
 	})
 });
 app.get('/createTodo', function (req, res) {
