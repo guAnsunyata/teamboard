@@ -24,8 +24,17 @@ var TaskProto = {
 			callback(task);
 		})
 	},
-	'findAll': function (req, callback) {
+	'findAll': function(req, callback) {
 		TaskModel.find({'projectID': req.body.proj_id}, function (err, task) {
+			if(err) throw err;
+			callback(task);
+		})
+	},
+	'getCount': function(req, callback) {
+		TaskModel
+		.find({'projectID': req.body.proj_id})
+		.populate('todos')
+		.exec(function (err, task) {
 			if(err) throw err;
 			callback(task);
 		})
