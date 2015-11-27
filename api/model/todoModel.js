@@ -4,7 +4,7 @@ var todoSchema = new Schema({
 	title: String,
 	content: String,
 	collabs: [ Schema.Types.ObjectId ],
-	finished: {
+	checker: {
 		type: Boolean,
 		default: false
 	},
