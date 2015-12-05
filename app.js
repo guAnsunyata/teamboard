@@ -91,7 +91,7 @@ io.sockets.on('connection', function (socket){
 				todo_id: data._id
 			}
 			// update todos field in the task model after todo was created.
-			Task.updateTodoID(dataForTaskUpdate, function (data) {
+			Task.pushTodoID(dataForTaskUpdate, function (data) {
 				//console.log(data);
 			});
 			io.sockets.emit('emit new todo', data);
@@ -116,7 +116,7 @@ io.sockets.on('connection', function (socket){
 		})
 	});
 	socket.on('update todo checker', function (req, callback) {
-		/* updateContnet 的參數 req 需要有:
+		/* updateChecker 的參數 req 需要有:
 		 * 		todo_id: 	_id of the task
 		 * 		checker: 	todo checkbox status(t/f)
 		 */
@@ -125,11 +125,21 @@ io.sockets.on('connection', function (socket){
 		})
 	});
 	socket.on('update todo order', function (req, callback) {
-		/* updateContnet 的參數 req 需要有:
+		/* updateOrder 的參數 req 需要有:
 		 * 		todo_id: 	_id of the task
-		 * 		order: 	the order of todo(Number)
+		 * 		before: 	order number of the todo before change
+		 *		after: 		order number of the todo after change
 		 */
-		Todo.updateOrder(req, function (data) {
+		 Todo.updateOrder(req, function (data) {
+		 	// 目前回傳資料為被刪除的todo所屬的task的所有資料
+		 	socket.broadcast.emit('emit update todo order', data);
+		 })
+	});
+	socket.on('delete todo', function (req, callback) {
+		/* delete 的參數 req 需要有:
+		 * 		todo_id: 	_id of the task
+		 */
+		Todo.delete(req, function (data) {
 			socket.broadcast.emit('emit todo order', data);
 		})
 	});
@@ -208,11 +218,16 @@ app.post('/api/getCount', function (req, res) {
 				finishedTask: finishedTask,
 				totalTodo: totalTodo,
 				finishedTodo: finishedTodo,
-				// mongoData: data
+				mongoData: data
 			}
 			res.json(dataToReturn);
 		}
 		count(data, combineData);
+	})
+});
+app.post('/findAllTask', function (req, res) {
+	Task.findAll(req, function (data) {
+		res.json(data);
 	})
 });
 // update task
@@ -226,17 +241,22 @@ app.get('/deleteAllTask', function (req, res) {
 		res.status(data).end();
 	});
 });
+app.get('/tryPull', function (req, res) {
+	Task.tryPull(req, function (data) {
+		res.json(data);
+	})
+});
 
 /* Todo api */
 // use _id of task to create todo
 app.post('/api/createTodo', function (req, res) {
 	Todo.create(req, function (data) {
 		var dataForTaskUpdate = {
-			taskID: req.body.task_id,
-			todoID: data._id
+			task_id: req.body.task_id,
+			todo_id: data._id
 		}
 		// update todos field in the task model after todo was created.
-		Task.updateTodoID(dataForTaskUpdate, function (data) {
+		Task.pushTodoID(dataForTaskUpdate, function (data) {
 			res.json(data);
 		})
 	})
@@ -246,19 +266,24 @@ app.post('/api/findAllTodo', function (req, res) {
 		res.json(data);
 	})
 });
-app.get('/createTodo', function (req, res) {
-	Todo.create(req, function (data) {
+app.get('/api/todos', function (req, res) {
+	Todo.find(req, function (data) {
 		res.json(data);
-	});
+	})
 });
-app.get('/findAllTodo', function (req, res) {
-	Todo.findAll(req, function (data) {
+app.post('/api/updateTodoOrder', function (req, res) {
+	Todo.updateOrder(req, function (data) {
 		res.json(data);
-	});
+	})
 });
 app.get('/delAllTodo', function (req, res) {
 	Todo.deleteAll(req, function (data) {
 		res.status(data).end();
+	});
+});
+app.post('/delt5Todo', function (req, res) {
+	Todo.delete(req, function (data) {
+		res.json(data);
 	});
 });
 // test page for api testing!
