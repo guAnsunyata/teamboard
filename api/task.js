@@ -39,7 +39,7 @@ var TaskProto = {
 			callback(task);
 		})
 	},
-	'updateTodoID': function(req, callback) {
+	'pushTodoID': function(req, callback) {
 		var query = {_id: req.task_id}
 		TaskModel.update(query, {$pushAll: {todos: [req.todo_id]}}, function (err, task) {
 			if(err) {
@@ -58,7 +58,7 @@ var TaskProto = {
 	'updateName': function(req, callback) {
 		var query = {_id: req.body.task_id};
 		TaskModel.update(query, {name: req.body.name}, function (err, task) {
-			// if(err) throw err;
+			if(err) throw err;
 			if(task!=0){
 				callback('update succeeded');
 			}else{
@@ -88,6 +88,19 @@ var TaskProto = {
 			if(err) throw err;
 			callback(task);
 		});
+	},
+	'tryPull': function(req, callback) {
+		var query = { '_id': '5655a94e5abde1080f059588' }
+		TaskModel.update(
+			query,
+			{todos: []},
+			function (err, task) {
+				if(err) throw err;
+				TaskModel.find({}, function (err, task) {
+					if(err) throw err;
+					callback(task);
+				})
+		})
 	},
 	'deleteAll': function (req, callback) {
 		TaskModel.remove({}, function (err, task) {
