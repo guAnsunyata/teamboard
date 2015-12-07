@@ -4,13 +4,13 @@ var TaskModel = require('./model/taskModel.js');
 var TodoProto = {
 	'create': function(req, callback) {
 		// step 1: get order of this todo
-		TodoModel.count({'taskID': req.body.task_id}, function (err, todo) {
+		TodoModel.count({'taskID': req.task_id}, function (err, todo) {
 			// step 2: create this todo
 			var new_todo = new TodoModel({
 				'title': '新事項',
 				'content': '雙擊編輯內容',
 				'order': todo,
-				'taskID': req.body.task_id
+				'taskID': req.task_id
 			});
 			new_todo.save(function (err, todo) {
 				if(err) throw err;
