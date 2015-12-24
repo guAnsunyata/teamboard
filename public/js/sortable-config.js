@@ -45,9 +45,14 @@
 
 		    // Changed sorting within list
 		    onUpdate: function (/**Event*/evt) {
-		        //var itemEl = evt.item;  // dragged HTMLElement
-		        //socket.emit('update todo order',data);
-		        console.log(evt.item.id);
+		        console.log(evt.item, evt.newIndex, evt.oldIndex);
+		        var todo_id = evt.item.id.replace(/[li]/g, "");
+		        var data = {
+		        	todo_id: todo_id,
+		        	before: evt.oldIndex.toString(),
+		        	after: evt.newIndex.toString()
+		        }
+		        socket.emit('update todo order',data);
 		        // + indexes from onEnd
 		    },
 

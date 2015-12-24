@@ -132,7 +132,8 @@ io.sockets.on('connection', function (socket){
 		 */
 		 Todo.updateOrder(req, function (data) {
 		 	// 目前回傳資料為被刪除的todo所屬的task的所有資料
-		 	socket.broadcast.emit('emit update todo order', data);
+		 	socket.broadcast.emit('emit update todo order', req);
+		 	
 		 })
 	});
 	socket.on('delete todo', function (req, callback) {

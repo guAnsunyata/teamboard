@@ -36,6 +36,14 @@ socket.on('emit todo checker', function(data){
 	console.log('todo checker refresh');
 });
 
+socket.on('emit update todo order', function(data){
+	/* data : 
+	 * todo_id : target
+	 * before : todo_id which is before to the target aftering relocated.
+	 */
+	 console.log('emit update order '+data);
+});
+
 // socket.on('emit todo order', function(data){
 // 	var $el = $('#li'+data._id).children('.checkbox');
 // 	var state = $el.attr('checked');
@@ -46,7 +54,15 @@ var task_id = '5655a784dbb681cc10b5f03d';
 function collection_init(){
 	$.post('/api/findAllTodo',{task_id:task_id},function(data){
 		console.log('init:',data);
-		data.forEach(function (t){
+		function compare(a,b) {
+		  if (a.order < b.order)
+		    return -1;
+		  if (a.order > b.order)
+		    return 1;
+		  return 0;
+		}
+		//data = data.sort(compare);
+		data.sort(compare).forEach(function (t){
 			todo_deploy(t, function(el){
 				todo_regist(el);
 			});
