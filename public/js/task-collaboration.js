@@ -39,16 +39,24 @@ socket.on('emit todo checker', function(data){
 socket.on('emit update todo order', function(data){
 	/* data : 
 	 * todo_id : target
-	 * before : todo_id which is before to the target aftering relocated.
+	 * before : 
+	 * after : 
 	 */
-	 console.log('emit update order '+data);
+	var sum = $('.collapsible li').length;
+	var $el = $('#li'+data.todo_id);
+	var $current_after_el = $('.collapsible li:nth-child('+(parseInt(data.after)+1)+')');
+
+	$el.detach();
+	if(data.after >= data.before){
+		$current_after_el.after($el);
+	}else{ //(no_after <= sum)
+	 	$current_after_el.before($el);
+	}
+	//todo_regist(new_el);
+	console.log($current_after_el);
+	console.log('todo order refresh');
 });
 
-// socket.on('emit todo order', function(data){
-// 	var $el = $('#li'+data._id).children('.checkbox');
-// 	var state = $el.attr('checked');
-// 	$el.prop('checked', !state);
-// });
 var task_id = '5655a784dbb681cc10b5f03d';
 //collection
 function collection_init(){
