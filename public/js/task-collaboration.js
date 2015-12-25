@@ -1,4 +1,6 @@
 //此程式含有特別的「id前綴」，目的是用於(1)避免原生jsDOM方法不接受數字開頭的query (2)加快任何的query速度(減少次數)。
+//上述是用於client socket.on的快速反應
+//部分client socket.emit的id查詢尚未優化
 var socket = io.connect();
 var Global = this;
 
@@ -57,6 +59,11 @@ socket.on('emit update todo order', function(data){
 	console.log('todo order refresh');
 });
 
+socket.on('emit todo delete', function(data){
+	var $el = $('#li'+data.todo_id);
+	$el.remove();
+});
+
 var task_id = '5655a784dbb681cc10b5f03d';
 //collection
 function collection_init(){
@@ -86,7 +93,11 @@ function collection_init(){
 }
 
 Global.collection_lock = false;
+//尚未優化：$el的id
 function todo_regist($el){ // el is whole <li>
+	//this_id : 優化用id存取點
+	_this_id = $el.attr('id').replace(/[li]/g, "");
+	console.log('regist: ',_this_id);
 	$el.children('.collapsible-body').dblclick(function(){
 		var $this = $(this);
 		$this.attr("contentEditable","true");
@@ -117,7 +128,7 @@ function todo_regist($el){ // el is whole <li>
 		}
 		socket.emit('update todo checker',data);
 	});
-	$el.children('.collapsible-header').children('.todos-title').click(function(){
+	$el.children('.collapsible-header').children('.todos-title').click(function(e){
 		$(this).attr('contentEditable','true');
 	}).blur(function(){
 		var $this = $(this);
@@ -131,17 +142,35 @@ function todo_regist($el){ // el is whole <li>
 		content = escape(content);
 		socket.emit('update todo title',data);
 	});
+	$el.children('.collapsible-header').children('.todo-setting').click(function(e){
+		$(this).parent().parent().find('.todo-setting-drop').slideDown(300, function(){
+			//blur
+			$('body').click(function(){
+				$('.todo-setting-drop').stop().slideUp();
+				$('body').off('click');
+			});
+		});
+	});
+	$el.find('.todo-setting-drop .remove-btn').click(function(){
+		$el.remove();
+		var data = {todo_id: _this_id};
+		console.log('emit delete: ', _this_id);
+		socket.emit('delete todo', data);
+	});
 	//collapsible
 	$('.collapsible').collapsible({
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
 }
 
+//blur 區
+
 function get_todo_html(data){
 	//WARNING : 需補上data.status的判斷
 	var checked = false;
 	if(data.checker){ checked = 'checked'}else{ checked = '' };
-	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%''><i class='material-icons'>place</i><span class='todos-title'>"+data.title+"</span></div><div class='collapsible-body' id='todos-content' contentEditable='false'>"+data.content+"</div></li>";
+	var setting_icon = 'view_list';
+	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons'>place</i><span class='todos-title'>"+data.title+"</span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body' id='todos-content' contentEditable='false'>"+data.content+"</div></li>";
 	return html
 }
 

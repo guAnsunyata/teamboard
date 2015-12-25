@@ -115,6 +115,39 @@
 	    -webkit-user-select: none;
 	    -o-user-select: none;
  	}
+ 	.todo-setting{
+ 		float: right;
+ 	}
+ 	.todo-setting i{
+ 		font-size: 18px;
+ 		margin-right: 0px;
+ 	}
+ 	.todo-setting-nav{
+
+ 	}
+ 	.todo-setting-drop{
+ 		display: none;
+ 		position: absolute;
+ 		background: #D8D8D8;
+ 		z-index: 999;
+ 		float: right;
+ 		right: 0px;
+ 		font-weight: bold;
+ 		font-size: 18px;
+ 		line-height: 38px;
+ 		border-top-style:outset;
+ 		border-bottom-style:inset;
+		border-right-style:inset;
+		border-left-style:outset; 
+ 	}
+ 	.todo-setting-drop li{
+ 		padding-left: 28px;
+ 		padding-right: 28px;
+ 		cursor: pointer;
+ 	}
+ 	.todo-setting-drop li:hover{
+ 		background: #A4A4A4;
+ 	}
 </style>
 
 <body>
@@ -234,6 +267,7 @@
 		</div>
 		<div class="todos">
 			<ul class="collapsible" data-collapsible="expandable" id="todos-sortable">
+				<!-- <li id="li567ca81e68f9b3a8464bca40"><input type="checkbox" class="filled-in" id="checkbox567ca81e68f9b3a8464bca40" checked=""><label for="checkbox567ca81e68f9b3a8464bca40" style="position:absolute; margin-top:12px; margin-left:12px"></label><div class="collapsible-header" style="display: inline-block; width:100%"><i class="material-icons">place</i><span class="todos-title">新事項一</span><span class='todo-setting'><i class='material-icons'>view_list</i></span></div><ul class="todo-setting-drop"><li style="color: #0174DF">指派</li><li style="color: #DF013A">刪除</li></ul><div class="collapsible-body" id="todos-content" contenteditable="false">雙擊編輯內容</div></li> -->
 				<!-- <li>
 				  <input type="checkbox" class="filled-in" id="todos_id2" checked="checked"/>
 		      	  <label for="todos_id2" style="position: absolute; margin-top:12px; margin-left:12px"></label>

@@ -140,8 +140,9 @@ io.sockets.on('connection', function (socket){
 		/* delete 的參數 req 需要有:
 		 * 		todo_id: 	_id of the task
 		 */
+		 console.log('del : ', req);
 		Todo.delete(req, function (data) {
-			socket.broadcast.emit('emit todo order', data);
+			socket.broadcast.emit('emit todo delete', req);
 		})
 	});
 });
