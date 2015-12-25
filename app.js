@@ -425,3 +425,5 @@ io.sockets.on('connection', function(socket){
 });
 
 
+var testing_proj_id = '5653015b58fe43dc186ec0a0';
+var testing_task_id = '5655a784dbb681cc10b5f03d';
