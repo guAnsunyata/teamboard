@@ -133,7 +133,7 @@ var TodoProto = {
 				order: {$gt: todo.order}
 			}
 			var query2 = {
-				taskID: todo.taskID
+				_id: todo.taskID
 			}
 			// order of todo minus 1, if it's queueing behind the todo that is gonna delete
 			TodoModel.update(query, {$inc: {order: -1}}, {multi: true}, function (err, todo) {
@@ -143,8 +143,8 @@ var TodoProto = {
 					TaskModel.update(query2, {$pull: {todos: req.todo_id}}, function (err, task) {
 						// find todo of the task as return data
 						TaskModel.findOne(query2, function (err, task) {
-							callback(task);
-							console.log('task:::::',task);
+							callback(task.todos);
+							console.log(task.todos);
 						})
 					})
 				})
