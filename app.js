@@ -424,6 +424,14 @@ io.sockets.on('connection', function(socket){
 	console.log('Socket : a user connected');
 });
 
+//when Ctrl+C happened in node
+process.on('SIGINT', function() {
+  mongoose.connection.close(function () {
+    console.log(' : Mongoose disconnected on app termination');
+    process.exit(0);
+  });
+});
+
 
 var testing_proj_id = '5653015b58fe43dc186ec0a0';
 var testing_task_id = '5655a784dbb681cc10b5f03d';
