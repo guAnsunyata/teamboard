@@ -96,7 +96,7 @@ Global.collection_lock = false;
 //尚未優化：$el的id
 function todo_regist($el){ // el is whole <li>
 	//this_id : 優化用id存取點
-	_this_id = $el.attr('id').replace(/[li]/g, "");
+	var _this_id = $el.attr('id').replace(/[li]/g, "");
 	console.log('regist: ',_this_id);
 	$el.children('.collapsible-body').dblclick(function(){
 		var $this = $(this);
@@ -104,7 +104,7 @@ function todo_regist($el){ // el is whole <li>
 	}).blur(function(){
 		if(!Global.collection_lock){
 			var $this = $(this);
-			$this.attr("contentEditable","false");
+			//$this.attr("contentEditable","false");
 		}
 	}).keyup(function(){
 		var target = $(this).parent().attr('id');
@@ -114,6 +114,10 @@ function todo_regist($el){ // el is whole <li>
 		var data = {todo_id: formatted_tartget, content: content};
 		//socket.emit
 		socket.emit('update todo content',data);
+	}).on("change",function(){ //注意：更動Jquery方法
+	    if ($(this).text().trim().length > 0) {
+	    	$(this).slideDown('slow', function() {});
+	    };
 	});
 	//todo status
 	$el.children('label').click(function(){
@@ -152,7 +156,7 @@ function todo_regist($el){ // el is whole <li>
 		});
 	});
 	$el.find('.todo-setting-drop .remove-btn').click(function(){
-		$el.remove();
+		//$el.remove();
 		var data = {todo_id: _this_id};
 		console.log('emit delete: ', _this_id);
 		socket.emit('delete todo', data);
@@ -164,6 +168,21 @@ function todo_regist($el){ // el is whole <li>
 	$('.collapsible').collapsible({
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
+	tinymce.init({
+	  inline: true,
+	  selector: '.collapsible-body',
+	  plugins: [
+	        "advlist autolink lists link image charmap print preview anchor",
+	        "searchreplace visualblocks code fullscreen",
+	        "insertdatetime media table contextmenu paste imagetools",
+	        "textcolor"
+	    ],
+	    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor",
+	  imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
+	  content_css: [
+	    '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css'
+	  ]
+	});
 }
 
 //blur 區
@@ -173,7 +192,7 @@ function get_todo_html(data){
 	var checked = false;
 	if(data.checker){ checked = 'checked'}else{ checked = '' };
 	var setting_icon = 'view_list';
-	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons'>place</i><span class='todos-title'>"+data.title+"</span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body' id='todos-content' contentEditable='false'>"+data.content+"</div></li>";
+	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons'>place</i><span class='todos-title'>"+data.title+"</span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body' id='todos-content' contentEditable='true'>"+data.content+"</div></li>";
 	return html
 }
 
@@ -200,4 +219,18 @@ function sortable_button_init(){
 //$('.collapsible-header').off();
 //$('.collapsible').collapsible();
 //$('.collapsible-header').click();
+
+(function($)
+{
+    var oldHtml = $.fn.html;
+    $.fn.html = function()
+    {
+        var ret = oldHtml.apply(this, arguments); 
+        //trigger your event.
+        this.trigger("change");
+        return ret;
+    };
+})(jQuery);
+
+
 

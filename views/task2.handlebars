@@ -4,6 +4,7 @@
 	<title>Task - Todos</title>
 	<!-- Sortable.js Config -->
 	<script src="//cdn.jsdelivr.net/sortable/latest/Sortable.min.js"></script>
+	<script src='/js/tinymce/tinymce.min.js'></script>
 	<script src="/js/sortable-config.js"></script>
 	<!-- pickadate.js-master -->
 	<script src="/js/picker.date.js"></script>
@@ -319,12 +320,12 @@ $( document ).ready(function(){
 	sortable_button_init();
 });
 
-$(document).on('keypress', 'span', function (e) {
-    var code = e.keyCode || e.which;
-    if (code == 13) {
-        e.preventDefault();
-        return false;
-    }
-});
+// $(document).on('keypress', 'span', function (e) {
+//     var code = e.keyCode || e.which;
+//     if (code == 13) {
+//         e.preventDefault();
+//         return false;
+//     }
+// });
 
 </script>
