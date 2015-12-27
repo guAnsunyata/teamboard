@@ -381,6 +381,10 @@ app.get('/task', function (req, res) {
   res.render('task2', {layout: 'layout'});
 });
 
+app.get('/filesmgr', function (req, res) {
+  res.render('filesmanager', {layout: 'layout'});
+});
+
 app.post('/api/getData', function(req, res) {
 	var data = {'attr1':'321'};
 	res.json(data);

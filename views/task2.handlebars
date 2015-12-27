@@ -155,6 +155,30 @@
  	.todo-setting-drop li:hover{
  		background: #A4A4A4;
  	}
+ 	.todo-duedate{
+ 		float: right;
+ 		display: inline-block;
+ 	}
+ 	.todo-duedate span{
+ 		cursor: pointer;
+ 		color: #01579b;
+ 		display: inline-block;
+ 		line-height: 26px;
+ 		position: relative;
+ 		width: 48px;
+ 		text-align: center;
+ 		font-weight: 600;
+ 		border-top-style:outset;
+ 		border-bottom-style:inset;
+		border-right-style:inset;
+		border-left-style:outset;
+		border-radius: 5px;
+		border-width:thin;
+		font-size: 13px;
+ 	}
+ 	.todo-duedate span:hover{
+ 		background-color: #D8D8D8;
+ 	}
 </style>
 
 <body>
@@ -262,7 +286,7 @@
 
 		<div class="ctrl-panel">
 			<a id="button_add" class="waves-effect waves-light btn" href="javascript: add_todo();">新增</a>
-			<a id="button_delete" class="waves-effect waves-light btn" href="javascript: delete_todo();">刪除</a>
+			<a id="button_delete" class="waves-effect waves-light btn" href="javascript: delete_todo();">檔案</a>
 			<div class="switch" style="display: inline-block; margin-left: 10px;">
 			    <label>
 			      排序
@@ -306,18 +330,37 @@
   </div>
 
 </body>
+<div class="datepicler"></div>
 </html>
 
 <script>
 //script for document
 var todos = document.getElementById('todos-sortable');
 var sortable_api = sortable_init(todos);
-$('.datepicker').pickadate();
 
 $( document ).ready(function(){
 	$('.footer').remove();
 	collection_init();
 	sortable_button_init();
+	$('.collapsible').delegate('.todo-duedate', 'click', function(){
+		//date picker
+	}).delegate('.collapsible-body', 'click', function(){
+		  tinymce.init({
+		  inline: true,
+		  selector: '.collapsible-body',
+		  plugins: [
+		        "advlist autolink lists link image charmap print preview anchor",
+		        "searchreplace visualblocks code fullscreen",
+		        "insertdatetime media table contextmenu paste imagetools",
+		        "textcolor"
+		    ],
+		    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor",
+		  imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
+		  content_css: [
+		    '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css'
+		  ]
+		});
+	});
 });
 
 // $(document).on('keypress', 'span', function (e) {
