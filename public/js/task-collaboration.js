@@ -46,7 +46,7 @@ socket.on('emit update todo order', function(data){
 	 */
 	var sum = $('.collapsible li').length;
 	var $el = $('#li'+data.todo_id);
-	var $current_after_el = $('.collapsible li:nth-child('+(parseInt(data.after)+1)+')');
+	var $current_after_el = $('.collapsible>li:nth-child('+(parseInt(data.after)+1)+')');
 
 	$el.detach();
 	if(data.after >= data.before){
@@ -55,7 +55,7 @@ socket.on('emit update todo order', function(data){
 	 	$current_after_el.before($el);
 	}
 	//todo_regist(new_el);
-	console.log($current_after_el);
+	console.log('current_after_el: ',$current_after_el.html());
 	console.log('todo order refresh');
 });
 
@@ -156,6 +156,9 @@ function todo_regist($el){ // el is whole <li>
 		var data = {todo_id: _this_id};
 		console.log('emit delete: ', _this_id);
 		socket.emit('delete todo', data);
+	});
+	$el.find('.todo-setting-drop .assign-btn').click(function(){
+		alert('assing !');
 	});
 	//collapsible
 	$('.collapsible').collapsible({
