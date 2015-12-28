@@ -53,6 +53,7 @@ app.set('view engine', 'handlebars');
 
 //test
 // socket.io
+/* 冠德：socket.emit傳req為錯誤作法，無法確認更新是否成功。 */
 io.sockets.on('connection', function (socket){
 	socket.on('create task', function (req, callback) {
 		/* create 的參數 req 需要有:
@@ -141,6 +142,7 @@ io.sockets.on('connection', function (socket){
 		 * 		todo_id: 	_id of the task
 		 *		duedate: 	date
 		 */
+		 console.log('due');
 		Todo.updateDuedate(req, function (data) {
 		 	socket.broadcast.emit('emit update todo duedate', req);
 		})

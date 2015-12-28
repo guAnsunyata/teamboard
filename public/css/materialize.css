@@ -6123,7 +6123,7 @@ a.waves-effect .waves-ripple {
     display: block;
     float: left;
     text-align: center;
-    margin-right: 1rem; }
+    margin-right: 0rem; }
 
 .collapsible-body {
   display: none;
