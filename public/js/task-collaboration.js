@@ -64,6 +64,11 @@ socket.on('emit todo delete', function(data){
 	$el.remove();
 });
 
+socket.on('emit update todo duedate', function(data){
+	console.log('update todo duedate');
+	picker.set
+});
+
 var task_id = '5655a784dbb681cc10b5f03d';
 //collection
 function collection_init(){
@@ -177,7 +182,7 @@ function get_todo_html(data){
 	var checked = false;
 	if(data.checker){ checked = 'checked'}else{ checked = '' };
 	var setting_icon = 'view_list';
-	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons'>place</i><span class='todos-title'>"+data.title+"</span><span class='todo-duedate'><span>期限</span></span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body' id='todos-content' contentEditable='false'>"+data.content+"</div></li>";
+	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons'>place</i><span class='todos-title'>"+data.title+"</span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span><span class='todo-duedate'><span>期限</span></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body' id='todos-content' contentEditable='false'>"+data.content+"</div></li>";
 	return html
 }
 

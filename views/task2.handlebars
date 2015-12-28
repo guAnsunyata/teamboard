@@ -6,9 +6,6 @@
 	<script src="//cdn.jsdelivr.net/sortable/latest/Sortable.min.js"></script>
 	<script src='/js/tinymce/tinymce.min.js'></script>
 	<script src="/js/sortable-config.js"></script>
-	<!-- pickadate.js-master -->
-	<script src="/js/picker.date.js"></script>
-	<link type="text/css" rel="stylesheet" href="/css/classic.date.css"  media="screen,projection"/>
 	<!-- collaboration -->
 	<script src="/js/task-collaboration.js"></script>
 
@@ -160,12 +157,14 @@
  		display: inline-block;
  	}
  	.todo-duedate span{
+ 		padding-left: 7px;
+ 		padding-right: 7px;
  		cursor: pointer;
  		color: #01579b;
  		display: inline-block;
  		line-height: 26px;
  		position: relative;
- 		width: 48px;
+ 		min-width: 48px;
  		text-align: center;
  		font-weight: 600;
  		border-top-style:outset;
@@ -330,7 +329,7 @@
   </div>
 
 </body>
-<div class="datepicler"></div>
+<input type="date" style="display: none;" class="datepicker">
 </html>
 
 <script>
@@ -342,8 +341,45 @@ $( document ).ready(function(){
 	$('.footer').remove();
 	collection_init();
 	sortable_button_init();
+
+	//datepicker
+	var $datepicker_input = $('.datepicker').pickadate({
+	    selectMonths: true, // Creates a dropdown to control month
+	    selectYears: 15, // Creates a dropdown of 15 years to control year
+	    format: 'yyyy-mm-dd'
+	});
+	// Use the picker object directly.
+	picker = $datepicker_input.pickadate('picker');
+	picker.on('set', function() {
+	  var time = picker.get('select', 'mmmm - dd - yyyy').toString();
+	  if(!time){
+	  	time = '期限';
+	  }
+	  $this_duedate.find('span').html(time).attr('data-time',picker.get());
+	  // var data = {
+	  // 	todo_id: ,
+	  // 	duedate: time,
+	  // }
+	  // socket.emit('',data);
+	  //picker.set('clear');
+	});
+
 	$('.collapsible').delegate('.todo-duedate', 'click', function(){
-		//date picker
+		//trigger : date picker
+		// if($this_duedate.get(0) != $(this).get(0)){
+		// 	console.log('not the same guy');
+		// 	picker.set('clear');
+		// }
+		$this_duedate = $(this);
+		//get clicked todo current date
+		var this_current_date = $this_duedate.find('span').attr('data-time');
+		//set it on picker
+		if(typeof this_current_date != 'undefined'){
+			picker.set('select',this_current_date, { format: 'yyyy-mm-dd' });
+		}
+
+		picker.open();
+		event.stopPropagation();
 	}).delegate('.collapsible-body', 'click', function(){
 		  tinymce.init({
 		  inline: true,
@@ -363,12 +399,12 @@ $( document ).ready(function(){
 	});
 });
 
-// $(document).on('keypress', 'span', function (e) {
-//     var code = e.keyCode || e.which;
-//     if (code == 13) {
-//         e.preventDefault();
-//         return false;
-//     }
-// });
+$(document).on('keypress', 'span', function (e) {
+    var code = e.keyCode || e.which;
+    if (code == 13) {
+        e.preventDefault();
+        return false;
+    }
+});
 
 </script>
