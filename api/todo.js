@@ -6,11 +6,13 @@ var TodoProto = {
 		// step 1: get order of this todo
 		TodoModel.count({'taskID': req.task_id}, function (err, todo) {
 			// step 2: create this todo
+			var current_date = new Date();
 			var new_todo = new TodoModel({
 				'title': '新事項',
 				'content': '雙擊編輯內容',
 				'order': todo,
-				'taskID': req.task_id
+				'taskID': req.task_id,
+				'duedate': current_date
 			});
 			new_todo.save(function (err, todo) {
 				if(err) throw err;
