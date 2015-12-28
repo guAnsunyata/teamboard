@@ -136,6 +136,15 @@ io.sockets.on('connection', function (socket){
 		 	
 		 })
 	});
+	socket.on('update todo duedate', function (req, callback) {
+		/* updateDuedate 的參數 req 需要有:
+		 * 		todo_id: 	_id of the task
+		 *		duedate: 	date
+		 */
+		Todo.updateDuedate(req, function (data) {
+		 	socket.broadcast.emit('emit update todo duedate', req);
+		})
+	});
 	socket.on('delete todo', function (req, callback) {
 		/* delete 的參數 req 需要有:
 		 * 		todo_id: 	_id of the task

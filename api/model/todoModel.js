@@ -11,7 +11,8 @@ var todoSchema = new Schema({
 	taskID: {
 		type: Schema.Types.ObjectId,
 		ref: 'TaskModel'
-	}
+	},
+	duedate: Date
 });
 
 module.exports = mongoose.model('TodoModel', todoSchema);

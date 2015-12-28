@@ -103,6 +103,18 @@ var TodoProto = {
 				}else{}
 		});
 	},
+	'updateDuedate': function (req, callback) {
+		var query = {_id: req.todo_id};
+		TodoModel.update(query, {duedate: req.duedate}, function (err, todo) {
+			if(err) {
+				console.log(err);
+			}else{
+				TodoModel.findOne(query, function (err, todo) {
+					callback(todo);
+				})
+			}
+		})
+	},
 	'findAll': function (req, callback) {
 		TodoModel.find({taskID: req.body.task_id}, function (err, todo) {
 			if(err) throw err;
