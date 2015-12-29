@@ -84,6 +84,18 @@
  	.activity-post{
  		padding: 0px 0px 5px 0px;
  	}
+ 	.todo-comment-tag{
+ 		color: #004669;
+ 		background-color:#d9edf7;
+ 		font-size: 14px;
+ 		margin: 6px 0px 0px 0px;
+	    padding: 3px 7px;
+	    border-radius: 4px;
+ 	}
+ 	.todo-comment-owner-tag{
+ 		font-size: 12px;
+ 		color: #A2A2A2;
+ 	}
  	.status{
  		display: inline-block;
  		width: 55px;
@@ -155,6 +167,26 @@
  	.todo-duedate{
  		float: right;
  		display: inline-block;
+ 	}
+ 	.todo-post-btn{
+ 		margin-top: 2rem;
+ 		margin-right: 5px;
+ 		padding-left: 7px;
+ 		padding-right: 7px;
+ 		cursor: pointer;
+ 		color: #01579b;
+ 		display: inline-block;
+ 		line-height: 26px;
+ 		min-width: 48px;
+ 		text-align: center;
+ 		font-weight: 600;
+ 		border-top-style:outset;
+ 		border-bottom-style:inset;
+		border-right-style:inset;
+		border-left-style:outset;
+		border-radius: 5px;
+		border-width:thin;
+		font-size: 13px;
  	}
  	.todo-duedate span{
  		padding-left: 7px;
@@ -351,16 +383,30 @@ $( document ).ready(function(){
 	// Use the picker object directly.
 	picker = $datepicker_input.pickadate('picker');
 	picker.on('set', function() {
-	  var time = picker.get('select', 'mmmm - dd - yyyy').toString();
-	  if(!time){
-	  	time = '期限';
-	  }
-	  $this_duedate.find('span').html(time).attr('data-time',picker.get());
-	  // var data = {
-	  // 	todo_id: ,
-	  // 	duedate: time,
-	  // }
-	  // socket.emit('',data);
+		//初始化時(反模式)不需要進行後續動作
+		var isInit = (typeof $this_duedate === 'undefined');
+		if(!isInit){
+			var time_skin = picker.get('select', 'mmmm - dd - yyyy').toString();
+			var time_data = picker.get();
+
+			var target = $this_duedate.parent().parent().attr('id');
+			var formatted_tartget = target.substr(target.indexOf("li")+2,target.length-2);
+			//if picker is set or cancel
+			if(!time_skin){
+				time_skin = '期限';
+				$this_duedate.find('span').html(time_skin).attr('data-time','undefined');
+				var formatted_time = null;
+			}else{
+				$this_duedate.find('span').html(time_skin).attr('data-time',formatted_time);
+				var formatted_time = Date.parse(time_data);
+			}
+			var data = {
+				todo_id: formatted_tartget,
+			  	duedate: formatted_time,
+			  	time_skin: time_skin
+			}
+			socket.emit('update todo duedate',data);
+		}
 	  //picker.set('clear');
 	});
 
@@ -374,16 +420,18 @@ $( document ).ready(function(){
 		//get clicked todo current date
 		var this_current_date = $this_duedate.find('span').attr('data-time');
 		//set it on picker
-		if(typeof this_current_date != 'undefined'){
-			picker.set('select',this_current_date, { format: 'yyyy-mm-dd' });
+		if(this_current_date != 'undefined'){
+			picker.set('select', parseInt(this_current_date));
+		}else{
+			picker.set('clear');
 		}
 
 		picker.open();
 		event.stopPropagation();
-	}).delegate('.collapsible-body', 'click', function(){
+	}).delegate('.todo-content', 'click', function(){
 		  tinymce.init({
 		  inline: true,
-		  selector: '.collapsible-body',
+		  selector: '.todo-content',
 		  plugins: [
 		        "advlist autolink lists link image charmap print preview anchor",
 		        "searchreplace visualblocks code fullscreen",

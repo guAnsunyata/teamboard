@@ -13,6 +13,7 @@ var TodoProto = {
 				'order': todo,
 				'taskID': req.task_id,
 				'createdate': current_date,
+				'duedate': undefined
 			});
 			new_todo.save(function (err, todo) {
 				if(err) throw err;
