@@ -6,6 +6,7 @@ var io = require('socket.io').listen(server);
 var mongoose = require('./api/db');
 var settings = mongoose.settings;
 var step = require('step-master');
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -19,6 +20,7 @@ var Task = new TaskApi();
 var TodoApi = require('./api/todo');
 var Todo = new TodoApi;
 
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
