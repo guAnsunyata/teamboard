@@ -6,6 +6,10 @@ var projectSchema = new Schema({
 	startdate: Date,
 	duedate: Date,
 	status: String,
+	tasks: [{ 
+		type: Schema.Types.ObjectId,
+		ref: 'TaskModel'
+	}],
 	members: [{
 		type: Schema.Types.ObjectId,
 		ref: 'TaskModel'

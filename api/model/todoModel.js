@@ -12,6 +12,14 @@ var todoSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'TaskModel'
 	},
+	createdate: {
+		type: Date,
+		default: null
+	},
+	finisheddate: {
+		type: Date,
+		default: null
+	},
 	duedate: {
 		type: Date,
 		default: null

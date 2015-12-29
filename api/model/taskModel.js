@@ -3,8 +3,22 @@ var Schema = mongoose.Schema;
 var taskSchema = new Schema({
 	name: String,
 	desc: String,
-	startdate: Date,
-	duedate: Date,
+	createdate: {
+		type: Date,
+		default: null
+	},
+	finisheddate: {
+		type: Date,
+		default: null
+	},
+	startdate: {
+		type: Date,
+		default: null
+	},
+	duedate: {
+		type: Date,
+		default: null
+	},
 	leader: String,
 	collabs: [ Schema.Types.ObjectId ],
 	finished: {
