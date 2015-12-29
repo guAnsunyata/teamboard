@@ -12,7 +12,7 @@ var TodoProto = {
 				'content': '雙擊編輯內容',
 				'order': todo,
 				'taskID': req.task_id,
-				'duedate': current_date
+				'createdate': current_date,
 			});
 			new_todo.save(function (err, todo) {
 				if(err) throw err;
@@ -46,6 +46,11 @@ var TodoProto = {
 	},
 	'updateChecker': function(req, callback) {
 		var query = {_id: req.todo_id};
+		var updatedata = {
+			checker: req.checker
+			// finisheddate: req.
+		};
+		// typeof(req.yo)=='undefined'
 		TodoModel.update(query, {checker: req.checker}, function (err, todo) {
 			if(err) {
 				console.log(err);

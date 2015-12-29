@@ -1,20 +1,29 @@
+var ProjectModel = require('./model/projectModel.js');
 var TaskModel = require('./model/taskModel.js');
 var TodoModel = require('./model/todoModel.js');
 
 var TaskProto = {
 	'create': function(req, callback) {
+		var current_date = new Date();
 		var new_task = new TaskModel({
-			'name': req.name,
-			'desc': req.desc,
-			'startdate': req.startdate,
-			'duedate': req.duedate,
-			'leader': req.leader,
-			'collabs': req.collabs,
-			'projectID': req.proj_id
+			// 'name': req.body.name,
+			// 'desc': req.body.desc,
+			// 'leader': req.body.leader,
+			// 'collabs': req.body.collabs,
+			'createdate': current_date,
+			'projectID': req.body.proj_id
 		});
+		var query = {
+			_id: req.body.proj_id
+		};
 		new_task.save(function (err, task) {
 			if(err) throw err;
-			callback(task);
+			ProjectModel.update(query, {$pushAll: {tasks: [task._id]}}, function (err, proj) {
+				ProjectModel.findOne(query, function (err, proj) {
+					callback(proj);
+				});
+			});
+			// callback(task);
 		})
 	},
 	'createAtOnce': function(req, callback) {
@@ -100,6 +109,19 @@ var TaskProto = {
 					if(err) throw err;
 					callback(task);
 				})
+		})
+	},
+	'delete': function(req, callback) {
+		var taskID = req.body.task_id;
+		TaskModel.findOne({_id: taskID}, function (err, task) {
+			var projID = task.projectID;
+			TaskModel.remove({_id: taskID}, function (err, task) {
+				ProjectModel.update({_id: projID}, {$pull: {tasks: taskID}}, function (err, proj) {
+					ProjectModel.findOne({_id: projID}, function (err, proj) {
+						callback(proj);
+					});
+				});
+			});
 		})
 	},
 	'deleteAll': function (req, callback) {
