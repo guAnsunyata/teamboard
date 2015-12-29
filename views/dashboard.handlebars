@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <script src="js/countUp.js"></script>
+<script src="./js/Chart.js"></script>
 <style type="text/css">
   * {
     -webkit-box-sizing: border-box;
@@ -40,6 +41,7 @@
   }
   .proj-date-wrap{
     display: inline-block;
+    text-align: center;
   }
   .proj-date-dash{
     display: inline-block;
@@ -276,21 +278,19 @@
           <div class="grey lighten-1 proj-field-title">Project Name</div>
           <div class="proj-name">
             <div id="projName"></div>
-            <!-- Canvas網頁授權交易平台 -->
           </div>
           <div class="grey lighten-1 proj-field-title">About this Project</div>
           <div class="proj-desc">
             <div id="projDesc"></div>
-            <!-- 哇，一個網路授權耶，好猛哦！好~現在宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜宋楚瑜一種尷尬的狀態 -->
           </div>
           <div class="proj-date-wrap">
             <span class="grey lighten-1 proj-field-title">Start Date</span><br />
-            <span>2015-11-11</span>
+            <span id="projStartdate"></span>
           </div>
           <div class="proj-date-dash"> - </div>
           <div class="proj-date-wrap">
             <span class="grey lighten-1 proj-field-title">Due Date</span><br />
-            <span>2016-03-15</span>
+            <span id="projDuedate"></span>
           </div>
         </div>
         <div class="col s12 m12 l4 chart-mid">
@@ -344,6 +344,11 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col s12 m12 l12">
+          <!-- <canvas id="myChart"></canvas> -->
+        </div>
+      </div>
     </div>
   </div>
 
@@ -354,27 +359,6 @@
         <a class="btn waves-effect btn animate fadescaleInLeft" onclick="Materialize.toast('Guan : everybody hurry up !!', 4000)">Broadcast!</a>
     </div>
   </div>
-<!--
-  系統架構規劃
-    蒐集需求
-    需求分析
-    功能確認
-    開發技術與環境確認
-
-  資料庫設計
-    課程資料表
-    會員資料表
-    優惠方案資料表
-
-  系統實作
-    時程規劃
-    前端設計
-    後端資料存取
-  
-  系統測試
-    壓力測試
-    安全測試 -->
-
   <div class="row">
     <div class="task-card col s12 m6 l3" id="_id1">
       <div class="task-wrapper z-depth-2 animate bounceIn">
@@ -615,25 +599,55 @@
 
 </div>
 </div>
-
 <script type="text/javascript">
 $( document ).ready(function(){
   $('.footer').remove();
   $add_task_panel = $('.add-task-panel');
-  getStats(count_up);
+  getStats(count_up, letsChartjs);
 });
-
 function add_task(){
   $add_task_panel.css({"display":"block"})
   active_cancelzone();
 }
-function getStats(count_up) {
+function letsChartjs(){
+  Chart.defaults.global.responsive = true;
+  var data = {
+    labels: ["2015-12-29", "2015-12-30", "2015-12-31", "2016-1-1", "2016-1-2", "2016-1-3", "2016-1-4", "2016-1-5", "2016-1-6", "2016-1-7", "2016-1-8"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+    ]
+  };
+  var options = {};
+  var ctx = $("#myChart").get(0).getContext("2d");
+  var myNewChart = new Chart(ctx).Line(data, options);
+}
+function getStats(count_up, letsChartjs) {
   $.post('/api/getCount', {proj_id: '5653015b58fe43dc186ec0a0'},
     function (data) {
       count_up(data.totalTask,
                data.finishedTask,
                data.totalTodo,
                data.finishedTodo);
+      letsChartjs(data);
     });
 }
 function count_up(totalTask, finishedTask, totalTodo, finishedTodo){
@@ -656,15 +670,15 @@ function count_up(totalTask, finishedTask, totalTodo, finishedTodo){
     suffix : ''
   };
   var rate_countup = new CountUp("finishedRate", 0, rate, 0, 3.5, options);
-  var FTask_countup = new CountUp("finishedTask", 0, finishedTask, 0, 3.5, options);
-  var TTask_countup = new CountUp("totalTask", 0, totalTask, 0, 3.5, options);
-  var FTodo_countup = new CountUp("finishedTodo", 0, finishedTodo, 0, 3.5, options);
-  var TTodo_countup = new CountUp("totalTodo", 0, totalTodo, 0, 3.5, options);
+  var finished_task_countup = new CountUp("finishedTask", 0, finishedTask, 0, 3.5, options);
+  var total_task_countup = new CountUp("totalTask", 0, totalTask, 0, 3.5, options);
+  var finished_todo_countup = new CountUp("finishedTodo", 0, finishedTodo, 0, 3.5, options);
+  var total_todo_countup = new CountUp("totalTodo", 0, totalTodo, 0, 3.5, options);
   rate_countup.start();
-  FTask_countup.start();
-  TTask_countup.start();
-  FTodo_countup.start();
-  TTodo_countup.start();
+  finished_task_countup.start();
+  total_task_countup.start();
+  finished_todo_countup.start();
+  total_todo_countup.start();
 }
 </script>
 
@@ -672,12 +686,19 @@ function count_up(totalTask, finishedTask, totalTodo, finishedTodo){
   // get project information from mongolab
   var $projName = $('#projName');
   var $projDesc = $('#projDesc');
-  var projId;
-  $.post('/api/findProj', {id: '5653015b58fe43dc186ec0a0'}, 
+  var $projStartdate = $('#projStartdate');
+  var $projDuedate = $('#projDuedate');
+  var projId = "";
+  $.post('/api/findProj', {'proj_id': '5653015b58fe43dc186ec0a0'}, 
     function(data){
-      $projName.html(data[0].name);
-      projId = data[0]._id;
-      $projDesc.html(data[0].desc+'<br />');
+      startd = new Date(data.startdate);
+      startd_layout = (startd.getFullYear()+'-'+(startd.getMonth()+1)+'-'+startd.getDate());
+      dued = new Date(data.duedate);
+      dued_layout = (dued.getFullYear()+'-'+(dued.getMonth()+1)+'-'+dued.getDate());
+      $projName.html(data.name);
+      $projDesc.html(data.desc+'<br />');
+      $projStartdate.html(startd_layout);
+      $projDuedate.html(dued_layout);
   });
   // $.post('/api/updateProjName', {id: '5653015b58fe43dc186ec0a0', name:'project!'},
   //   function(data){
