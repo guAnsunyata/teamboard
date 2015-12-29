@@ -75,7 +75,7 @@
 		/* min-height:400px;
 		max-height: 400px; */
 		height: 100%;
-		overflow: scroll;
+		overflow: hidden;
 		font-family: 微軟正黑體;
 	}
 	.activity-date{
@@ -187,6 +187,9 @@
 		border-radius: 5px;
 		border-width:thin;
 		font-size: 13px;
+ 	}
+ 	.todo-post-btn:hover{
+ 		background: #D8D8D8;
  	}
  	.todo-duedate span{
  		padding-left: 7px;
@@ -382,10 +385,11 @@ $( document ).ready(function(){
 	});
 	// Use the picker object directly.
 	picker = $datepicker_input.pickadate('picker');
+	setClear = false;
 	picker.on('set', function() {
 		//初始化時(反模式)不需要進行後續動作
 		var isInit = (typeof $this_duedate === 'undefined');
-		if(!isInit){
+		if(!isInit && !setClear){
 			var time_skin = picker.get('select', 'mmmm - dd - yyyy').toString();
 			var time_data = picker.get();
 
@@ -397,8 +401,8 @@ $( document ).ready(function(){
 				$this_duedate.find('span').html(time_skin).attr('data-time','undefined');
 				var formatted_time = null;
 			}else{
-				$this_duedate.find('span').html(time_skin).attr('data-time',formatted_time);
 				var formatted_time = Date.parse(time_data);
+				$this_duedate.find('span').html(time_skin).attr('data-time',formatted_time);
 			}
 			var data = {
 				todo_id: formatted_tartget,
@@ -406,7 +410,9 @@ $( document ).ready(function(){
 			  	time_skin: time_skin
 			}
 			socket.emit('update todo duedate',data);
+			console.log('set callback');
 		}
+		setClear = false;
 	  //picker.set('clear');
 	});
 
@@ -423,6 +429,7 @@ $( document ).ready(function(){
 		if(this_current_date != 'undefined'){
 			picker.set('select', parseInt(this_current_date));
 		}else{
+			setClear = true;
 			picker.set('clear');
 		}
 
