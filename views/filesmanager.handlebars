@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<script src="/js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+
+<style type="text/css">
+	.filesmgr-body{
+		margin: 2% 12% 0% 12%;
+	}
+	.filesmgr-body .file-li{
+		display: inline-block;
+	}
+	.file{
+		display: inline-block;
+		width: 221px;
+		margin: 0px 8px 16px 8px;
+	}
+	.file:hover{
+		opacity: 0.9;
+		cursor: pointer;
+	}
+	.file .card-content{
+		min-height: 115px;
+	}
+	.file .card-content p{
+		line-height: 18px !important;
+	}
+	.file .card-content .i{
+		float: left;
+		margin-right: 2px;
+	}
+	.file .card-content .i i{
+		font-size: 14px;
+		line-height: 18px !important;
+	}
+	.addtag-btn{
+		color: inherit;
+ 		margin-right: 5px;
+ 		padding-left: 7px;
+ 		padding-right: 7px;
+ 		cursor: pointer;
+ 		display: inline-block;
+ 		line-height: 26px;
+ 		min-width: 48px;
+ 		text-align: center;
+ 		font-weight: 600;
+ 		border-top-style:outset;
+ 		border-bottom-style:inset;
+		border-right-style:inset;
+		border-left-style:outset;
+		border-radius: 5px;
+		border-width:thin;
+		font-size: 13px;
+ 	}
+ 	.revise-btn{
+ 		cursor: pointer;
+ 		float: right;
+ 		color: inherit;
+ 	}
+ 	.revise-btn i{
+ 		color: inherit;
+ 	}
+ 	.addtag-btn:hover{
+ 		background: #D8D8D8;
+ 	}
+ 	.files-nav-collection a.files-nav{
+ 		color: #01579b;
+ 		font-weight: 600;
+ 	}
+ 	.colortag{
+ 		float: right;
+ 	}
+ 	.files-nav i{
+ 		float: left;
+ 		font-size: 18px;
+ 		margin-right: 15px;
+ 		line-height: inherit;
+ 	}
+ 	.files-nav:hover i{
+ 		margin-right: 20px;
+ 	}
+ 	.catalog-tag{
+ 		margin-right: 13px;
+ 	}
+ 	.chip.chip-small img{
+ 		height: 20px;
+ 		width: 20px;
+ 	}
+ 	.chip-small{
+ 		height: 20px;
+ 		line-height: 20px;
+ 		font-size: 8px;
+ 		font-family: '新細明體';
+ 		margin-bottom: 5px;
+ 	}
+ 	.file-history div{
+ 		display: inline-block;
+ 		margin-left: 3px;
+ 		margin-right: 3px;
+ 	}
+ 	.file-history .file-date{
+
+ 	}
+ 	.todo-comment-tag{
+ 		color: #004669;
+ 		background-color:#d9edf7;
+ 		font-size: 14px;
+ 		margin: 6px 0px 0px 0px;
+	    padding: 3px 7px;
+	    border-radius: 4px;
+ 	}
+ 	.todo-comment-owner-tag{
+ 		font-size: 12px;
+ 		color: #A2A2A2;
+ 	}
+ 	.task-tag{
+ 		font-size: 14px;
+ 		color: #01579b;
+ 		font-weight: 600;
+ 	}
+</style>
+
+<script type="text/javascript">
+    $(function() {
+    	$('.footer').remove();
+    	$('.file-sortable').sortable({
+    		revert: true,
+    	});
+    	$('.file-sortable').disableSelection();
+    	Materialize.showStaggeredList('.staggered-test');
+  	});
+</script>
+
+<div class="filesmgr-body">
+	<div class="files-nav-collection collection with-header">
+		<div class="collection-header"><h4><i class="catalog-tag material-icons">description</i>檔案管理</h4></div>
+		<a href="#!" class="files-nav collection-item">專案<span class="badge">0</span></a>
+	    <a href="#!" class="files-nav collection-item"><i class="material-icons" style="">label</i>資料庫設計<span class="new badge" style="margin-right: 40px;">1</span><span class="badge">2</span></a>
+	    <a href="#!" class="files-nav collection-item"><i class="material-icons" style="color: #1B5E20;">label</i>系統架構規劃<span class="badge">1</span></a>
+	    <a href="#!" class="files-nav collection-item"><i class="material-icons" style="color: #00897b;">label</i>系統實作<span class="badge">2</span></a>
+	    <a href="#!" class="files-nav collection-item"><i class="material-icons" style="color: #A51A1A;">label</i>系統測試<span class="badge">2</span></a>
+    </div>
+
+    <ul class="file-sortable staggered-test">
+    <li class="file-li">
+		<div class="file card" style="color: white;">
+	        <div class="card-content" style="background-color: #01579b;">
+	          <span class="card-title" style="font-size: 18px; line-height: 14px;">資料庫草稿.docx</span>
+	          <hr/>
+              <span class="i"><i class="material-icons">label_outline</i></span><p style='font-size: 12px;'>12-30-2015 13:07</p>
+              <p style='font-size: 12px;'>資料庫設計</p>
+	        </div>
+	        <div class="card-action" style="padding: 15px; color: #01579b">
+	          <span class="addtag-btn">下載</span>
+	          <span class="addtag-btn">標籤</span>
+	          <span class="revise-btn"><i class="material-icons">present_to_all</i></span>
+	        </div>
+	    </div>
+    </li>
+    <li class="file-li">
+		<div class="file card" style="color: white;">
+	        <div class="card-content" style="background-color: #01579b;">
+	          <span class="card-title" style="font-size: 18px; line-height: 14px;">進貨表單.xls</span>
+	          <hr/>
+	          <span class="i"><i class="material-icons">label_outline</i></span><p style='font-size: 12px;'>12-28-2015 14:36</p>
+	          <p style='font-size: 12px;'>資料庫設計：子任務二</p>
+	        </div>
+	        <div class="card-action" style="padding: 15px; color: #01579b">
+	          <span class="addtag-btn">下載</span>
+	          <span class="addtag-btn">標籤</span>
+	          <span class="revise-btn"><i class="material-icons">present_to_all</i></span>
+	        </div>
+	    </div>
+    </li>
+    <li class="file-li">
+		<div class="file card" style="color: white;">
+	        <div class="card-content" style="background-color: #1B5E20;">
+	          <span class="card-title" style="font-size: 18px; line-height: 14px;">公司簡介.pdf</span>
+	          <hr/>
+	          <span class="i"><i class="material-icons">label_outline</i></span><p style='font-size: 12px;'>12-20-2015 14:12</p>
+	          <p style='font-size: 12px;'>系統架構規劃</p>
+	        </div>
+	        <div class="card-action" style="padding: 15px; color: #1B5E20;">
+	          <span class="addtag-btn" style="color: inherit;">下載</span>
+	          <span class="addtag-btn" style="color: inherit;">標籤</span>
+	          <span class="revise-btn"><i class="material-icons">present_to_all</i></span>
+	        </div>
+	    </div>
+    </li>
+    <li class="file-li">
+		<div class="file card" style="color: white;">
+	        <div class="card-content" style="background-color: #A51A1A;">
+	          <span class="card-title" style="font-size: 18px; line-height: 14px;">資安文件.docx</span>
+	          <hr/>
+	          <span class="i"><i class="material-icons">label_outline</i></span><p style='font-size: 12px;'>12-27-2015 15:34</p>
+	          <p style='font-size: 12px;'>系統測試：子任務一</p>
+	        </div>
+	        <div class="card-action" style="padding: 15px; color: #A51A1A;">
+	          <span class="addtag-btn">下載</span>
+	          <span class="addtag-btn">標籤</span>
+	          <span class="revise-btn"><i class="material-icons">present_to_all</i></span>
+	        </div>
+	    </div>
+    </li>
+    <li class="file-li">
+		<div class="file card" style="color: white;">
+	        <div class="card-content" style="background-color: #A51A1A;">
+	          <span class="card-title" style="font-size: 18px; line-height: 14px;">資安文件.docx</span>
+	          <hr/>
+	          <span class="i"><i class="material-icons">label_outline</i></span><p style='font-size: 12px;'>12-27-2015 15:34</p>
+	          <p style='font-size: 12px;'>系統測試：子任務一</p>
+	        </div>
+	        <div class="card-action" style="padding: 15px; color: #A51A1A;">
+	          <span class="addtag-btn">下載</span>
+	          <span class="addtag-btn">標籤</span>
+	          <span class="revise-btn"><i class="material-icons">present_to_all</i></span>
+	        </div>
+	    </div>
+    </li>
+    <li class="file-li">
+		<div class="file card" style="color: black; font-weight: 600;">
+	        <div class="card-content" style="background-image: url('images/test-logo.png'); opacity: 0.7">
+	          <span class="card-title" style="font-size: 18px; line-height: 14px; color: black; font-weight: 600;">公司Logo.jpg<i class="colortag material-icons" style="color: #00897b;">stop</i></span>
+	          <hr/>
+	          <span class="i"><i class="material-icons">label_outline</i></span><p style='font-size: 12px;'>12-27-2015 15:34</p>
+	          <p style='font-size: 12px;'>系統實作</p>
+	        </div>
+	        <div class="card-action" style="padding: 15px; color: #00897b;">
+	          <span class="addtag-btn">下載</span>
+	          <span class="addtag-btn">標籤</span>
+	          <span class="revise-btn"><i class="material-icons">present_to_all</i></span>
+	        </div>
+	    </div>
+    </li>
+    <li class="file-li">
+		<div class="file card" style="color: white;">
+	        <div class="card-content" style="background-color: #00897b;">
+	          <span class="card-title" style="font-size: 18px; line-height: 14px;">類別圖草稿.pdf</span>
+	          <hr/>
+	          <span class="i"><i class="material-icons">label_outline</i></span><p style='font-size: 12px;'>12-27-2015 15:34</p>
+	          <p style='font-size: 12px;'>系統實作</p>
+	        </div>
+	        <div class="card-action" style="padding: 15px; color: #00897b;">
+	          <span class="addtag-btn">下載</span>
+	          <span class="addtag-btn">標籤</span>
+	          <span class="revise-btn"><i class="material-icons">present_to_all</i></span>
+	        </div>
+	    </div>
+    </li>
+    <!-- <li class="file-li">
+		<div class="file card blue-grey darken-1">
+	        <div class="card-content white-text">
+	          <span class="card-title" style="font-size: 18px; line-height: 14px;">預期效益與目標.docx</span>
+	          <hr/>
+	          <p style='font-size: 12px; line-height: 12px;'>資料庫設計：子任務A</p>
+	        </div>
+	        <div class="card-action" style="padding: 10px;">
+	          <a href="#">Download</a>
+	        </div>
+	    </div>
+    </li> -->
+    </ul>
+
+	<ul class="collection with-header">
+		<li class="collection-header"><h4><i class="catalog-tag material-icons">label</i>標籤管理</h4></li>
+	    <li class="collection-item avatar">
+	      <i class="material-icons circle">folder</i>
+	      <span class="title">第二次開會新增</span>
+	      <p style="font-size: 14px;">開會當天彙整的資料</p>
+	      <p
+	      <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+	    </li>
+	    <li class="collection-item avatar">
+	      <i class="material-icons circle">folder</i>
+	      <span class="title">客戶面談相關</span>
+	      <p>Second Line</p>
+	      <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+	    </li>
+	</ul>
+
+	<ul class="file-history collection with-header">
+	    <li class="collection-header"><h4>檔案歷史紀錄</h4></li>
+	    <li class="collection-item">
+		    <div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>query_builder</i>2015-12-30 13:07</div>
+		    <span class="addtag-btn" style="color: #01579b">上傳</span>
+	    	<div class="file-name">資料庫草稿.docx<a href="#!" class="secondary-content"></a></div>
+	    	<!-- <div class="chip chip-small">
+			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
+			  林紘丞
+			</div> -->
+			<div style="font-size: 10px; color: #004669;">in</div>
+			<div class="task-tag">資料庫設計</div>
+	    	<div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 uploaded the file</div>
+	    </li>
+	    <li class="collection-item">
+		    <div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>query_builder</i>2015-12-28 20:07</div>
+		    <span class="addtag-btn" style="color: #01579b">上傳</span>
+	    	<div class="file-name">進貨表單.xls<a href="#!" class="secondary-content"></a></div>
+	    	<!-- <div class="chip chip-small">
+			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
+			  林紘丞
+			</div> -->
+			<div style="font-size: 10px; color: #004669;">in</div>
+			<div class="task-tag">資料庫設計：子任務二</div>
+	    	<div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 uploaded the file</div>
+	    </li>
+	    <li class="collection-item">
+		    <div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>query_builder</i>2015-12-16 19:54</div>
+		    <span class="addtag-btn" style="color: #01579b">上傳</span>
+	    	<div class="file-name">公司簡介.pdf<a href="#!" class="secondary-content"></a></div>
+	    	<!-- <div class="chip chip-small">
+			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
+			  林紘丞
+			</div> -->
+			<div style="font-size: 10px; color: #1B5E20;">in</div>
+			<div class="task-tag" style="color: #1B5E20;">系統規劃架構</div>
+	    	<div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 uploaded the file</div>
+	    </li>
+	    <li class="collection-item">
+		    <div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>query_builder</i>2015-12-16 19:53</div>
+		    <span class="addtag-btn" style="color: #A51A1A;">刪除</span>
+	    	<div class="file-name">資安資料參考.docx<a href="#!" class="secondary-content"></a></div>
+	    	<!-- <div class="chip chip-small">
+			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
+			  林紘丞
+			</div> -->
+			<div style="font-size: 10px; color: #A51A1A;">in</div>
+			<div class="task-tag" style="color: #A51A1A;">系統測驗</div>
+	    	<div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 abandoned the file</div>
+	    </li>
+	    <li class="collection-item">
+		    <div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>query_builder</i>2015-12-16 19:37</div>
+		    <span class="addtag-btn" style="color: #1B5E20;">修訂</span>
+	    	<div class="file-name">資安文件.docx<a href="#!" class="secondary-content"></a></div>
+	    	<!-- <div class="chip chip-small">
+			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
+			  林紘丞
+			</div> -->
+			<div style="font-size: 10px; color: #A51A1A;">in</div>
+			<div class="task-tag" style="color: #A51A1A;">系統測驗：子任務一</div>
+	    	<div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 revised the file (version 2.0)</div>
+	    </li>
+	    <li class="collection-item">
+		    <div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>query_builder</i>2015-12-16 19:33</div>
+		    <span class="addtag-btn" style="color: #01579b">上傳</span>
+	    	<div class="file-name">資安文件.docx<a href="#!" class="secondary-content"></a></div>
+	    	<!-- <div class="chip chip-small">
+			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
+			  林紘丞
+			</div> -->
+			<div style="font-size: 10px; color: #A51A1A;">in</div>
+			<div class="task-tag" style="color: #A51A1A;">系統測驗：子任務一</div>
+	    	<div class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 uploaded the file</div>
+	    </li>
+	    	<a href="#!" class="files-nav collection-item">
+	    		<spna style="color: #01579b">更多...</spna>
+	    	</a>
+	</ul>
+
+	<!-- <ul class="collection with-header">
+	    <li class="collection-header"><h4>First Names</h4></li>
+	    <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div>
+	</ul> -->
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+</div>
+
