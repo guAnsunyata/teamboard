@@ -346,7 +346,7 @@
       </div>
       <div class="row">
         <div class="col s12 m12 l12">
-          <!-- <canvas id="myChart" height="80"></canvas> -->
+          <canvas id="myChart" height="70" style="display: none;"></canvas>
         </div>
       </div>
     </div>
@@ -605,6 +605,29 @@ $( document ).ready(function(){
   $add_task_panel = $('.add-task-panel');
   getStats(count_up);
   letsChartjs();
+
+  var $dashboardWrap = $("#dashboard-wrap");
+  var $dashboardMid = $(".chart-mid");
+  var $chart = $("#myChart");
+  $dashboardMid.click(function () {
+    // $dashboardWrap.stop().fadeToggle(300);
+    // $chart.stop().fadeToggle(300);
+    if(!$chart.is(':animated')&&!$dashboardWrap.is(':animated')){
+      $dashboardWrap.fadeToggle(300, function () {
+        $chart.fadeToggle(300);
+      });
+    }
+  });
+
+  $chart.click(function () {
+    // $dashboardWrap.stop().fadeToggle(300);
+    // $chart.stop().fadeToggle(300);
+    if(!$chart.is(':animated')&&!$dashboardWrap.is(':animated')){
+      $chart.fadeToggle(300, function () {
+        $dashboardWrap.fadeToggle(300);
+      });
+    }
+  });
 });
 function add_task(){
   $add_task_panel.css({"display":"block"})
@@ -623,22 +646,22 @@ function letsChartjs(){
     datasets: [
         {
             label: "My First dataset",
-            fillColor: "rgba(151,187,205,0)",
-            strokeColor: "rgba(151,187,205,5)",
-            pointColor: "rgba(151,187,205,5)",
+            fillColor: "rgba(121,157,175,0)",
+            strokeColor: "rgba(121,157,175,5)",
+            pointColor: "rgba(121,157,175,5)",
             pointStrokeColor: "#fff",
             pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,5)",
+            pointHighlightStroke: "rgba(121,157,175,5)",
             data: [0, 4, 4, 4, 5, 5, 8, 10]
         },
         {
             label: "My Second dataset",
-            fillColor: "rgba(190,190,190,0)",
-            strokeColor: "rgba(190,190,190,1)",
-            pointColor: "rgba(190,190,190,1)",
+            fillColor: "rgba(150,150,150,0)",
+            strokeColor: "rgba(150,150,150,1)",
+            pointColor: "rgba(150,150,150,1)",
             pointStrokeColor: "#fff",
             pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(190,190,190,1)",
+            pointHighlightStroke: "rgba(150,150,150,1)",
             data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         }
     ]
