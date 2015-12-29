@@ -3,6 +3,19 @@ var TaskModel = require('./model/taskModel.js');
 var TodoModel = require('./model/todoModel.js');
 
 var ProjectProto = {
+	'temp': function(req, callback) {
+		Date.prototype.addDays = function(days) {
+		    this.setDate(this.getDate() + parseInt(days));
+		    return this;
+		};
+		ProjectModel.findOne({_id: '5653015b58fe43dc186ec0a0'}, function (err, proj) {
+			// var dued = proj.duedate.addDays(-6);
+			var startd = proj.startdate.addDays(+5);
+			ProjectModel.update({_id: '5653015b58fe43dc186ec0a0'}, {startdate: startd}, function (err, proj) {
+				console.log(proj);
+			});
+		});
+	},
 	//最殘的create
 	'create': function(req, callback) {
 		var current_date = new Date();

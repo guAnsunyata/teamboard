@@ -2,6 +2,9 @@ var TodoModel = require('./model/todoModel.js');
 var TaskModel = require('./model/taskModel.js');
 
 var TodoProto = {
+	'temp': function(id, callback) {
+		TodoModel.update({_id: id}, {})
+	},
 	'create': function(req, callback) {
 		// step 1: get order of this todo
 		TodoModel.count({'taskID': req.task_id}, function (err, todo) {
@@ -47,12 +50,17 @@ var TodoProto = {
 	},
 	'updateChecker': function(req, callback) {
 		var query = {_id: req.todo_id};
+		var current_date = new Date();
 		var updatedata = {
 			checker: req.checker
-			// finisheddate: req.
 		};
+		if(updatedata.checker){
+			updatedata.finisheddate = current_date;
+		}else{
+			updatedata.finisheddate = undefined;
+		}
 		// typeof(req.yo)=='undefined'
-		TodoModel.update(query, {checker: req.checker}, function (err, todo) {
+		TodoModel.update(query, updatedata, function (err, todo) {
 			if(err) {
 				console.log(err);
 			}else{

@@ -213,30 +213,57 @@ app.post('/api/deleteTask', function (req, res) {
 // find task by project id
 app.post('/api/getCount', function (req, res) {
 	Proj.getProj(req, function (data) {
+		// Proj.temp();
 		function count(data, callback) {
 			var totalTask = data.tasks.length;
 			var finishedTask = 0;
 			var totalTodo = 0;
 			var finishedTodo = 0;
+			
+			var projDuedate = data.duedate;
+			var projStartdate = data.startdate;
+			var projDuration = getDayDiff(projDuedate, projStartdate);
+			console.log("projDuration: " + projDuration);
+			var PerDay_todoFinishedCountArr = [];
+			for (var i = 0; i < projDuration; i++) {
+				PerDay_todoFinishedCountArr[i] = 0;
+			};
 			for(var task in data.tasks){
 				if(data.tasks[task].finished)
 					finishedTask++;
 				if(data.tasks[task].todos!=null){
 					totalTodo += data.tasks[task].todos.length;
 					for(var todo in data.tasks[task].todos){
-						if(data.tasks[task].todos[todo].checker)
+						if(data.tasks[task].todos[todo].checker){
 							finishedTodo++;
+							var todo = data.tasks[task].todos[todo];
+							var diff_projStartdate_todoFinisheddate = getDayDiff(todo.finisheddate, projStartdate);
+							console.log(diff_projStartdate_todoFinisheddate);
+							PerDay_todoFinishedCountArr[diff_projStartdate_todoFinisheddate]++;
+						}
 					}
 				}
 			}
-			callback(totalTask, finishedTask, totalTodo, finishedTodo, data);
+			var todoFinishedCountArr = [];
+			todoFinishedCountArr[0] = PerDay_todoFinishedCountArr[0];
+			for (var i = 1; i < projDuration; i++) {
+				todoFinishedCountArr[i] = todoFinishedCountArr[i-1] + PerDay_todoFinishedCountArr[i];
+			};
+			callback(totalTask, finishedTask, totalTodo, finishedTodo, todoFinishedCountArr, data);
 		}
-		var combineData = function(totalTask, finishedTask, totalTodo, finishedTodo, data) {
+		function getDayDiff(dateA, dateB){
+			var a = new Date(dateA.getFullYear()+"-"+(dateA.getMonth()+1)+"-"+dateA.getDate());
+			var b = new Date(dateB.getFullYear()+"-"+(dateB.getMonth()+1)+"-"+dateB.getDate());
+			var oneDay = 24*60*60*1000;
+			return Math.round(Math.abs((a.getTime()-b.getTime())/(oneDay)));
+		}
+		var combineData = function(totalTask, finishedTask, totalTodo, finishedTodo, todoFinishedCountArr, data) {
 			var dataToReturn = {
 				totalTask: totalTask,
 				finishedTask: finishedTask,
 				totalTodo: totalTodo,
 				finishedTodo: finishedTodo,
+				todoFinishedCountArr: todoFinishedCountArr,
 				projectData: data
 			}
 			res.json(dataToReturn);
