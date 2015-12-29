@@ -199,24 +199,28 @@ app.post('/api/updateProjDesc', function (req, res) {
 app.post('/api/createTask', function (req, res) {
 	Task.create(req, function (data) {
 		res.json(data);
-		console.log(data);
+	});
+});
+app.post('/api/deleteTask', function (req, res) {
+	Task.delete(req, function (data) {
+		res.json(data);
 	});
 });
 // find task by project id
 app.post('/api/getCount', function (req, res) {
-	Task.getCount(req, function (data){
+	Proj.getProj(req, function (data) {
 		function count(data, callback) {
-			var totalTask = data.length;
+			var totalTask = data.tasks.length;
 			var finishedTask = 0;
 			var totalTodo = 0;
 			var finishedTodo = 0;
-			for(var task in data){
-				if(data[task].finished)
+			for(var task in data.tasks){
+				if(data.tasks[task].finished)
 					finishedTask++;
-				if(data[task].todos!=null){
-					totalTodo += data[task].todos.length;
-					for(var todo in data[task].todos){
-						if(data[task].todos[todo].checker)
+				if(data.tasks[task].todos!=null){
+					totalTodo += data.tasks[task].todos.length;
+					for(var todo in data.tasks[task].todos){
+						if(data.tasks[task].todos[todo].checker)
 							finishedTodo++;
 					}
 				}
@@ -229,7 +233,7 @@ app.post('/api/getCount', function (req, res) {
 				finishedTask: finishedTask,
 				totalTodo: totalTodo,
 				finishedTodo: finishedTodo,
-				mongoData: data
+				projectData: data
 			}
 			res.json(dataToReturn);
 		}
