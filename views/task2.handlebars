@@ -213,9 +213,39 @@
  	.todo-duedate span:hover{
  		background-color: #D8D8D8;
  	}
+ 	.popout-assigning-panel{
+	    display: none;
+	    padding: 30px;
+	    position: fixed;
+	    width: 300px;
+	    min-height: 400px;
+	    top: 40%;
+	    left: 50%;
+	    margin-top: -50px;
+	    margin-left: -150px;
+	    background-color: white;
+	    z-index: 999;
+	    overflow: hidden;
+	}
 </style>
 
 <body>
+
+<div class="popout-assigning-panel pop-out z-depth-2">
+	<div style="font-size: 26px;"><i class="material-icons">person_pin</i> 工作指派</div>
+	<hr/>
+	<br/>
+ 	<div class="input-field col s12">
+	    <select multiple>
+	      <option value="" disabled selected>請選擇指派對象</option>
+	      <option value="1"> 許韶文</option>
+	      <option value="2"> 林紘丞</option>
+	    </select>
+	    <label>Assigning</label>
+	</div>
+	<a id="button_add" class="waves-effect waves-light btn">指派</a>
+</div>
+
 <div id="task-id" style="display: none;">5655a784dbb681cc10b5f03d</div>
   <div class="row task">
     <!-- Post -->
@@ -320,7 +350,7 @@
 
 		<div class="ctrl-panel">
 			<a id="button_add" class="waves-effect waves-light btn" href="javascript: add_todo();">新增</a>
-			<a id="button_delete" class="waves-effect waves-light btn" href="javascript: delete_todo();">檔案</a>
+			<a id="button_delete" class="waves-effect waves-light btn" type="file" href="javascript: upload();">檔案</a>
 			<div class="switch" style="display: inline-block; margin-left: 10px;">
 			    <label>
 			      排序
@@ -365,6 +395,7 @@
 
 </body>
 <input type="date" style="display: none;" class="datepicker">
+<input type="file" id="upload" name="upload" style="visibility: hidden; width: 1px; height: 1px" multiple />
 </html>
 
 <script>
@@ -376,6 +407,7 @@ $( document ).ready(function(){
 	$('.footer').remove();
 	collection_init();
 	sortable_button_init();
+	$('select').material_select();
 
 	//datepicker
 	var $datepicker_input = $('.datepicker').pickadate({
@@ -416,7 +448,7 @@ $( document ).ready(function(){
 	  //picker.set('clear');
 	});
 
-	$('.collapsible').delegate('.todo-duedate', 'click', function(){
+	$('.collapsible').delegate('.todo-duedate', 'click', function(e){
 		//trigger : date picker
 		// if($this_duedate.get(0) != $(this).get(0)){
 		// 	console.log('not the same guy');
@@ -434,7 +466,7 @@ $( document ).ready(function(){
 		}
 
 		picker.open();
-		event.stopPropagation();
+		e.stopPropagation();
 	}).delegate('.todo-content', 'click', function(){
 		  tinymce.init({
 		  inline: true,

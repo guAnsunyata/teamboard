@@ -105,6 +105,7 @@ function collection_init(){
 	}
 }
 
+$popout_assigning_panel = $('.popout-assigning-panel');
 Global.collection_lock = false;
 //尚未優化：$el的id
 function todo_regist($el){ // el is whole <li>
@@ -146,6 +147,7 @@ function todo_regist($el){ // el is whole <li>
 		socket.emit('update todo checker',data);
 	});
 	$el.children('.collapsible-header').children('.todos-title').click(function(e){
+		e.stopPropagation();
 		$(this).attr('contentEditable','true');
 	}).blur(function(){
 		var $this = $(this);
@@ -160,6 +162,7 @@ function todo_regist($el){ // el is whole <li>
 		socket.emit('update todo title',data);
 	});
 	$el.children('.collapsible-header').children('.todo-setting').click(function(e){
+		e.stopPropagation();
 		$(this).parent().parent().find('.todo-setting-drop').slideDown(300, function(){
 			//blur
 			$('body').click(function(){
@@ -175,7 +178,8 @@ function todo_regist($el){ // el is whole <li>
 		socket.emit('delete todo', data);
 	});
 	$el.find('.todo-setting-drop .assign-btn').click(function(){
-		alert('assing !');
+		$('.popout-assigning-panel').css({"display":"block"});
+		active_cancelzone();
 	});
 	//collapsible
 	$('.collapsible').collapsible({
@@ -198,7 +202,7 @@ function get_todo_html(data){
 		var time_skin = '期限';
 		var time_data = 'undefined';
 	}
-	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons' style='font-size: 14px;'>label</i><span class='todos-title'>"+data.title+"</span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span><span class='todo-duedate'><span data-time='"+time_data+"'>"+time_skin+"</span></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body'><div class='todo-content' contentEditable='false'>"+data.content+"</div><div class='todo-plugin'><br/><br/><span class='todo-comment-tag'>評論留言</span><hr/><ul><li class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 create the task</li><li><span class='todo-post-btn'><span>張貼</span></span><span class='todo-post-btn'><span>附檔</span></span></li></ul></div></div></li>";
+	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons' style='font-size: 14px;'>label</i><span class='todos-title'>"+data.title+"</span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span><span class='todo-duedate'><span data-time='"+time_data+"'>"+time_skin+"</span></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body'><div class='todo-content' contentEditable='false'>"+data.content+"</div><div class='todo-plugin'><br/><br/><span class='todo-comment-tag'>評論留言</span><hr/><ul><li class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 created the task</li><li><span class='todo-post-btn'><span>張貼</span></span><span class='todo-post-btn'><span>附檔</span></span></li></ul></div></div></li>";
 	return html
 }
 
@@ -207,6 +211,10 @@ function get_todo_html(data){
 function add_todo(){
 	// WARNING : 需補上task_id
 	socket.emit('create todo',{task_id:task_id},function(){});
+}
+
+function upload(){
+	document.getElementById('upload').click();
 }
 
 function sortable_button_init(){
