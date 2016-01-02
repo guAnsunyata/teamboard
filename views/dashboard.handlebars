@@ -648,8 +648,8 @@ function get_chart_avg_val(days, totalTodo) {
   // 產生平均每日應完成代辦事項數量的累計值
   var avg_todo_per_day = totalTodo / days;
   var array = [];
-  for (var i = days - 1; i >= 0; i--) {
-    array[i] = i * Math.round( (avg_todo_per_day) * 100 ) / 100;
+  for (var i = days; i >= 0; i--) {
+    array[i-1] = Math.round(i * avg_todo_per_day * 100) / 100;
   };
   return array;
 }
