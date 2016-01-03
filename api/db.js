@@ -1,14 +1,15 @@
 var mongoose = require('mongoose');
 
 //mongodb connection
-//var mongolab_db = 'mongodb://admin:admin@ds057234.mongolab.com:57234/teamboard-dev';
-var mongolab_db = 'mongodb://admin:admin@ds043971.mongolab.com:43971/teamboard-dev-heroku';
+var mongolab_db = 'mongodb://admin:admin@ds057234.mongolab.com:57234/teamboard-dev';
+//var mongolab_db = 'mongodb://admin:admin@ds043971.mongolab.com:43971/teamboard-dev-heroku';
 var localhost_db = 'mongodb://localhost:27017/teamboard';
 
 mongoose.settings = {
 	cookieSecret: 'patchwork',
-	db: 'teamboard-dev-heroku',
+	db: 'teamboard-dev',
 	host: 'localhost',
+	port: 27017
 };
 
 
