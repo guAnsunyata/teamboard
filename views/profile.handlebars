@@ -1,0 +1,24 @@
+<!doctype html>
+<div class="container">
+	<!-- login results -->
+  <div class="row">
+    <div class="col s12">
+      <h3>results:</h3>
+      <h4>local</h4>
+      <p>
+        <strong>id</strong>: {{ user._id }}<br>
+        <strong>email</strong>: {{ user.local.username }}<br>
+        <strong>password</strong>: {{ user.local.password }}
+      </p>
+      <h4>facebook</h4>
+      <p>
+        <strong>id</strong>: {{ user.facebook.id }}<br>
+        <strong>token</strong>: {{ user.facebook.token }}<br>
+        <strong>email</strong>: {{ user.facebook.email }}<br>
+        <strong>name</strong>: <a href="{{ user.facebook.link }}" target="_blank">{{ user.facebook.fname }}{{ user.facebook.lname }}</a>
+        <!-- <strong>link</strong>: {{ user.facebook.link }} -->
+      </p>
+      <a href="/logout">logout</a>
+    </div>
+  </div>
+</div>

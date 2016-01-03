@@ -44,14 +44,17 @@ var handlebars = require('express3-handlebars').create({defaultLayout: 'main'});
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
-// //mongodb connection
-// mongoose.connect('mongodb://localhost:27017/teamboard', function(err){
-// 	if(err){
-// 		console.log(err);
-// 	} else{
-// 		console.log('Connected to mongodb!');
-// 	}
-// });
+// Configuring Passport
+var passport = require('passport');
+require('./passport/passport')(passport);
+var expressSession = require('express-session');
+// TODO - Why Do we need this key ?
+app.use(expressSession({secret: 'mySecretKey'}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// include routes
+require('./routes/index')(app, passport);
 
 //test
 // socket.io
