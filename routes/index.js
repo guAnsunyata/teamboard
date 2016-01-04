@@ -2,19 +2,48 @@
 var hbs_layout = 'layout';
 
 var UserTest = require('../api/model/testUserModel');
-var TaskModel = require('../api/model/taskModel.js');
-var ProjectModel = require('../api/model/projectModel.js');
+var TaskApi = require('../api/task');
+var Task = new TaskApi();
+// var ProjectModel = require('../api/project');
 
 module.exports = function (app, passport) {
+	// 取得 user session
 	app.post('/getUserSession', isLoggedIn, function(req, res){
 		res.json(req.user.facebook);
 	});
 
-  // user api
+  	// get collabs by task id, post body task_id: "..."
+	app.post('/api/getusersbytaskid', function (req, res) {
+		Task.findbyid(req, function (data) {
+			res.json(data);
+		})
+	});
+
+	app.get('/api/getusersbytaskid', function (req, res) {
+		Task.temp(req, function (data) {
+			res.json(data);
+		})
+	});
+
+  	app.get('/api/users', function (req, res) {
+  		UserTest
+		.find()
+		.select('facebook.name facebook.link')
+		.exec(function (err, data) {
+			res.json(data);
+		})
+  	});
+
 	app.post('/api/users', function (req, res) {
 
 		if(typeof(req.body.task_id) != 'undefined' && !req.body.task_id ) {
-			
+			var query = {
+				_id: req.body.task_id
+			}
+			TaskModel.find(query, function (err, task) {
+				if(err) throw err;
+				else res.json();
+			})
 		}
 
 
