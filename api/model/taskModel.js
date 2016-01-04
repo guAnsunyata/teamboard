@@ -19,8 +19,14 @@ var taskSchema = new Schema({
 		type: Date,
 		default: null
 	},
-	leader: String,
-	collabs: [ Schema.Types.ObjectId ],
+	leader: {
+		type: Schema.Types.ObjectId,
+		ref: 'UserTest'
+	},
+	collabs: [{
+		type: Schema.Types.ObjectId,
+		ref: 'UserTest'
+	}],
 	finished: {
 		type: Boolean,
 		default: false
