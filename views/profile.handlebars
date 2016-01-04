@@ -11,11 +11,11 @@
         <strong>password</strong>: {{ user.local.password }}
       </p>
       <h4>facebook</h4>
-      <p>
+      <p style="word-wrap: break-word;">
         <strong>id</strong>: {{ user.facebook.id }}<br>
         <strong>token</strong>: {{ user.facebook.token }}<br>
         <strong>email</strong>: {{ user.facebook.email }}<br>
-        <strong>name</strong>: <a href="{{ user.facebook.link }}" target="_blank">{{ user.facebook.fname }}{{ user.facebook.lname }}</a>
+        <strong>name</strong>: <a href="{{ user.facebook.link }}" target="_blank">{{ user.facebook.name }}</a>
         <!-- <strong>link</strong>: {{ user.facebook.link }} -->
       </p>
       <a href="/logout">logout</a>
