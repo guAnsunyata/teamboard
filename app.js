@@ -63,6 +63,13 @@ io.sockets.on('connection', function (socket){
 	socket.on('create task', function (req, callback) {
 		/* create 的參數 req 需要有:
 		 * 		proj_id: 	_id of the project
+		 *		name: 			String,
+		 *		desc: 			String,
+		 *		finisheddate: 	Date,
+		 *		startdate:		Date,
+		 *		duedate:		Date,
+		 *		leader:			Schema.Types.ObjectId,
+		 *		collabs:		[Schema.Types.ObjectId],
 		 */
 		Task.create(req, function (data) {
 			io.sockets.emit('emit new task', data);
