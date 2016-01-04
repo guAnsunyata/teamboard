@@ -1,8 +1,36 @@
 var ProjectModel = require('./model/projectModel.js');
 var TaskModel = require('./model/taskModel.js');
 var TodoModel = require('./model/todoModel.js');
+var UserTest = require('./model/testUserModel.js');
 
 var TaskProto = {
+	'temp': function (req, callback) {
+
+		// TaskModel.update(
+		// 	{_id:'5655a784dbb681cc10b5f03d'},
+		// 	{$pushAll: {collabs: ['568a6d6d121228bd7d32a82c']}},
+		// 	function (err, task) {
+		// 		callback(task);
+		// })
+
+	},
+	// get name of the collaborators
+	'findbyid': function (req, callback) {
+		var query = {
+			_id: req.body.task_id
+		}
+		TaskModel
+		.findOne(query)
+		.select('collabs')
+		.populate({
+			path: 'collabs',
+			select: 'facebook.name',
+			model: 'UserTest'
+		})
+		.exec(function (err, task) {
+			callback(task);
+		});
+	},
 	'create': function(req, callback) {
 		var current_date = new Date();
 		var new_task = new TaskModel({
