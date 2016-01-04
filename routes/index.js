@@ -1,5 +1,39 @@
+// handlebars layout config
 var hbs_layout = 'layout';
+
+var UserTest = require('../api/model/testUserModel');
+var TaskModel = require('../api/model/taskModel.js');
+var ProjectModel = require('../api/model/projectModel.js');
+
 module.exports = function (app, passport) {
+	app.post('/getUserSession', isLoggedIn, function(req, res){
+		res.json(req.user.facebook);
+	});
+
+  // user api
+	app.post('/api/users', function (req, res) {
+
+		if(typeof(req.body.task_id) != 'undefined' && !req.body.task_id ) {
+			
+		}
+
+
+		UserTest
+		.find()
+		.select('facebook.name facebook.link')
+		.exec(function (err, data) {
+			// res.json(data);
+		})
+	});
+
+
+	// app.get('/api/delusers', function (req, res) {
+	// 	UserTest.remove(function (err, data) {
+	// 		res.json(data);
+	// 	})
+	// });
+
+  // passport-facebook login related routing
 	app.get('/logintest', function (req, res) {
 		res.render('login', {layout: hbs_layout});
 	});
