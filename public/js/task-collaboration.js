@@ -195,15 +195,52 @@ function get_todo_html(data){
 	if(data.checker){ checked = 'checked'}else{ checked = '' };
 	var setting_icon = 'view_list';
 	if(data.duedate){
-		picker.set('select', data.duedate);
-		var time_skin = picker.get('select', 'mmmm - dd - yyyy').toString();
+		picker.set('select', new Date(data.duedate).getTime());
+		var time_skin = picker.get('select', 'mmm - dd - yyyy').toString();
 		var time_data = new Date(data.duedate).getTime();
 	}else{
 		var time_skin = '期限';
 		var time_data = 'undefined';
 	}
-	var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons' style='font-size: 14px;'>label</i><span class='todos-title'>"+data.title+"</span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span><span class='todo-duedate'><span data-time='"+time_data+"'>"+time_skin+"</span></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body'><div class='todo-content' contentEditable='false'>"+data.content+"</div><div class='todo-plugin'><br/><br/><span class='todo-comment-tag'>評論留言</span><hr/><ul><li class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 created the task</li><li><span class='todo-post-btn'><span>張貼</span></span><span class='todo-post-btn'><span>附檔</span></span></li></ul></div></div></li>";
-	return html
+	var htmlTemplate = "<li id='li"+data._id+"'>" + 
+	"<input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" />" + 
+	"<label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label>" + 
+	"<div class='collapsible-header' style='display: inline-block; width:100%;'>" + 
+		"<i class='material-icons' style='font-size: 14px;'>label</i>" + 
+		"<span class='todos-title'>"+data.title+"</span>" + 
+		"<span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span>" + 
+		"<span class='chip chip-small' style='float: right; margin-top: 10px; line-height: 26px; margin-left: 5px; height: 26px;'>" +
+			"<img src='images/dashboard-leader2.jpg' alt='Contact Person' style='width: 25px; height: 25px;'>" +
+			"林紘丞" + 
+		"</span>" +
+		"<span class='todo-duedate'>" + 
+			"<span data-time='"+time_data+"'>"+time_skin+"</span>" + 
+		"</span>" + 
+	"</div>" + 
+	"<ul class='todo-setting-drop z-depth-1'>" + 
+		"<li class='assign-btn' style='color: #0174DF'>指派</li>" + 
+		"<li class='remove-btn' style='color: #DF013A'>刪除</li>" + 
+	"</ul>" + 
+	"<div class='collapsible-body'>" + 
+		"<div class='todo-content' contentEditable='false'>"+data.content+"</div>" + 
+		"<div class='todo-plugin'><br/><br/>" + 
+			"<span class='todo-comment-tag'>評論留言</span>" + 
+			"<hr/>" + 
+			"<ul>" + 
+				"<li class='todo-comment-owner-tag'>" + 
+					"<i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>" + 
+					"李冠德 created the task" + 
+				"</li>" + 
+				"<li>" + 
+					"<span class='todo-post-btn'><span>張貼</span></span>" + 
+					"<span class='todo-post-btn'><span>附檔</span></span>" + 
+				"</li>" + 
+			"</ul>" + 
+		"</div>" + 
+	"</div>" + 
+	"</li>";
+	//var html = "<li id='li"+data._id+"'><input type='checkbox' class='filled-in' id='checkbox"+data._id+"' "+checked+" /><label for='checkbox"+data._id+"' style='position:absolute; margin-top:12px; margin-left:12px'></label><div class='collapsible-header' style='display: inline-block; width:100%;'><i class='material-icons' style='font-size: 14px;'>label</i><span class='todos-title'>"+data.title+"</span><span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span><span class='todo-duedate'><span data-time='"+time_data+"'>"+time_skin+"</span></span></div><ul class='todo-setting-drop z-depth-1'><li class='assign-btn' style='color: #0174DF'>指派</li><li class='remove-btn' style='color: #DF013A'>刪除</li></ul><div class='collapsible-body'><div class='todo-content' contentEditable='false'>"+data.content+"</div><div class='todo-plugin'><br/><br/><span class='todo-comment-tag'>評論留言</span><hr/><ul><li class='todo-comment-owner-tag'><i class='material-icons' style='font-size: 10px; margin-right: 5px;'>comment</i>李冠德 created the task</li><li><span class='todo-post-btn'><span>張貼</span></span><span class='todo-post-btn'><span>附檔</span></span></li></ul></div></div></li>";
+	return htmlTemplate
 }
 
 
@@ -234,6 +271,7 @@ function sortable_button_init(){
 //$('.collapsible').collapsible();
 //$('.collapsible-header').click();
 
+//增加change觸發
 (function($)
 {
     var oldHtml = $.fn.html;

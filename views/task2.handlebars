@@ -59,10 +59,9 @@
  	}
  	.chip-small{
  		height: 20px;
- 		line-height: 20px;
+ 		line-height: inherit;
  		font-size: 8px;
  		font-family: '新細明體';
- 		margin-bottom: 5px;
  	}
  	.activity{
  		text-align: center; margin-bottom: 3px; font-size: 20px;
@@ -231,7 +230,7 @@
 
 <body>
 
-<div class="popout-assigning-panel pop-out z-depth-2">
+<div class="popout-assigning-panel pop-out z-depth-2" style="font-family: '微軟正黑體';">
 	<div style="font-size: 26px;"><i class="material-icons">person_pin</i> 工作指派</div>
 	<hr/>
 	<br/>
@@ -249,7 +248,7 @@
 <div id="task-id" style="display: none;">5655a784dbb681cc10b5f03d</div>
   <div class="row task">
     <!-- Post -->
-    <div class="col s3">
+    <div class="col m12 l3">
     <ul id="dropdown2" class="dropdown-content">
     <li><a href="#!">系統架構規劃<span class="badge">5/11</span></a></li>
     <li><a href="#!">資料庫設計<span class="new badge">1</span></a></li>
@@ -286,47 +285,13 @@
 			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
 			  林紘丞
 			</div> | 系統架構規劃
-			<span class="status update">更新</span>
-			<div class="chip chip-small">
-			  <img src="images/dashboard-leader.jpg" alt="Contact Person">
-			  許韶文
-			</div>｜資料庫設計
-			<span class="status update">更新</span>
-			<div class="chip chip-small">
-			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
-			  林紘丞
-			</div>｜系統架構規劃
-			<span class="status add">新增</span>
-			<div class="chip chip-small">
-			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
-			  林紘丞
-			</div>｜系統架構規劃
-			<span class="status update">更新</span>
-			<div class="chip chip-small">
-			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
-			  林紘丞
-			</div> | 系統架構規劃
-			<span class="status update">更新</span>
-			<div class="chip chip-small">
-			  <img src="images/dashboard-leader.jpg" alt="Contact Person">
-			  許韶文
-			</div>｜資料庫設計
-			<span class="status update">更新</span>
-			<div class="chip chip-small">
-			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
-			  林紘丞
-			</div>｜系統架構規劃
-			<span class="status add">新增</span>
-			<div class="chip chip-small">
-			  <img src="images/dashboard-leader2.jpg" alt="Contact Person">
-			  林紘丞
-			</div>｜系統架構規劃
+			
 	      </div>
 
       </div>
     </div>
     <!-- Todo & config -->
-    <div class="col s9">
+    <div class="col m12 l9">
 	    <div class="todos-dashboard z-depth-1">
 			<div class="task-dashboard-wrapper">
 				<span class="task-title">資料庫設計</span><br/>
@@ -395,7 +360,7 @@
 
 </body>
 <input type="date" style="display: none;" class="datepicker">
-<input type="file" id="upload" name="upload" style="visibility: hidden; width: 1px; height: 1px" multiple />
+<input type="file" id="upload" name="upload" style="visibility: hidden; width: 1px; height: 1px;" multiple />
 </html>
 
 <script>
@@ -413,7 +378,7 @@ $( document ).ready(function(){
 	var $datepicker_input = $('.datepicker').pickadate({
 	    selectMonths: true, // Creates a dropdown to control month
 	    selectYears: 15, // Creates a dropdown of 15 years to control year
-	    format: 'yyyy-mm-dd'
+	    format: 'yyyy-mmm-dd'
 	});
 	// Use the picker object directly.
 	picker = $datepicker_input.pickadate('picker');
@@ -422,7 +387,7 @@ $( document ).ready(function(){
 		//初始化時(反模式)不需要進行後續動作
 		var isInit = (typeof $this_duedate === 'undefined');
 		if(!isInit && !setClear){
-			var time_skin = picker.get('select', 'mmmm - dd - yyyy').toString();
+			var time_skin = picker.get('select', 'mmm - dd - yyyy').toString();
 			var time_data = picker.get();
 
 			var target = $this_duedate.parent().parent().attr('id');

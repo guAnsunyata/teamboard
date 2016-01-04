@@ -19,6 +19,8 @@
 	<script type="text/javascript" src="/js/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 
+	 <script type="text/javascript" src="js/mustache.min.js"></script>
+
 	<style>
 		/* global */
 		html{
@@ -88,6 +90,9 @@
 			opacity: 0;
 			display: none;
 		}
+		.mynav-pc a{
+			font-family: '微軟正黑體';
+		}
 	</style>
 </head>
 
@@ -108,15 +113,15 @@
 					<li><a href="">Project</a></li></li>
 					<li><a href="#" class="dropdown-button" data-activates="dropdown1"><i class="material-icons">perm_identity</i></a></li>
 				</ul>
-				<ul id="dropdown1" class="dropdown-content">
-					<li style="font-size:14px; padding-left:10px; padding-top:6px; color:#01579b;">Guan Dei, Li</li>
+				<ul id="dropdown1" class="dropdown-content" style="font-family: '微軟正黑體'">
+					<li id="userLname" style="font-size:14px; padding-left:10px; padding-top:6px; color:#01579b;">Ms.Demo</li>
 					<li style="text-align: center; background-color: #eee"><i class="material-icons" style="color: #01579b">perm_identity</i></li>
-					<li style="font-size:14px; padding-left:10px; padding-top:6px; padding-right:12px; color:#01579b;">guansunyata@gmail.com</li>
+					<li id="userEmail" style="font-size:14px; padding-left:10px; padding-top:6px; padding-right:12px; color:#01579b;">Demo@patchwork.com</li>
 					<li class="divider"></li>
-					<li style="text-align: center; font-size: 12px;"><a href="#">Logout</a></li>
+					<li style="text-align: center; font-size: 12px;"><a href="/logout">Logout</a></li>
 				</ul>
 				<ul class="mynav-mobile side-nav" id="mobile-demo">
-					<li><a href="">DashBoard</a></li></li>
+					<li><a href="/dashboard">DashBoard</a></li></li>
 					<li><a href="">TeamMate</a></li></li>
 					<li><a href="">Project</a></li></li>
 					<li><i class="material-icons">perm_identity</i></li>
@@ -142,6 +147,11 @@
 <script type="text/javascript">
 var socket = io.connect();
 $( document ).ready(function() {
+	//get User data
+	$.post('/getUserSession', function(data){
+		$('#userLname').html(data.lname);
+		$('#userEmail').html(data.email);
+	});
 	//cancel zone
 	$('.cancel-zone').click(function() {
 		console.log('cancel-zone was clicked and set pop-out element display: none');

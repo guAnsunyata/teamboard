@@ -354,9 +354,20 @@
 
   <div class="panel">
     <div class="panel-content">
-        <a class="add-task-btn waves-effect btn animate fadescaleInLeft" href="javascript:add_task()">Add Task</a>
-        <input>
-        <a class="btn waves-effect btn animate fadescaleInLeft" onclick="Materialize.toast('Guan : everybody hurry up !!', 4000)">Broadcast!</a>
+          <form class="col s12">
+            <div class="row">
+              <div class="col s2">
+                <a class="add-task-btn waves-effect btn animate fadescaleInLeft" href="javascript:add_task()">新增任務</a>
+              </div>
+              <div class="input-field col s2" style="margin-top: -12px;">
+                <input id="yell" type="text">
+              </div>
+              <div class="col s2">
+                <a id="yellbtn" class="btn waves-effect btn animate fadescaleInLeft">廣播</a>
+              </div>
+            </div>
+          </form>
+        </div>
     </div>
   </div>
   <div class="row">
@@ -628,6 +639,22 @@ function add_task(){
   $add_task_panel.css({"display":"block"})
   active_cancelzone();
 }
+
+var socket = io.connect();
+$('#yellbtn').click(function(){
+  var yell = $('#yell').val();
+  var user = $('#userLname').html();
+  var data = {
+    yell: yell,
+    user: user
+  }
+  socket.emit('yell', data);
+});
+
+socket.on('emit yell', function(data){
+  Materialize.toast(data.user + " : " + data.yell , 4000);
+});
+
 function get_chart_x_label(days, startdate) {
   // 使用傳入參數: days(專案期程天數), startdate(專案開始日)
   // 產生圖表的X軸標籤數值

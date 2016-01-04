@@ -168,6 +168,13 @@ io.sockets.on('connection', function (socket){
 			io.sockets.emit('emit todo delete', req);
 		})
 	});
+	socket.on('yell', function (req, callback){
+		var data = {
+			yell: req.yell,
+			user: req.user
+		}
+		io.sockets.emit('emit yell', data);
+	});
 });
 
 // test update
