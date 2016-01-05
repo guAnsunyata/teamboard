@@ -228,16 +228,20 @@ app.post('/api/getCount', function (req, res) {
 			
 			var projDuedate = data.duedate;
 			var projStartdate = data.startdate;
-			var projDuration = getDayDiff(projDuedate, projStartdate);
+			var projDuration = getDayDiff(projDuedate, projStartdate)+1;
 			console.log("projDuration: " + projDuration);
 			var PerDay_todoFinishedCountArr = [];
 			for (var i = 0; i < projDuration; i++) {
 				PerDay_todoFinishedCountArr[i] = 0;
 			};
 			for(var task in data.tasks){
+				// 判斷task是否已完成
 				if(data.tasks[task].finished)
+					// task已完成 finishedTask記數+1
 					finishedTask++;
+				// 判斷task之下有沒有todo
 				if(data.tasks[task].todos!=null){
+					// 有todo 取得todo個數
 					totalTodo += data.tasks[task].todos.length;
 					for(var todo in data.tasks[task].todos){
 						if(data.tasks[task].todos[todo].checker){
@@ -251,11 +255,16 @@ app.post('/api/getCount', function (req, res) {
 				}
 			}
 			var todoFinishedCountArr = [];
+			var last_day_with_finished_todo = 0;
+			for (var i = 0; i < projDuration; i++) {
+				if (PerDay_todoFinishedCountArr[i] != 0) 
+					last_day_with_finished_todo = i ;
+			};
 			todoFinishedCountArr[0] = PerDay_todoFinishedCountArr[0];
-			for (var i = 1; i < projDuration; i++) {
+			for (var i = 1; i <= last_day_with_finished_todo; i++) {
 				todoFinishedCountArr[i] = todoFinishedCountArr[i-1] + PerDay_todoFinishedCountArr[i];
 			};
-			callback(totalTask, finishedTask, totalTodo, finishedTodo, todoFinishedCountArr, data);
+			callback(totalTask, finishedTask, totalTodo, finishedTodo, todoFinishedCountArr, projDuration, data);
 		}
 		function getDayDiff(dateA, dateB){
 			var a = new Date(dateA.getFullYear()+"-"+(dateA.getMonth()+1)+"-"+dateA.getDate());
@@ -263,13 +272,14 @@ app.post('/api/getCount', function (req, res) {
 			var oneDay = 24*60*60*1000;
 			return Math.round(Math.abs((a.getTime()-b.getTime())/(oneDay)));
 		}
-		var combineData = function(totalTask, finishedTask, totalTodo, finishedTodo, todoFinishedCountArr, data) {
+		var combineData = function(totalTask, finishedTask, totalTodo, finishedTodo, todoFinishedCountArr, projDuration, data) {
 			var dataToReturn = {
 				totalTask: totalTask,
 				finishedTask: finishedTask,
 				totalTodo: totalTodo,
 				finishedTodo: finishedTodo,
 				todoFinishedCountArr: todoFinishedCountArr,
+				projDuration: projDuration,
 				projectData: data
 			}
 			res.json(dataToReturn);
