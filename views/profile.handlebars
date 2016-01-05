@@ -7,8 +7,8 @@
       <h4>local</h4>
       <p>
         <strong>id</strong>: {{ user._id }}<br>
-        <strong>email</strong>: {{ user.local.username }}<br>
-        <strong>password</strong>: {{ user.local.password }}
+        <!-- <strong>email</strong>: {{ user.local.username }}<br> -->
+        <!-- <strong>password</strong>: {{ user.local.password }} -->
       </p>
       <h4>facebook</h4>
       <p style="word-wrap: break-word;">
@@ -16,7 +16,7 @@
         <strong>token</strong>: {{ user.facebook.token }}<br>
         <strong>email</strong>: {{ user.facebook.email }}<br>
         <strong>name</strong>: <a href="{{ user.facebook.link }}" target="_blank">{{ user.facebook.name }}</a>
-        <!-- <strong>link</strong>: {{ user.facebook.link }} -->
+        <img src="{{ user.facebook.photo }}" alt="">
       </p>
       <a href="/logout">logout</a>
     </div>

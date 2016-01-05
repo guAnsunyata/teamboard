@@ -15,7 +15,7 @@ var TaskProto = {
 
 	},
 	// get name of the collaborators
-	'findbyid': function (req, callback) {
+	'findcollabsbyid': function (req, callback) {
 		var query = {
 			_id: req.body.task_id
 		}
@@ -24,7 +24,7 @@ var TaskProto = {
 		.select('collabs')
 		.populate({
 			path: 'collabs',
-			select: 'facebook.name',
+			select: 'facebook.name facebook.photo',
 			model: 'UserTest'
 		})
 		.exec(function (err, task) {
@@ -34,10 +34,10 @@ var TaskProto = {
 	'create': function(req, callback) {
 		var current_date = new Date();
 		var new_task = new TaskModel({
-			// 'name': req.body.name,
-			// 'desc': req.body.desc,
-			// 'leader': req.body.leader,
-			// 'collabs': req.body.collabs,
+			'name': req.body.name,
+			'desc': req.body.desc,
+			'leader': req.body.leader,
+			'collabs': req.body.collabs,
 			'createdate': current_date,
 			'projectID': req.body.proj_id
 		});
@@ -47,11 +47,8 @@ var TaskProto = {
 		new_task.save(function (err, task) {
 			if(err) throw err;
 			ProjectModel.update(query, {$pushAll: {tasks: [task._id]}}, function (err, proj) {
-				ProjectModel.findOne(query, function (err, proj) {
-					callback(proj);
-				});
+				callback(task);
 			});
-			// callback(task);
 		})
 	},
 	'createAtOnce': function(req, callback) {

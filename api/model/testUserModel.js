@@ -13,7 +13,8 @@ var testUserSchema = mongoose.Schema({
 		name: String,
 		fname: String,
 		lname: String,
-		link: String
+		link: String,
+		photo: String
 	}
 });
 

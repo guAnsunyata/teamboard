@@ -24,11 +24,10 @@ module.exports = function(passport){
         clientID:       auth.facebookAuth.clientID,
         clientSecret:   auth.facebookAuth.clientSecret,
         callbackURL:    auth.facebookAuth.callbackURL,
-        profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified'],
+        profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'displayName', 'picture.type(normal)', 'timezone', 'updated_time', 'verified'],
     },
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function(){
-            console.log("link: "+profile.profileUrl);
             UserTest.findOne({'facebook.id': profile.id}, function(err, user){
                 if(err)
                     return done(err);
@@ -39,11 +38,12 @@ module.exports = function(passport){
                     // console.log(profile);
                     newUser.facebook.id = profile.id;
                     newUser.facebook.token = accessToken;
-                    newUser.facebook.name = profile.name.familyName+''+profile.name.givenName;
+                    newUser.facebook.name = profile.displayName;
                     newUser.facebook.fname = profile.name.familyName;
                     newUser.facebook.lname = profile.name.givenName;
                     newUser.facebook.email = profile.emails[0].value;
                     newUser.facebook.link = profile.profileUrl;
+                    newUser.facebook.photo = profile.photos[0].value;
 
                     newUser.save(function(err){
                         if(err)
