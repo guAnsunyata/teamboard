@@ -4,7 +4,8 @@ var hbs_layout = 'layout';
 var UserTest = require('../api/model/testUserModel');
 var TaskApi = require('../api/task');
 var Task = new TaskApi();
-// var ProjectModel = require('../api/project');
+var ProjectApi = require('../api/project');
+var Project = new ProjectApi();
 
 module.exports = function (app, passport) {
 	// 取得 user session
@@ -14,21 +15,18 @@ module.exports = function (app, passport) {
 
   	// get collabs by task id, post body task_id: "..."
 	app.post('/api/getusersbytaskid', function (req, res) {
-		Task.findbyid(req, function (data) {
+		Task.findcollabsbyid(req, function (data) {
 			res.json(data);
 		})
 	});
 
-	app.get('/api/getusersbytaskid', function (req, res) {
-		Task.temp(req, function (data) {
-			res.json(data);
-		})
-	});
+	// app.post('/api/getusersbyprojid', function (req, res) {
+	// });
 
   	app.get('/api/users', function (req, res) {
   		UserTest
 		.find()
-		.select('facebook.name facebook.link')
+		.select('facebook.name facebook.photo')
 		.exec(function (err, data) {
 			res.json(data);
 		})
@@ -36,16 +34,15 @@ module.exports = function (app, passport) {
 
 	app.post('/api/users', function (req, res) {
 
-		if(typeof(req.body.task_id) != 'undefined' && !req.body.task_id ) {
-			var query = {
-				_id: req.body.task_id
-			}
-			TaskModel.find(query, function (err, task) {
-				if(err) throw err;
-				else res.json();
-			})
-		}
-
+		// if(typeof(req.body.task_id) != 'undefined' && !req.body.task_id ) {
+		// 	var query = {
+		// 		_id: req.body.task_id
+		// 	}
+		// 	TaskModel.find(query, function (err, task) {
+		// 		if(err) throw err;
+		// 		else res.json();
+		// 	})
+		// }
 
 		UserTest
 		.find()
@@ -56,11 +53,11 @@ module.exports = function (app, passport) {
 	});
 
 
-	// app.get('/api/delusers', function (req, res) {
-	// 	UserTest.remove(function (err, data) {
-	// 		res.json(data);
-	// 	})
-	// });
+	app.get('/api/delusers', function (req, res) {
+		UserTest.remove({_id: '568b8389d3b813e0059489ce'}, function (err, data) {
+			res.json(data);
+		})
+	});
 
   // passport-facebook login related routing
 	app.get('/logintest', function (req, res) {
