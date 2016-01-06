@@ -102,6 +102,7 @@
     height: 40px;
   }
   .task-card{
+    font-family: '微軟正黑體';
     padding-left: 12px;
     padding-right: 12px;
     margin-bottom: 12px;
@@ -198,6 +199,14 @@
     height: 100%;
   }
 
+  #createTask div{
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  #createTask label{
+    padding-left: 10px;
+  }
+
   /* tooltip */
   /* 
   a.tooltip {outline:none; }
@@ -230,8 +239,8 @@
 <div class="dashboard col s12">
   <!-- pop-out div (P.S. there are cancel zone in the layout)-->
   <div class="pop-out add-task-panel z-depth-2 animate fadescaleIn">
-    <div class="add-task-panel-title">Add Task</div>
-    <div class="row">
+    <div class="add-task-panel-title" style="margin-top: 15px;">專案：新增任務</div>
+    <div id="createTask" class="row">
     <form class="col s12">
       <div class="row">
         <div class="input-field col s12">
@@ -257,14 +266,14 @@
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <input id="email" type="text" class="validate">
-          <label for="email">Task leader</label>
+          <input id="leader" type="text" class="validate">
+          <label for="leader">Task leader</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <input id="email" type="text" class="validate">
-          <label for="email">Collaborations</label>
+          <input id="cola" type="text" class="validate">
+          <label for="cola">Collaborations</label>
         </div>
       </div>
     </form>
@@ -643,12 +652,17 @@ function add_task(){
 var socket = io.connect();
 $('#yellbtn').click(function(){
   var yell = $('#yell').val();
+  yell = escapeHtml(yell);
   var user = $('#userLname').html();
   var data = {
     yell: yell,
     user: user
   }
-  socket.emit('yell', data);
+  if(yell.length < 80 && yell.length > 0){
+    socket.emit('yell', data);
+  }else{
+    $('#yell').val('');
+  }
 });
 
 socket.on('emit yell', function(data){

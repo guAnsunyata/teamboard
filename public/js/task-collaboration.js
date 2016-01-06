@@ -77,6 +77,10 @@ socket.on('emit update todo duedate', function(data){
 	$el.find('span').html(time_skin).attr('data-time', time_source.toString());
 });
 
+socket.on('emit yell', function(data){
+  Materialize.toast(data.user + " : " + data.yell , 4000);
+});
+
 var task_id = '5655a784dbb681cc10b5f03d';
 //collection
 function collection_init(){
