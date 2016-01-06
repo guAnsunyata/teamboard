@@ -4,7 +4,6 @@ var server = require('http').Server(app);
 var path = require('path');
 var io = require('socket.io').listen(server);
 var mongoose = require('./api/db');
-var settings = mongoose.settings;
 var step = require('step-master');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -24,16 +23,6 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
-app.use(session({
-	secret: settings.cookieSecret,
-	key: settings.db, //cookie name
-	cookie: {maxAge: 1000 * 60 * 60 * 24 * 30}, //30days
-	store: new MongoStore({
-		db: settings.db,
-		host: settings.host,
-		prot: settings.prot
-	})
-}));
 app.use(flash());
 
 app.use(express.static(path.join(__dirname, 'public')));

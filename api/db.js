@@ -5,13 +5,6 @@ var mongolab_db = 'mongodb://admin:admin@ds057234.mongolab.com:57234/teamboard-d
 //var mongolab_db = 'mongodb://admin:admin@ds043971.mongolab.com:43971/teamboard-dev-heroku';
 var localhost_db = 'mongodb://localhost:27017/teamboard';
 
-mongoose.settings = {
-	cookieSecret: 'patchwork',
-	db: 'teamboard-dev',
-	host: 'localhost',
-	port: 27017
-};
-
 
 
 mongoose.connect(mongolab_db, function(err){
