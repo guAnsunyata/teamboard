@@ -248,7 +248,7 @@ app.post('/api/getCount', function (req, res) {
 							finishedTodo++;
 							var todo = data.tasks[task].todos[todo];
 							var diff_projStartdate_todoFinisheddate = getDayDiff(todo.finisheddate, projStartdate);
-							console.log(diff_projStartdate_todoFinisheddate);
+							// console.log(diff_projStartdate_todoFinisheddate);
 							PerDay_todoFinishedCountArr[diff_projStartdate_todoFinisheddate]++;
 						}
 					}

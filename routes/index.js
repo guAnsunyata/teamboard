@@ -59,6 +59,10 @@ module.exports = function (app, passport) {
 		})
 	});
 
+	app.get('/project', function (req, res) {
+		res.render('project', {layout: hbs_layout});
+	});
+
   // passport-facebook login related routing
 	app.get('/logintest', function (req, res) {
 		res.render('login', {layout: hbs_layout});
