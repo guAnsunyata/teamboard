@@ -4,7 +4,6 @@ var server = require('http').Server(app);
 var path = require('path');
 var io = require('socket.io').listen(server);
 var mongoose = require('./api/db');
-var step = require('step-master');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
