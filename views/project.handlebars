@@ -58,50 +58,132 @@
 		margin: 0 1px;
 		border-radius: 5px;
 	}
+	.done-title {
+		border-bottom: 1px solid #000;
+		padding-bottom: 6px;
+		margin-bottom: 10px;
+	}
 </style>
 <div class="container">
 	<div class="row">
+		<!-- project cards -->
     <div class="col s12 l8">
     	<h5>參與專案</h5>
+    	<a class="waves-effect waves-light btn">新增專案</a>
+
       <div class="card blue-grey">
         <div class="card-content white-text">
-          <span class="card-title">課程報名繳費系統</span>
-          <p>此專案由雲林科技大學資訊中心指派，由本校資管系學生開發。</p>
+          <span class="card-title" id="projname"></span>
+          <p id="projdesc"></p>
         </div>
-        <div class="card-action">
+        <div class="card-action white-text">
+        	<span class="white-text" id="projstart"></span>
+        	<span class="white-text"> ~ </span>
+        	<span class="white-text" id="projdue"></span>
         </div>
       </div>
 
 			<div class="card blue-grey">
         <div class="card-content white-text">
-          <span class="card-title">課程報名繳費系統</span>
-          <p>此專案由雲林科技大學資訊中心指派，由本校資管系學生開發。</p>
+          <span class="card-title" id="demoname"></span>
+          <p id="demodesc"></p>
         </div>
-        <div class="card-action">
+        <div class="card-action white-text">
+        	<span class="white-text" id="demostart"></span>
+        	<span class="white-text"> ~ </span>
+        	<span class="white-text" id="demodue"></span>
         </div>
       </div>
 
     </div>
 
+		<!-- user assignment list -->
     <div class="col s12 l4">
     	<h5>任務清單</h5>
     	<div class="list valign-wrapper">
     			<i class="material-icons valign">assignment</i>
     			<div class="content valign">
     				<span class="due">2015-1-11</span>
-    				在<span class="proj">課程報名繳費系統</span>中，擔任<span class="task">資料庫設計</span>的<span class="leader">負責人</span>
+    				在<span class="proj">課程報名繳費系統</span>擔任<span class="task">資料庫設計</span>的<span class="leader">負責人</span>
     			</div>
     	</div>
     	<div class="list valign-wrapper">
     			<i class="material-icons valign">assignment</i>
     			<div class="content valign">
     				<span class="due">2015-1-11</span>
-    				在<span class="proj">課程報名繳費系統</span>中，擔任<span class="task">資料庫設計</span>之下<span class="todo">蒐集資料庫資料</span>的協作者
+    				在<span class="proj">課程報名繳費系統</span>擔任<span class="task">資料庫設計</span>之下<span class="todo">蒐集資料庫資料</span>的協作者
+    			</div>
+    	</div>
+    	<div class="list valign-wrapper">
+    			<i class="material-icons valign">assignment</i>
+    			<div class="content valign">
+    				<span class="due">2015-1-15</span>
+    				在<span class="proj">斗六市反射鏡清潔活動</span>擔任<span class="task">地點勘查</span>的<span class="leader">負責人</span>
+    			</div>
+    	</div>
+    	<div class="list valign-wrapper">
+    			<i class="material-icons valign">assignment</i>
+    			<div class="content valign">
+    				<span class="due">2015-1-17</span>
+    				在<span class="proj">斗六市反射鏡清潔活動</span>擔任<span class="task">用品採買</span>的協作者
     			</div>
     	</div>
 			<br>
-    	<div>已完成</div>
+
+    	<div class="done-title">已完成</div>
+    	<div class="list done valign-wrapper">
+    			<i class="material-icons valign">assignment_turned_in</i>
+    			<div class="content valign">
+    				在<span class="proj">課程報名繳費系統</span>中，擔任<span class="task">資料庫設計</span>之下<span class="todo">蒐集資料庫資料</span>的協作者
+    			</div>
+    	</div>
     </div>
 
   </div>
 </div>
+<script>
+	$( document ).ready(function(){
+		getStats(showData);
+		getOtherStats(showOtherData);
+	});
+
+	function getStats(callback) {
+	  $.post('/api/getCount', {proj_id: '5653015b58fe43dc186ec0a0'},
+	    function (data) {
+	    	callback(data);
+	  });
+	}
+	function showData(data) {
+		var $projname = $('#projname'),
+				$projdesc = $('#projdesc'),
+				$projstart = $('#projstart'),
+				$projdue = $('#projdue');
+		$projname.text(data.projectData.name);
+		$projdesc.text(data.projectData.desc);
+		$projstart.text(getDate(data.projectData.startdate));
+		$projdue.text(getDate(data.projectData.duedate));
+	}
+	function getDate(time_str){
+		var time = new Date(time_str);
+		var date = time.getFullYear()+'-'+(time.getMonth()+1)+'-'+time.getDate();
+		return date;
+	}
+
+	function getOtherStats(callback) {
+//568e1fa289060db416ca00c6
+		$.post('/api/findProj', {proj_id: '568e1fa289060db416ca00c6'},
+	    function (data) {
+	    	callback(data);
+	  });
+	}
+	function showOtherData(data) {
+		var $demoname = $('#demoname'),
+				$demodesc = $('#demodesc'),
+				$demostart = $('#demostart'),
+				$demodue = $('#demodue');
+		$demoname.text(data.name);
+		$demodesc.text(data.desc);
+		$demostart.text(getDate(data.startdate));
+		$demodue.text(getDate(data.duedate));
+	}
+</script>
