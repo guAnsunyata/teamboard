@@ -54,13 +54,13 @@ module.exports = function (app, passport) {
 
 
 	app.get('/api/delusers', function (req, res) {
-		UserTest.remove({_id: '568b8389d3b813e0059489ce'}, function (err, data) {
+		UserTest.remove({}, function (err, data) {
 			res.json(data);
 		})
 	});
 
-	app.get('/project', function (req, res) {
-		res.render('project', {layout: hbs_layout});
+	app.get('/project', isLoggedIn, function (req, res) {
+		res.render('project', {layout: hbs_layout, user: req.user});
 	});
 
   // passport-facebook login related routing
@@ -75,12 +75,12 @@ module.exports = function (app, passport) {
 	app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}));
 
 	app.get('/auth/facebook/callback', 
-	  passport.authenticate('facebook', { successRedirect: '/profiletest',
-	                                      failureRedirect: '/logintest' }));
+	  passport.authenticate('facebook', { successRedirect: '/project',
+	                                      failureRedirect: '/' }));
 
 	app.get('/logout', function (req, res) {
 		req.logout();
-		res.redirect('/logintest');
+		res.redirect('/');
 	});
 }
 
@@ -92,5 +92,5 @@ function isLoggedIn(req, res, next) {
 		return next();
 	}
 	// if the user is not authenticated then redirect him to the login page
-	res.redirect('/logintest');
+	res.redirect('/');
 }

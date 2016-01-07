@@ -4,13 +4,28 @@
 		font-family: Microsoft JhengHei;
 	}
 	h5 {
-		border-bottom: 1px solid #000;
-		padding-bottom: 10px;
+		/*border-bottom: 1px solid #000;*/
+		/*padding-bottom: 10px;*/
 		margin-top: 20px;
-		margin-bottom: 20px;
+		/*margin-bottom: 20px;*/
+	}
+	#userInfoWrap {
+	}
+	#userPic {
+		display:inline-block;
+		float: left;
+	}
+	#userName {
+		display:inline-block;
+		margin-left: 10px;
+		margin-top: 20px;
+		float: left;
+		height: 80px;
+		vertical-align: middle;
 	}
 	.list {
 		padding-top: 6px;
+		padding-left: 6px;
 		padding-bottom: 6px;
 		margin-bottom: 4px;
 		line-height: 2;
@@ -59,9 +74,9 @@
 		border-radius: 5px;
 	}
 	.done-title {
-		border-bottom: 1px solid #000;
-		padding-bottom: 6px;
-		margin-bottom: 10px;
+		/*border-bottom: 1px solid #000;*/
+		/*padding-bottom: 6px;*/
+		/*margin-bottom: 10px;*/
 	}
 </style>
 <div class="container">
@@ -69,11 +84,12 @@
 		<!-- project cards -->
     <div class="col s12 l8">
     	<h5>參與專案</h5>
+    	<hr>
     	<a class="waves-effect waves-light btn">新增專案</a>
 
       <div class="card blue-grey">
         <div class="card-content white-text">
-          <span class="card-title" id="projname"></span>
+          <a href="/dashboard"><span class="card-title" id="projname"></span></a>
           <p id="projdesc"></p>
         </div>
         <div class="card-action white-text">
@@ -99,38 +115,52 @@
 
 		<!-- user assignment list -->
     <div class="col s12 l4">
+    	<div class="card">
+        <div class="card-content">
+        	<div id="userInfoWrap">
+	        	<div class="valign" id="userPic"><img src="{{user.facebook.photo}}" width="80" height="80"></div>
+	        	<div class="valign" id="userName">
+	        		<a href="{{user.facebook.link}}" target="_blank">{{user.facebook.name}}</a><br />
+	        		{{user.facebook.email}}
+	        	</div>
+        	</div>
+        </div>
+      </div>
+
     	<h5>任務清單</h5>
+    	<hr>
     	<div class="list valign-wrapper">
-    			<i class="material-icons valign">assignment</i>
-    			<div class="content valign">
-    				<span class="due">2015-1-11</span>
-    				在<span class="proj">課程報名繳費系統</span>擔任<span class="task">資料庫設計</span>的<span class="leader">負責人</span>
-    			</div>
+  			<i class="material-icons valign">assignment</i>
+  			<div class="content valign">
+  				<span class="due">2015-1-11</span>
+  				在<span class="proj">課程報名繳費系統</span>擔任<span class="task">資料庫設計</span>的<span class="leader">負責人</span>
+  			</div>
     	</div>
     	<div class="list valign-wrapper">
-    			<i class="material-icons valign">assignment</i>
-    			<div class="content valign">
-    				<span class="due">2015-1-11</span>
-    				在<span class="proj">課程報名繳費系統</span>擔任<span class="task">資料庫設計</span>之下<span class="todo">蒐集資料庫資料</span>的協作者
-    			</div>
+  			<i class="material-icons valign">assignment</i>
+  			<div class="content valign">
+  				<span class="due">2015-1-11</span>
+  				在<span class="proj">課程報名繳費系統</span>擔任<span class="task">資料庫設計</span>之下<span class="todo">蒐集資料庫資料</span>的協作者
+  			</div>
     	</div>
     	<div class="list valign-wrapper">
-    			<i class="material-icons valign">assignment</i>
-    			<div class="content valign">
-    				<span class="due">2015-1-15</span>
-    				在<span class="proj">斗六市反射鏡清潔活動</span>擔任<span class="task">地點勘查</span>的<span class="leader">負責人</span>
-    			</div>
+  			<i class="material-icons valign">assignment</i>
+  			<div class="content valign">
+  				<span class="due">2015-1-15</span>
+  				在<span class="proj">斗六市反射鏡清潔活動</span>擔任<span class="task">地點勘查</span>的<span class="leader">負責人</span>
+  			</div>
     	</div>
     	<div class="list valign-wrapper">
-    			<i class="material-icons valign">assignment</i>
-    			<div class="content valign">
-    				<span class="due">2015-1-17</span>
-    				在<span class="proj">斗六市反射鏡清潔活動</span>擔任<span class="task">用品採買</span>的協作者
-    			</div>
+  			<i class="material-icons valign">assignment</i>
+  			<div class="content valign">
+  				<span class="due">2015-1-17</span>
+  				在<span class="proj">斗六市反射鏡清潔活動</span>擔任<span class="task">用品採買</span>的協作者
+  			</div>
     	</div>
 			<br>
 
     	<div class="done-title">已完成</div>
+    	<hr>
     	<div class="list done valign-wrapper">
     			<i class="material-icons valign">assignment_turned_in</i>
     			<div class="content valign">
@@ -143,6 +173,8 @@
 </div>
 <script>
 	$( document ).ready(function(){
+  	$('.footer').remove();
+
 		getStats(showData);
 		getOtherStats(showOtherData);
 	});
