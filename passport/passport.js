@@ -24,7 +24,7 @@ module.exports = function(passport){
         clientID:       auth.facebookAuth.clientID,
         clientSecret:   auth.facebookAuth.clientSecret,
         callbackURL:    auth.facebookAuth.callbackURL,
-        profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'displayName', 'picture.type(small)', 'timezone', 'updated_time', 'verified'],
+        profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'displayName', 'picture.type(large)', 'timezone', 'updated_time', 'verified'],
     },
     function (accessToken, refreshToken, profile, done) {
         process.nextTick(function(){
