@@ -5,6 +5,28 @@ var TodoProto = {
 	'temp': function(id, callback) {
 		TodoModel.update({_id: id}, {})
 	},
+	'assign': function(req, callback) {
+		var req = req.body;
+		var query = {
+			_id: req.todo_id
+		};
+		TodoModel.update(query, {collabs: req.collabs}, function (err, todo) {
+			callback(todo);
+		});
+	},
+	'getCollabs': function(req,callback) {
+		var req = req.body;
+		var query = {
+			_id: req.todo_id
+		};
+		TodoModel.findOne(query).select('collabs').exec(function (err, todo) {
+			if (typeof(todo.collabs)=='undefined') {
+				callback([]);
+			} else {
+				callback(todo.collabs);
+			}
+		});
+	},
 	'create': function(req, callback) {
 		// step 1: get order of this todo
 		TodoModel.count({'taskID': req.task_id}, function (err, todo) {

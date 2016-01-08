@@ -310,6 +310,16 @@ app.get('/tryPull', function (req, res) {
 
 /* Todo api */
 // use _id of task to create todo
+app.post('/api/getTodoCollabs', function (req, res) {
+	Todo.getCollabs(req, function (data) {
+		res.json(data);
+	})
+});
+app.post('/api/assignTodo', function (req, res) {
+	Todo.assign(req, function (data) {
+		res.json(data);
+	})
+});
 app.post('/api/createTodo', function (req, res) {
 	Todo.create(req, function (data) {
 		var dataForTaskUpdate = {
