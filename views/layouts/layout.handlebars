@@ -93,6 +93,14 @@
 		.mynav-pc a{
 			font-family: '微軟正黑體';
 		}
+		.user-img{
+			width: 100px;
+			margin-top: -0px;
+		}
+		.userImage_wrapper{
+			overflow: hidden;
+			height: 90px;
+		}
 	</style>
 </head>
 
@@ -115,7 +123,7 @@
 				</ul>
 				<ul id="dropdown1" class="dropdown-content" style="font-family: '微軟正黑體'">
 					<li id="userLname" style="font-size:14px; padding-left:10px; padding-top:6px; color:#01579b;">Ms.Demo</li>
-					<li style="text-align: center; background-color: #eee"><i class="material-icons" style="color: #01579b">perm_identity</i></li>
+					<li id="userImage" style="text-align: center; background-color: #eee"><i class="material-icons" style="color: #01579b">perm_identity</i></li>
 					<li id="userEmail" style="font-size:14px; padding-left:10px; padding-top:6px; padding-right:12px; color:#01579b;">Demo@patchwork.com</li>
 					<li class="divider"></li>
 					<li style="text-align: center; font-size: 12px;"><a href="/logout">Logout</a></li>
@@ -159,8 +167,11 @@ var socket = io.connect();
 $( document ).ready(function() {
 	//get User data
 	$.post('/getUserSession', function(data){
-		$('#userLname').html(data.lname);
-		$('#userEmail').html(data.email);
+		if(data.lname){
+			$('#userLname').html(data.lname);
+			$('#userEmail').html(data.email);
+			$('#userImage').html(data.photo);
+		}
 	});
 	//cancel zone
 	$('.cancel-zone').click(function() {

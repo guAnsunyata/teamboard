@@ -227,7 +227,7 @@ function get_todo_html(data){
 	"</ul>" + 
 	"<div class='collapsible-body'>" + 
 		"<div class='todo-content' contentEditable='false'>"+data.content+"</div>" + 
-		"<div class='todo-plugin'><br/><br/>" + 
+		"<div class='todo-plugin' contentEditable='false'><br/><br/>" + 
 			"<span class='todo-comment-tag'>評論留言</span>" + 
 			"<hr/>" + 
 			"<ul>" + 
