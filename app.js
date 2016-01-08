@@ -147,6 +147,9 @@ io.sockets.on('connection', function (socket){
 		 	socket.broadcast.emit('emit update todo duedate', req);
 		})
 	});
+	socket.on('update collabs', function (req, callback) {
+		socket.broadcast.emit('emit update collabs', req);
+	});
 	socket.on('delete todo', function (req, callback) {
 		/* delete 的參數 req 需要有:
 		 * 		todo_id: 	_id of the task
