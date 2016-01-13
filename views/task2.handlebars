@@ -235,14 +235,14 @@
 	<hr/>
 	<br/>
  	<div class="input-field col s12">
-	    <select multiple>
+	    <select id="assign-select" multiple>
 	      <option value="" disabled selected>請選擇指派對象</option>
-	      <option value="1"> 許韶文</option>
-	      <option value="2"> 林紘丞</option>
+	      <!-- <option value="1" selected="true"> 許韶文</option>
+	      <option value="2"> 林紘丞</option> -->
 	    </select>
 	    <label>Assigning</label>
 	</div>
-	<a id="button_add" class="waves-effect waves-light btn">指派</a>
+	<a id="button_add" class="waves-effect waves-light btn assign-btn">指派</a>
 </div>
 
 <div id="task-id" style="display: none;">5655a784dbb681cc10b5f03d</div>
@@ -309,7 +309,11 @@
 				    <img src="images/dashboard-leader2.jpg" alt="Contact Person">
 				    林紘丞
 				</div>
-				<i class="material-icons" style="font-size: 26px; padding-top: 7px;">supervisor_account</i>
+				<div class="chip">
+				    <img src="images/dashboard-leader3.jpg" alt="Contact Person">
+				    王浩平
+				</div>
+				<a id="button_add" class="waves-effect waves-light btn assign-btn" style="padding-left: 15px; padding-right: 15px;">新增成員</a>
 			</div>
 		</div>
 

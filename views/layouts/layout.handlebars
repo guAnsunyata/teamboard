@@ -95,7 +95,7 @@
 		}
 		.user-img{
 			width: 100px;
-			margin-top: -0px;
+			margin-top: -30px;
 		}
 		.userImage_wrapper{
 			overflow: hidden;
@@ -170,7 +170,7 @@ $( document ).ready(function() {
 		if(data.lname){
 			$('#userLname').html(data.lname);
 			$('#userEmail').html(data.email);
-			$('#userImage').html(data.photo);
+			$('#userImage').html('<div class="userImage_wrapper"><img src="'+data.photo+'" class="user-img" /></div>');
 		}
 	});
 	//cancel zone

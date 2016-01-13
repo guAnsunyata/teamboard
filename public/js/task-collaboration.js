@@ -81,6 +81,14 @@ socket.on('emit yell', function(data){
   Materialize.toast(data.user + " : " + data.yell , 4000);
 });
 
+socket.on('emit yell', function(data){
+  Materialize.toast(data.user + " : " + data.yell , 4000);
+});
+
+socket.on('emit update collabs', function(data){
+  $('#li'+data.todo_id).find('.todo-collabs').html(data.html);
+});
+
 var task_id = '5655a784dbb681cc10b5f03d';
 //collection
 function collection_init(){
@@ -184,6 +192,59 @@ function todo_regist($el){ // el is whole <li>
 	$el.find('.todo-setting-drop .assign-btn').click(function(){
 		$('.popout-assigning-panel').css({"display":"block"});
 		active_cancelzone();
+		$('select').html('<option value="" disabled >請選擇指派對象</option>');
+		$('.assign-btn').click(function(){
+			var $user_assigned = $("#assign-select :selected");
+			var user_assigned = [];
+			$.map($user_assigned, function(user_val){
+				user_assigned.push(user_val.value);
+			});
+			console.log(user_assigned);
+			// $.post('/api/getUsers',{todo_id: _this_id},function(data){
+			// }
+			var user_html = "<span class='chip chip-small' style='float: right; margin-top: 10px; line-height: 26px; margin-left: 5px; height: 26px;'>" +
+				"<img src='images/dashboard-leader3.jpg' alt='Contact Person' style='width: 25px; height: 25px;'>" +
+				"王浩平" + 
+			"</span>";
+			$el.find('.todo-collabs').html(user_html);
+			var data = {
+				todo_id: _this_id,
+				html: user_html
+			}
+			socket.emit('update collabs', data);
+		});
+		var data = [
+			{
+				_id: '111',
+				assigned: false,
+				facebook: {
+					name: '許韶文'
+				}
+			},{
+				_id: '222',
+				assigned: false,
+				facebook: {
+					name: '林紘丞'
+				}
+			},{
+				_id: '333',
+				assigned: false,
+				facebook: {
+					name: '王浩平'
+				}
+			}
+		]
+		//$.post('/api/getUsers',{todo_id: _this_id},function(data){
+			data.forEach(function(user){
+				if(user.assigned){
+					var user_html = '<option value="'+user._id+'" selected> '+user.facebook.name+'</option>';
+				}else{
+					var user_html = '<option value="'+user._id+'"> '+user.facebook.name+'</option>';
+				}
+				$('#assign-select').append(user_html);
+			});
+			$('select').material_select();
+		//});
 	});
 	//collapsible
 	$('.collapsible').collapsible({
@@ -213,10 +274,7 @@ function get_todo_html(data){
 		"<i class='material-icons' style='font-size: 14px;'>label</i>" + 
 		"<span class='todos-title'>"+data.title+"</span>" + 
 		"<span class='todo-setting'><i class='material-icons'>"+setting_icon+"</i></span>" + 
-		"<span class='chip chip-small' style='float: right; margin-top: 10px; line-height: 26px; margin-left: 5px; height: 26px;'>" +
-			"<img src='images/dashboard-leader2.jpg' alt='Contact Person' style='width: 25px; height: 25px;'>" +
-			"林紘丞" + 
-		"</span>" +
+		"<span class='todo-collabs'></span>" + 
 		"<span class='todo-duedate'>" + 
 			"<span data-time='"+time_data+"'>"+time_skin+"</span>" + 
 		"</span>" + 
@@ -258,6 +316,7 @@ function upload(){
 	document.getElementById('upload').click();
 }
 
+
 function sortable_button_init(){
 	$('#button_sortable').click(function(){
 		var state = sortable_api.option("disabled"); // get
@@ -270,6 +329,10 @@ function sortable_button_init(){
 	    }
 	});
 }
+
+// $('option').click(function(){
+// 	$(this).prop('selected','true');
+// });
 
 //$('.collapsible-header').off();
 //$('.collapsible').collapsible();
